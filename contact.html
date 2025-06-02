@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Zaheb International - Get in touch for visa processing, hotel bookings, certified translation, and travel insurance services in Kuwait">
+    <meta name="keywords" content="contact Zaheb International, visa services Kuwait, travel agency Kuwait, contact form">
+    <title>Contact Us | Zaheb International</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Additional Contact Page Styles */
+        .contact-info-card {
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-info-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .rtl .contact-info-icon {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+        
+        .contact-info-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info-content p, .contact-info-content a {
+            color: var(--gray-color);
+            margin: 0;
+        }
+        
+        .contact-form-card {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-sm);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+        }
+        
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-top: 50px;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .contact-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 992px) {
+            .contact-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ar">العربية</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Zaheb International Logo">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1 class="page-title" data-en="Contact Us" data-ar="اتصل بنا"></h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-en="Contact" data-ar="اتصل بنا"></li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-row">
+                <div class="contact-info">
+                    <div class="glass-card contact-info-card fade-in">
+                        <h2 data-en="Get In Touch" data-ar="تواصل معنا"></h2>
+                        <p data-en="We're here to answer any questions you may have about our services. Reach out to us and we'll respond as soon as we can." data-ar="نحن هنا للإجابة على أي أسئلة قد تكون لديك حول خدماتنا. تواصل معنا وسنرد في أقرب وقت ممكن."></p>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4 data-en="Our Office" data-ar="مكتبنا"></h4>
+                                <p data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya, Kuwait" data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية، الكويت"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4 data-en="Phone / WhatsApp" data-ar="الهاتف / واتساب"></h4>
+                                <p><a href="tel:+96522281011">+965 2228 1011</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4 data-en="Email" data-ar="البريد الإلكتروني"></h4>
+                                <p><a href="mailto:info@zaheb.com">info@zaheb.com</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4 data-en="Working Hours" data-ar="ساعات العمل"></h4>
+                                <p data-en="24/7 Support Available" data-ar="دعم متاح على مدار الساعة"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4 data-en="Instagram" data-ar="انستغرام"></h4>
+                                <p><a href="https://www.instagram.com/zaheb4visa/" target="_blank">@zaheb4visa</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <div class="glass-card contact-form-card fade-in">
+                        <h2 data-en="Send Us a Message" data-ar="أرسل لنا رسالة"></h2>
+                        <p data-en="Fill out the form below, and we'll get back to you shortly." data-ar="املأ النموذج أدناه، وسنرد عليك قريبًا."></p>
+                        
+                        <div id="form-status"></div>
+                        
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" class="form-control" data-en="Your Name" data-ar="اسمك" placeholder="Your Name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" id="phone" name="phone" class="form-control" data-en="Your Phone Number" data-ar="رقم هاتفك" placeholder="Your Phone Number" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="message" name="message" class="form-control" data-en="Your Message" data-ar="رسالتك" placeholder="Your Message" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Google Map -->
+            <div class="map-container fade-in">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.9029592234786!2d48.08107491503515!3d29.33317688214116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf9c83ce455983%3A0xc3fcf73f7ba4f614!2sSalem%20Al%20Mubarak%20St%2C%20Salmiya%2C%20Kuwait!5e0!3m2!1sen!2s!4v1623456789012!5m2!1sen!2s" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-white.png" alt="Zaheb International Logo">
+                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق"></p>
+                </div>
+                <div class="footer-links">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة"></h3>
+                    <ul>
+                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
+                        <li><a href="about.html" data-en="About Us" data-ar="من نحن"></a></li>
+                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا"></a></li>
+                        <li><a href="portfolio.html" data-en="Portfolio" data-ar="معرض الأعمال"></a></li>
+                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا"></a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 data-en="Contact Us" data-ar="اتصل بنا"></h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya" data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية"></span></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/96522281011" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p data-en="&copy; 2023 Zaheb International. All Rights Reserved." data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html> 
