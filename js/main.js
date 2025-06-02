@@ -115,6 +115,16 @@ function initLanguageSwitcher() {
                 }
             }
         });
+        
+        // Update WhatsApp button tooltip
+        const whatsappBtn = document.querySelector('.whatsapp-btn');
+        if (whatsappBtn) {
+            if (lang === 'ar') {
+                whatsappBtn.setAttribute('data-tooltip', whatsappBtn.getAttribute('data-ar-tooltip'));
+            } else {
+                whatsappBtn.setAttribute('data-tooltip', whatsappBtn.getAttribute('data-en-tooltip'));
+            }
+        }
     }
 }
 

@@ -119,6 +119,76 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* WhatsApp Contact Button Styles */
+        .whatsapp-contact {
+            text-align: center;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        
+        .whatsapp-contact h2 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .whatsapp-contact p {
+            margin-bottom: 30px;
+            color: var(--gray-color);
+        }
+        
+        .whatsapp-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366;
+            color: var(--white-color);
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-contact-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            color: var(--white-color);
+        }
+        
+        .whatsapp-contact-btn i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+        
+        .rtl .whatsapp-contact-btn i {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+        
+        @media (max-width: 576px) {
+            .whatsapp-contact {
+                padding: 25px;
+            }
+            
+            .whatsapp-contact-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .whatsapp-contact-btn i {
+                font-size: 1.5rem;
+                margin-right: 10px;
+            }
+            
+            .rtl .whatsapp-contact-btn i {
+                margin-right: 0;
+                margin-left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -233,31 +303,16 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="contact-form">
-                    <div class="glass-card contact-form-card fade-in">
-                        <h2 data-en="Send Us a Message" data-ar="أرسل لنا رسالة"></h2>
-                        <p data-en="Fill out the form below, and we'll get back to you shortly." data-ar="املأ النموذج أدناه، وسنرد عليك قريبًا."></p>
-                        
-                        <div id="form-status"></div>
-                        
-                        <form id="contact-form">
-                            <div class="form-group">
-                                <input type="text" id="name" name="name" class="form-control" data-en="Your Name" data-ar="اسمك" placeholder="Your Name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <input type="tel" id="phone" name="phone" class="form-control" data-en="Your Phone Number" data-ar="رقم هاتفك" placeholder="Your Phone Number" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <textarea id="message" name="message" class="form-control" data-en="Your Message" data-ar="رسالتك" placeholder="Your Message" required></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
-                        </form>
-                    </div>
-                </div>
+            
+            </div>
+            
+            <div class="whatsapp-contact glass-card fade-in">
+                <h2 data-en="Contact Us on WhatsApp" data-ar="تواصل معنا عبر واتساب"></h2>
+                <p data-en="Click the button below to start a conversation with us on WhatsApp. We're available 24/7 to assist you." data-ar="انقر على الزر أدناه لبدء محادثة معنا على واتساب. نحن متاحون على مدار الساعة لمساعدتك."></p>
+                <a href="https://wa.me/96522281011" class="whatsapp-contact-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span data-en="Chat with Us on WhatsApp" data-ar="تحدث معنا على واتساب"></span>
+                </a>
             </div>
             
             <!-- Google Map -->
@@ -302,7 +357,7 @@
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank">
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us" data-ar-tooltip="تحدث معنا">
         <i class="fab fa-whatsapp"></i>
     </a>
 
