@@ -204,6 +204,7 @@ section {
     border-radius: var(--border-radius);
     padding: 5px;
     box-shadow: var(--glass-shadow);
+    transition: var(--transition);
 }
 
 .rtl .language-switcher {
@@ -220,11 +221,32 @@ section {
     font-weight: 500;
     border-radius: var(--border-radius-sm);
     transition: var(--transition);
+    min-width: 70px;
+    text-align: center;
 }
 
 .lang-btn.active {
     background-color: var(--primary-color);
     color: var(--white-color);
+}
+
+/* Mobile Language Switcher */
+.language-switcher-mobile {
+    display: none;
+    justify-content: center;
+    background: var(--glass-background);
+    backdrop-filter: var(--glass-blur);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 200px;
+}
+
+.mobile-lang {
+    display: none;
+    justify-content: center;
+    width: 100%;
 }
 
 /* ===== HEADER & NAVIGATION ===== */
@@ -543,8 +565,46 @@ section {
 }
 
 @media (max-width: 768px) {
+    .desktop-lang {
+        display: none;
+    }
+    
+    .mobile-lang {
+        display: flex;
+        order: 3; /* Position in the middle of the navigation */
+    }
+    
+    .language-switcher-mobile {
+        display: flex;
+    }
+    
+    .language-switcher-mobile .lang-btn {
+        padding: 8px 15px;
+        font-size: 1rem;
+        min-width: 80px;
+    }
+    
     .mobile-menu-btn {
         display: flex;
+    }
+    
+    .language-switcher {
+        top: 15px;
+        right: 15px;
+        padding: 3px;
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 4px 15px rgba(31, 38, 135, 0.25);
+    }
+    
+    .rtl .language-switcher {
+        left: 15px;
+        right: auto;
+    }
+    
+    .lang-btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        min-width: 60px;
     }
     
     .nav {
@@ -598,6 +658,25 @@ section {
 @media (max-width: 576px) {
     .hero-title {
         font-size: 2rem;
+    }
+    
+    .language-switcher {
+        top: 10px;
+        right: 10px;
+        padding: 2px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .rtl .language-switcher {
+        left: 10px;
+        right: auto;
+    }
+    
+    .lang-btn {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+        min-width: 50px;
+        font-weight: 600;
     }
     
     .section-title {

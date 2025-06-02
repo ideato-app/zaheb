@@ -16,10 +16,10 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Language Switcher -->
-    <div class="language-switcher">
-        <button class="lang-btn active" data-lang="en">English</button>
-        <button class="lang-btn" data-lang="ar">العربية</button>
+    <!-- Language Switcher (Desktop) -->
+    <div class="language-switcher desktop-lang">
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn active" data-lang="ar">العربية</button>
     </div>
 
     <!-- Header -->
@@ -34,6 +34,13 @@
                 <ul class="nav-list">
                     <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <!-- Language Switcher (Mobile) -->
+                    <li class="nav-item mobile-lang">
+                        <div class="language-switcher-mobile">
+                            <button class="lang-btn" data-lang="en">English</button>
+                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                        </div>
+                    </li>
                     <li class="nav-item"><a href="services.html" class="nav-link active">Services</a></li>
                     <li class="nav-item"><a href="portfolio.html" class="nav-link">Portfolio</a></li>
                     <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -113,7 +120,7 @@
         <div class="container">
             <div class="row">
                 <div class="service-image fade-in">
-                    <img src="images/booking-service.jpg" alt="Hotel and Travel Bookings Service" class="glass-card">
+                    <img src="images/booking-service.png" alt="Hotel and Travel Bookings Service" class="glass-card">
                 </div>
                 <div class="service-content glass-card fade-in">
                     <h2 data-en="Hotel & Travel Bookings" data-ar="حجوزات الفنادق والسفر"></h2>
@@ -151,7 +158,7 @@
         <div class="container">
             <div class="row">
                 <div class="service-image fade-in">
-                    <img src="images/translation-service.jpg" alt="Certified Translation Service" class="glass-card">
+                    <img src="images/translation-service.svg" alt="Certified Translation Service" class="glass-card">
                 </div>
                 <div class="service-content glass-card fade-in">
                     <h2 data-en="Certified Translations" data-ar="الترجمات المعتمدة"></h2>
