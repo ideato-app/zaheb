@@ -113,8 +113,7 @@
             grid-template-columns: 1fr 2fr;
             gap: 30px;
         }
-        
-        @media (max-width: 992px) {
+        @media (max-width: 768px) {
             .contact-row {
                 grid-template-columns: 1fr;
             }
@@ -231,9 +230,9 @@
     </header>
 
     <!-- Page Banner -->
-    <section class="page-banner">
+    <section class="page-banner" style="padding: 40px 0; min-height: unset; background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('images/hero-bg.jpg'); background-size: cover; background-position: center;">
         <div class="container">
-            <h1 class="page-title" data-en="Contact Us" data-ar="اتصل بنا"></h1>
+            <h1 class="page-title" data-en="Contact Us" data-ar="اتصل بنا" style="font-size: 2rem; margin-bottom: 10px;"></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
@@ -247,6 +246,14 @@
     <section class="contact-section">
         <div class="container">
             <div class="contact-row">
+                <div class="whatsapp-contact glass-card fade-in">
+                    <h2 data-en="Contact Us on WhatsApp" data-ar="تواصل معنا عبر واتساب"></h2>
+                    <p data-en="Click the button below to start a conversation with us on WhatsApp. We're available 24/7 to assist you." data-ar="انقر على الزر أدناه لبدء محادثة معنا على واتساب. نحن متاحون على مدار الساعة لمساعدتك."></p>
+                    <a href="https://wa.me/96522281011" class="whatsapp-contact-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        <span data-en="Chat with Us on WhatsApp" data-ar="تحدث معنا على واتساب"></span>
+                    </a>
+                </div>
                 <div class="contact-info">
                     <div class="glass-card contact-info-card fade-in">
                         <h2 data-en="Get In Touch" data-ar="تواصل معنا"></h2>
@@ -303,16 +310,6 @@
                         </div>
                     </div>
                 </div>
-            
-            </div>
-            
-            <div class="whatsapp-contact glass-card fade-in">
-                <h2 data-en="Contact Us on WhatsApp" data-ar="تواصل معنا عبر واتساب"></h2>
-                <p data-en="Click the button below to start a conversation with us on WhatsApp. We're available 24/7 to assist you." data-ar="انقر على الزر أدناه لبدء محادثة معنا على واتساب. نحن متاحون على مدار الساعة لمساعدتك."></p>
-                <a href="https://wa.me/96522281011" class="whatsapp-contact-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    <span data-en="Chat with Us on WhatsApp" data-ar="تحدث معنا على واتساب"></span>
-                </a>
             </div>
             
             <!-- Google Map -->
@@ -362,6 +359,12 @@
     </a>
 
     <!-- JavaScript -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/language.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/animations.js"></script>
+    <script src="js/modules/whatsapp.js"></script>
+    <script src="js/modules/contact.js"></script>
     <script src="js/main.js"></script>
 </body>
-</html> 
+</html>

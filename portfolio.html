@@ -183,6 +183,20 @@
             height: 100%;
             border: 0;
         }
+
+        /* Page Banner Styles */
+        .page-banner {
+            padding: 40px 0;
+            min-height: unset;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -227,7 +241,7 @@
     <!-- Page Banner -->
     <section class="page-banner">
         <div class="container">
-            <h1 class="page-title" data-en="Our Portfolio" data-ar="معرض أعمالنا"></h1>
+            <h1 class="page-title" data-en="Portfolio" data-ar="معرض الأعمال" style="font-size: 2rem; margin-bottom: 10px;"></h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
@@ -433,6 +447,11 @@
     </a>
 
     <!-- JavaScript -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/language.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/animations.js"></script>
+    <script src="js/modules/whatsapp.js"></script>
     <script src="js/main.js"></script>
 </body>
-</html> 
+</html>
