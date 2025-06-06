@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Zaheb International - Comprehensive visa information for US, Canada, China, and West Arabic countries">
+    <meta name="keywords"
+        content="visa information, US visa, Canada visa, China visa, West Arabic visa, travel documents, visa requirements">
+    <title>Visa Information | Zaheb International</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Additional styles specific to visa page */
+        .visa-intro {
+            padding: 60px 0 30px;
+        }
+
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .countries-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .country {
+            margin-bottom: 30px;
+        }
+
+        .country-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 1rem;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+        }
+
+        .country-header h2 {
+            margin: 0;
+            color: var(--white-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .country-header h2 i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .rtl .country-header h2 i {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        .country-content {
+            padding: 1.5rem;
+        }
+
+        .visa-info,
+        .requirements {
+            margin-bottom: 1.5rem;
+        }
+
+        .visa-info h3,
+        .requirements h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .visa-info h3 i,
+        .requirements h3 i {
+            margin-right: 10px;
+        }
+
+        .rtl .visa-info h3 i,
+        .rtl .requirements h3 i {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        .visa-info ul,
+        .requirements ul {
+            padding-left: 1.5rem;
+        }
+
+        .rtl .visa-info ul,
+        .rtl .requirements ul {
+            padding-left: 0;
+            padding-right: 1.5rem;
+        }
+
+        .visa-info li,
+        .requirements li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body class="visa-page">
+    <!-- Language Switcher (Desktop) -->
+    <div class="language-switcher desktop-lang">
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn active" data-lang="ar">العربية</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Zaheb International Logo">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <!-- Language Switcher (Mobile) -->
+                    <li class="nav-item mobile-lang">
+                        <div class="language-switcher-mobile">
+                            <button class="lang-btn" data-lang="en">English</button>
+                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="visa.html" class="nav-link active">Visa Info</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title -->
+    <div class="container" style="padding-top: 80px; padding-bottom: 0; text-align: center;">
+        <h1 data-en="Visa Information" data-ar="معلومات التأشيرة"></h1>
+    </div>
+
+    <!-- Visa Introduction -->
+    <section class="visa-intro">
+        <div class="container">
+            <div class="glass-card text-center fade-in">
+                <h2 class="section-title" data-en="Essential Visa Information" data-ar="معلومات التأشيرة الأساسية"></h2>
+                <p class="lead"
+                    data-en="Planning an international trip? Below you'll find essential visa information for popular destinations. Remember to always check with the official embassy or consulate for the most up-to-date requirements."
+                    data-ar="هل تخطط لرحلة دولية؟ ستجد أدناه معلومات أساسية عن التأشيرات للوجهات الشهيرة. تذكر دائمًا التحقق من السفارة أو القنصلية الرسمية للحصول على أحدث المتطلبات.">
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visa Information Content -->
+    <section class="visa-content">
+        <div class="container">
+            <div class="countries-grid">
+                <!-- United States -->
+                <div class="country glass-card fade-in">
+                    <div class="country-header">
+                        <h2><i class="fas fa-flag-usa"></i> <span data-en="United States (US)"
+                                data-ar="الولايات المتحدة الأمريكية"></span></h2>
+                    </div>
+                    <div class="country-content">
+                        <div class="visa-info">
+                            <h3><i class="fas fa-id-card"></i> <span data-en="Visa Types"
+                                    data-ar="أنواع التأشيرات"></span></h3>
+                            <p data-en="The United States offers various visa categories including:"
+                                data-ar="تقدم الولايات المتحدة فئات مختلفة من التأشيرات تشمل:"></p>
+                            <ul>
+                                <li><strong>B-1/B-2</strong> - <span data-en="Business/Tourist Visa"
+                                        data-ar="تأشيرة الأعمال/السياحة"></span></li>
+                                <li><strong>F-1</strong> - <span data-en="Student Visa" data-ar="تأشيرة الطالب"></span>
+                                </li>
+                                <li><strong>H-1B</strong> - <span data-en="Work Visa for Specialty Occupations"
+                                        data-ar="تأشيرة العمل للمهن المتخصصة"></span></li>
+                                <li><strong>J-1</strong> - <span data-en="Exchange Visitor Visa"
+                                        data-ar="تأشيرة الزائر للتبادل"></span></li>
+                            </ul>
+                        </div>
+                        <div class="requirements">
+                            <h3><i class="fas fa-clipboard-list"></i> <span data-en="General Requirements"
+                                    data-ar="المتطلبات العامة"></span></h3>
+                            <ul>
+                                <li data-en="Valid passport with at least 6 months validity"
+                                    data-ar="جواز سفر ساري المفعول لمدة 6 أشهر على الأقل"></li>
+                                <li data-en="Completed DS-160 form" data-ar="استمارة DS-160 مكتملة"></li>
+                                <li data-en="Visa application fee payment receipt"
+                                    data-ar="إيصال دفع رسوم طلب التأشيرة"></li>
+                                <li data-en="Passport-sized photo" data-ar="صورة بحجم جواز السفر"></li>
+                                <li data-en="Interview at US Embassy or Consulate"
+                                    data-ar="مقابلة في السفارة أو القنصلية الأمريكية"></li>
+                                <li data-en="Supporting documents based on visa type"
+                                    data-ar="وثائق داعمة حسب نوع التأشيرة"></li>
+                            </ul>
+                        </div>
+                        <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> <span
+                                data-en="Inquire Now" data-ar="استفسر الآن"></span></a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-info-circle"></i> <span
+                                data-en="More Details" data-ar="تفاصيل اكتر"></span></a>
+                    </div>
+                </div>
+
+                <!-- Canada -->
+                <div class="country glass-card fade-in">
+                    <div class="country-header">
+                        <h2><i class="fas fa-leaf"></i> <span data-en="Canada" data-ar="كندا"></span></h2>
+                    </div>
+                    <div class="country-content">
+                        <div class="visa-info">
+                            <h3><i class="fas fa-id-card"></i> <span data-en="Visa Types"
+                                    data-ar="أنواع التأشيرات"></span></h3>
+                            <p data-en="Canada offers various visa categories including:"
+                                data-ar="تقدم كندا فئات مختلفة من التأشيرات تشمل:"></p>
+                            <ul>
+                                <li><strong data-en="Visitor Visa" data-ar="تأشيرة الزائر"></strong> - <span
+                                        data-en="For tourism or business" data-ar="للسياحة أو الأعمال"></span></li>
+                                <li><strong data-en="Study Permit" data-ar="تصريح الدراسة"></strong> - <span
+                                        data-en="For international students" data-ar="للطلاب الدوليين"></span></li>
+                                <li><strong data-en="Work Permit" data-ar="تصريح العمل"></strong> - <span
+                                        data-en="For temporary foreign workers"
+                                        data-ar="للعمال الأجانب المؤقتين"></span></li>
+                                <li><strong data-en="Express Entry" data-ar="الدخول السريع"></strong> - <span
+                                        data-en="For skilled immigrants" data-ar="للمهاجرين المهرة"></span></li>
+                            </ul>
+                        </div>
+                        <div class="requirements">
+                            <h3><i class="fas fa-clipboard-list"></i> <span data-en="General Requirements"
+                                    data-ar="المتطلبات العامة"></span></h3>
+                            <ul>
+                                <li data-en="Valid passport" data-ar="جواز سفر ساري المفعول"></li>
+                                <li data-en="Completed application forms" data-ar="استمارات الطلب مكتملة"></li>
+                                <li data-en="Proof of financial support" data-ar="إثبات الدعم المالي"></li>
+                                <li data-en="Letter of invitation (if applicable)" data-ar="خطاب دعوة (إن وجد)"></li>
+                                <li data-en="Biometrics (fingerprints and photo)"
+                                    data-ar="القياسات الحيوية (بصمات الأصابع والصورة)"></li>
+                                <li data-en="Medical examination (for certain applications)"
+                                    data-ar="الفحص الطبي (لبعض الطلبات)"></li>
+                            </ul>
+                        </div>
+                        <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> <span
+                                data-en="Inquire Now" data-ar="استفسر الآن"></span></a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-info-circle"></i> <span
+                                data-en="More Details" data-ar="تفاصيل اكتر"></span></a>
+                    </div>
+                </div>
+
+                <!-- China -->
+                <div class="country glass-card fade-in">
+                    <div class="country-header">
+                        <h2><i class="fas fa-dragon"></i> <span data-en="China" data-ar="الشنجن"></span></h2>
+                    </div>
+                    <div class="country-content">
+                        <div class="visa-info">
+                            <h3><i class="fas fa-id-card"></i> <span data-en="Visa Types"
+                                    data-ar="أنواع التأشيرات"></span></h3>
+                            <p data-en="China offers various visa categories including:"
+                                data-ar="تقدم الصين فئات مختلفة من التأشيرات تشمل:"></p>
+                            <ul>
+                                <li><strong>L Visa</strong> - <span data-en="Tourist Visa"
+                                        data-ar="تأشيرة سياحية"></span></li>
+                                <li><strong>M Visa</strong> - <span data-en="Business Visa"
+                                        data-ar="تأشيرة الأعمال"></span></li>
+                                <li><strong>Z Visa</strong> - <span data-en="Work Visa" data-ar="تأشيرة العمل"></span>
+                                </li>
+                                <li><strong>X Visa</strong> - <span data-en="Student Visa"
+                                        data-ar="تأشيرة الطالب"></span></li>
+                            </ul>
+                        </div>
+                        <div class="requirements">
+                            <h3><i class="fas fa-clipboard-list"></i> <span data-en="General Requirements"
+                                    data-ar="المتطلبات العامة"></span></h3>
+                            <ul>
+                                <li data-en="Valid passport with at least 6 months validity"
+                                    data-ar="جواز سفر ساري المفعول لمدة 6 أشهر على الأقل"></li>
+                                <li data-en="Completed visa application form" data-ar="استمارة طلب التأشيرة مكتملة">
+                                </li>
+                                <li data-en="Recent passport photo" data-ar="صورة حديثة بحجم جواز السفر"></li>
+                                <li data-en="Proof of travel arrangements" data-ar="إثبات ترتيبات السفر"></li>
+                                <li data-en="Invitation letter (for certain visa types)"
+                                    data-ar="خطاب دعوة (لأنواع معينة من التأشيرات)"></li>
+                                <li data-en="Supporting documents based on visa type"
+                                    data-ar="وثائق داعمة حسب نوع التأشيرة"></li>
+                            </ul>
+                        </div>
+                        <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> <span
+                                data-en="Inquire Now" data-ar="استفسر الآن"></span></a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-info-circle"></i> <span
+                                data-en="More Details" data-ar="تفاصيل اكتر"></span></a>
+                    </div>
+                </div>
+
+                <!-- West Arabic Countries -->
+                <div class="country glass-card fade-in">
+                    <div class="country-header">
+                        <h2><i class="fas fa-mosque"></i> <span data-en="West Arabic Countries"
+                                data-ar="الدول العربية"></span></h2>
+                    </div>
+                    <div class="country-content">
+                        <div class="visa-info">
+                            <h3><i class="fas fa-id-card"></i> <span data-en="Visa Types"
+                                    data-ar="أنواع التأشيرات"></span></h3>
+                            <p data-en="West Arabic countries typically offer these visa categories:"
+                                data-ar="تقدم الدول العربية الغربية عادة فئات التأشيرات التالية:"></p>
+                            <ul>
+                                <li><strong data-en="Tourist Visa" data-ar="تأشيرة سياحية"></strong> - <span
+                                        data-en="For tourism purposes" data-ar="لأغراض السياحة"></span></li>
+                                <li><strong data-en="Business Visa" data-ar="تأشيرة الأعمال"></strong> - <span
+                                        data-en="For business activities" data-ar="للأنشطة التجارية"></span></li>
+                                <li><strong data-en="Work Visa" data-ar="تأشيرة العمل"></strong> - <span
+                                        data-en="For employment purposes" data-ar="لأغراض العمل"></span></li>
+                                <li><strong data-en="Transit Visa" data-ar="تأشيرة العبور"></strong> - <span
+                                        data-en="For passing through the country" data-ar="للمرور عبر البلاد"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="requirements">
+                            <h3><i class="fas fa-clipboard-list"></i> <span data-en="General Requirements"
+                                    data-ar="المتطلبات العامة"></span></h3>
+                            <ul>
+                                <li data-en="Valid passport with at least 6 months validity"
+                                    data-ar="جواز سفر ساري المفعول لمدة 6 أشهر على الأقل"></li>
+                                <li data-en="Completed visa application form" data-ar="استمارة طلب التأشيرة مكتملة">
+                                </li>
+                                <li data-en="Recent passport photos" data-ar="صور حديثة بحجم جواز السفر"></li>
+                                <li data-en="Proof of accommodation" data-ar="إثبات الإقامة"></li>
+                                <li data-en="Return ticket" data-ar="تذكرة العودة"></li>
+                                <li data-en="Proof of sufficient funds" data-ar="إثبات وجود أموال كافية"></li>
+                                <li data-en="Sponsor letter (for certain countries and visa types)"
+                                    data-ar="خطاب كفالة (لبعض البلدان وأنواع التأشيرات)"></li>
+                            </ul>
+                        </div>
+                        <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> <span
+                                data-en="Inquire Now" data-ar="استفسر الآن"></span></a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-info-circle"></i> <span
+                                data-en="More Details" data-ar="تفاصيل اكتر"></span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content glass-card">
+                <h2 class="cta-title" data-en="Need Help With Your Visa Application?"
+                    data-ar="هل تحتاج إلى مساعدة في طلب التأشيرة الخاص بك؟"></h2>
+                <p class="cta-text"
+                    data-en="Contact our visa experts today for professional assistance with your visa application process"
+                    data-ar="اتصل بخبراء التأشيرات لدينا اليوم للحصول على مساعدة احترافية في عملية طلب التأشيرة الخاصة بك">
+                </p>
+                <a href="contact.html" class="btn btn-primary" data-en="Contact Us Now" data-ar="تواصل معنا الآن"></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-white.png" alt="Zaheb International Logo">
+                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق"></p>
+                </div>
+                <div class="footer-links">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة"></h3>
+                    <ul>
+                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
+                        <li><a href="about.html" data-en="About Us" data-ar="من نحن"></a></li>
+                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا"></a></li>
+                        <li><a href="visa.html" data-en="Visa Info" data-ar="معلومات التأشيرة"></a></li>
+                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا"></a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 data-en="Contact Us" data-ar="اتصل بنا"></h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span
+                            data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya"
+                            data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية"></span></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/96522281011" target="_blank" data-en-tooltip="Chat with us"
+                            data-ar-tooltip="تحدث معنا"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p data-en="&copy; 2023 Zaheb International. All Rights Reserved."
+                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us"
+        data-ar-tooltip="تحدث معنا">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/language.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/animations.js"></script>
+    <script src="js/modules/whatsapp.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

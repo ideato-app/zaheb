@@ -23,8 +23,10 @@ async function fetchHeroData() {
           <h1 class="hero-title">${tittle1.replace(/^@@/, '')}</h1>
           <p class="hero-subtitle">${tittle2}</p>
           <div style="margin-top: 15px;"> 
-            <a href="contact.html" class="btn btn-primary" style="margin: 5px;">Get Your Free Consultation</a> 
-            <a href="services.html" class="btn btn-primary" style="margin: 5px;" data-en="Our Services" data-ar="خدماتنا">Our Services</a> 
+            <a href="contact.html" class="btn btn-primary" style="margin: 5px;">Contact Us</a> 
+             <a href="services.html" class="btn btn-primary" style="margin: 5px;" data-en="Our Services" data-ar="خدماتنا">Our Services</a> 
+            <a href="visa.html" class="btn btn-primary" style="margin: 5px;">Visa</a> 
+           
           </div>
         `;
         // Also update the company overview section if present
