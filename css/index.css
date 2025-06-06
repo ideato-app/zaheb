@@ -10,7 +10,8 @@
     align-items: center;
     text-align: center;
     color: var(--white-color);
-    padding-top: 80px; /* Consider if this is needed if header height varies */
+    padding-top: 80px;
+    /* Consider if this is needed if header height varies */
 }
 
 .hero-content {
@@ -102,6 +103,7 @@
     .hero-title {
         font-size: 2.3rem;
     }
+
     .hero-subtitle {
         font-size: 1rem;
     }

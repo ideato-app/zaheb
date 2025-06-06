@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Zaheb International Services - Visa processing, hotel bookings, certified translation, and travel insurance services in Kuwait">
+    <meta name="keywords"
+        content="visa services Kuwait, travel agency Kuwait, certified translation Kuwait, travel insurance Kuwait">
+    <title>Our Services | Zaheb International</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Enhanced Services CSS -->
+    <style>
+        /* Enhanced Services Page Styles */
+        .services-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            text-align: center;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="50" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .services-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .services-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .service-card p {
+            color: var(--gray-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+            color: var(--gray-color);
+        }
+
+        .service-features li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        .service-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-btn:hover {
+            transform: translateX(5px);
+            color: white;
+        }
+
+        .service-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .service-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        .process-section {
+            background: var(--light-color);
+            padding: 80px 0;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 100%;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            z-index: 1;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .process-step h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .process-step p {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #1a1a1a 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .cta-enhanced {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-enhanced::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-30px, -30px) rotate(360deg);
+            }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-enhanced h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-enhanced p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-btn {
+            background: white;
+            color: var(--primary-color);
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .services-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .process-step::after {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Language Switcher (Desktop) -->
+    <div class="language-switcher desktop-lang">
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn active" data-lang="ar">العربية</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="Zaheb International Logo">
+                </a>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <!-- Language Switcher (Mobile) -->
+                    <li class="nav-item mobile-lang">
+                        <div class="language-switcher-mobile">
+                            <button class="lang-btn" data-lang="en">English</button>
+                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="services.html" class="nav-link active">Services</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Hero Section -->
+    <section class="services-hero">
+        <div class="container">
+            <h1 data-en="Our Services" data-ar="خدماتنا">Our Services</h1>
+            <p data-en="Comprehensive travel solutions designed to make your journey smooth and hassle-free"
+                data-ar="حلول سفر شاملة مصممة لجعل رحلتك سلسة وخالية من المتاعب">
+                Comprehensive travel solutions designed to make your journey smooth and hassle-free
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-overview">
+        <div class="container">
+            <div class="services-grid">
+                <!-- Visa Processing -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <h3 data-en="Visa Processing" data-ar="معالجة التأشيرات">Visa Processing</h3>
+                    <p data-en="Expert visa processing services for multiple countries with high success rates"
+                        data-ar="خدمات معالجة التأشيرات للعديد من البلدان بمعدل نجاح عالي">
+                        Expert visa processing services for multiple countries with high success rates
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="Schengen, USA, Canada, UK, Australia visas"
+                            data-ar="تأشيرات شنغن وأمريكا وكندا وبريطانيا وأستراليا">Schengen, USA, Canada, UK,
+                            Australia visas</li>
+                        <li data-en="Document preparation and review" data-ar="إعداد ومراجعة الوثائق">Document
+                            preparation and review</li>
+                        <li data-en="Interview preparation assistance" data-ar="مساعدة في التحضير للمقابلة">Interview
+                            preparation assistance</li>
+                        <li data-en="Regular status updates" data-ar="تحديثات منتظمة للحالة">Regular status updates</li>
+                    </ul>
+                    <a href="#visa" class="service-btn">
+                        <span data-en="Learn More" data-ar="اعرف أكثر">Learn More</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Hotel & Travel Bookings -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h3 data-en="Hotel & Travel Bookings" data-ar="حجوزات الفنادق والسفر">Hotel & Travel Bookings</h3>
+                    <p data-en="Complete travel booking services with exclusive deals and personalized recommendations"
+                        data-ar="خدمات حجز سفر كاملة مع صفقات حصرية وتوصيات مخصصة">
+                        Complete travel booking services with exclusive deals and personalized recommendations
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="Hotels, flights, and car rentals" data-ar="فنادق وطيران وتأجير سيارات">Hotels,
+                            flights, and car rentals</li>
+                        <li data-en="Exclusive deals and discounts" data-ar="صفقات وخصومات حصرية">Exclusive deals and
+                            discounts</li>
+                        <li data-en="24/7 booking support" data-ar="دعم حجز على مدار الساعة">24/7 booking support</li>
+                        <li data-en="Custom travel itineraries" data-ar="جداول سفر مخصصة">Custom travel itineraries</li>
+                    </ul>
+                    <a href="#bookings" class="service-btn">
+                        <span data-en="Book Now" data-ar="احجز الآن">Book Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Certified Translation -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 data-en="Certified Translation" data-ar="الترجمة المعتمدة">Certified Translation</h3>
+                    <p data-en="Professional translation services for official documents with embassy acceptance"
+                        data-ar="خدمات ترجمة مهنية للوثائق الرسمية مقبولة من السفارات">
+                        Professional translation services for official documents with embassy acceptance
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="Embassy-accepted translations" data-ar="ترجمات مقبولة من السفارات">Embassy-accepted
+                            translations</li>
+                        <li data-en="Quick turnaround time" data-ar="وقت إنجاز سريع">Quick turnaround time</li>
+                        <li data-en="Multiple language pairs" data-ar="أزواج لغات متعددة">Multiple language pairs</li>
+                        <li data-en="Competitive pricing" data-ar="أسعار تنافسية">Competitive pricing</li>
+                    </ul>
+                    <a href="#translation" class="service-btn">
+                        <span data-en="Get Quote" data-ar="احصل على عرض">Get Quote</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Travel Insurance -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 data-en="Travel Insurance" data-ar="تأمين السفر">Travel Insurance</h3>
+                    <p data-en="Comprehensive travel insurance coverage for peace of mind during your journeys"
+                        data-ar="تغطية تأمين سفر شاملة لراحة البال أثناء رحلاتك">
+                        Comprehensive travel insurance coverage for peace of mind during your journeys
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="Medical emergency coverage" data-ar="تغطية الطوارئ الطبية">Medical emergency
+                            coverage</li>
+                        <li data-en="Trip cancellation protection" data-ar="حماية إلغاء الرحلة">Trip cancellation
+                            protection</li>
+                        <li data-en="Lost luggage coverage" data-ar="تغطية فقدان الأمتعة">Lost luggage coverage</li>
+                        <li data-en="24/7 emergency assistance" data-ar="مساعدة طوارئ على مدار الساعة">24/7 emergency
+                            assistance</li>
+                    </ul>
+                    <a href="#insurance" class="service-btn">
+                        <span data-en="Get Protected" data-ar="احصل على الحماية">Get Protected</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Business Services -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 data-en="VIP Business Services" data-ar="خدمات الأعمال المميزة">VIP Business Services</h3>
+                    <p data-en="Premium services for business travelers and VIP clients with exclusive benefits"
+                        data-ar="خدمات متميزة لمسافري الأعمال وكبار الشخصيات مع مزايا حصرية">
+                        Premium services for business travelers and VIP clients with exclusive benefits
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="Priority visa processing" data-ar="معالجة تأشيرات ذات أولوية">Priority visa
+                            processing</li>
+                        <li data-en="Luxury accommodations" data-ar="أماكن إقامة فاخرة">Luxury accommodations</li>
+                        <li data-en="Dedicated account manager" data-ar="مدير حساب مخصص">Dedicated account manager</li>
+                        <li data-en="VIP lounge access" data-ar="دخول صالات كبار الشخصيات">VIP lounge access</li>
+                    </ul>
+                    <a href="#business" class="service-btn">
+                        <span data-en="VIP Inquiry" data-ar="استفسار مميز">VIP Inquiry</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Additional Service -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 data-en="24/7 Support" data-ar="دعم على مدار الساعة">24/7 Support</h3>
+                    <p data-en="Round-the-clock customer support for all your travel needs and emergencies"
+                        data-ar="دعم عملاء على مدار الساعة لجميع احتياجات السفر وحالات الطوارئ">
+                        Round-the-clock customer support for all your travel needs and emergencies
+                    </p>
+                    <ul class="service-features">
+                        <li data-en="24/7 customer support" data-ar="دعم عملاء على مدار الساعة">24/7 customer support
+                        </li>
+                        <li data-en="Emergency assistance" data-ar="مساعدة في حالات الطوارئ">Emergency assistance</li>
+                        <li data-en="Multi-language support" data-ar="دعم متعدد اللغات">Multi-language support</li>
+                        <li data-en="Instant chat support" data-ar="دعم محادثة فورية">Instant chat support</li>
+                    </ul>
+                    <a href="contact.html" class="service-btn">
+                        <span data-en="Contact Us" data-ar="اتصل بنا">Contact Us</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="container">
+            <h2 class="section-title" data-en="How We Work" data-ar="كيف نعمل">How We Work</h2>
+            <div class="process-steps">
+                <div class="process-step fade-in">
+                    <div class="step-number">1</div>
+                    <h4 data-en="Consultation" data-ar="استشارة">Consultation</h4>
+                    <p data-en="Free consultation to understand your travel needs and requirements"
+                        data-ar="استشارة مجانية لفهم احتياجات ومتطلبات السفر الخاصة بك">
+                        Free consultation to understand your travel needs and requirements
+                    </p>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">2</div>
+                    <h4 data-en="Planning" data-ar="تخطيط">Planning</h4>
+                    <p data-en="Custom planning and preparation of all necessary documents and arrangements"
+                        data-ar="تخطيط مخصص وإعداد جميع الوثائق والترتيبات اللازمة">
+                        Custom planning and preparation of all necessary documents and arrangements
+                    </p>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">3</div>
+                    <h4 data-en="Processing" data-ar="معالجة">Processing</h4>
+                    <p data-en="Expert handling of applications, bookings, and all service requirements"
+                        data-ar="معالجة خبيرة للطلبات والحجوزات وجميع متطلبات الخدمة">
+                        Expert handling of applications, bookings, and all service requirements
+                    </p>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">4</div>
+                    <h4 data-en="Completion" data-ar="إنجاز">Completion</h4>
+                    <p data-en="Successful completion and delivery of services with ongoing support"
+                        data-ar="إنجاز وتسليم ناجح للخدمات مع دعم مستمر">
+                        Successful completion and delivery of services with ongoing support
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title" data-en="Our Track Record" data-ar="سجلنا الحافل">Our Track Record</h2>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <span class="stat-number">5000+</span>
+                    <div class="stat-label" data-en="Successful Visas" data-ar="تأشيرات ناجحة">Successful Visas</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">98%</span>
+                    <div class="stat-label" data-en="Success Rate" data-ar="معدل النجاح">Success Rate</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">50+</span>
+                    <div class="stat-label" data-en="Countries Covered" data-ar="دولة مغطاة">Countries Covered</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">10+</span>
+                    <div class="stat-label" data-en="Years Experience" data-ar="سنوات خبرة">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced CTA Section -->
+    <section class="cta-enhanced">
+        <div class="container">
+            <div class="cta-content">
+                <h2 data-en="Ready to Start Your Journey?" data-ar="هل أنت مستعد لبدء رحلتك؟">Ready to Start Your
+                    Journey?</h2>
+                <p data-en="Contact us today for a free consultation and let our experts handle all your travel needs"
+                    data-ar="اتصل بنا اليوم للحصول على استشارة مجانية ودع خبراءنا يتعاملون مع جميع احتياجات سفرك">
+                    Contact us today for a free consultation and let our experts handle all your travel needs
+                </p>
+                <a href="contact.html" class="cta-btn">
+                    <span data-en="Get Started Today" data-ar="ابدأ اليوم">Get Started Today</span>
+                    <i class="fas fa-rocket"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-white.png" alt="Zaheb International Logo">
+                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق">Your Trusted Travel Partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا">Services</a></li>
+                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span
+                            data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya"
+                            data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية">Office 1, 2nd Floor,
+                            Salem Al Mubarak Street, First Mall, Salmiya</span></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/96522281011" target="_blank" data-en-tooltip="Chat with us"
+                            data-ar-tooltip="تحدث معنا"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p data-en="&copy; 2023 Zaheb International. All Rights Reserved."
+                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة.">&copy; 2023 Zaheb International. All Rights
+                    Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us"
+        data-ar-tooltip="تحدث معنا">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/language.js"></script>
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/animations.js"></script>
+    <script src="js/modules/whatsapp.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Enhanced animations for service cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Counter animation for stats
+        function animateCounter(element, target) {
+            let count = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                count += increment;
+                if (count >= target) {
+                    count = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(count) + (target === 98 ? '%' : target >= 1000 ? '+' : '');
+            }, 20);
+        }
+
+        // Observe stats for counter animation
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const number = entry.target.querySelector('.stat-number');
+                    const value = parseInt(number.textContent.replace(/[^\d]/g, ''));
+                    animateCounter(number, value);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-item').forEach(item => {
+            statsObserver.observe(item);
+        });
+    </script>
+</body>
+
+</html>

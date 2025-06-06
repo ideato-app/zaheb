@@ -39,7 +39,7 @@ async function fetchHeroData() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (document.body.classList.contains('index-page')) {
         fetchHeroData();
     }

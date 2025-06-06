@@ -1,39 +1,47 @@
 /* filepath: c:\Users\zemax\Desktop\zaheb\css\contact.css */
 /* ===== CONTACT PAGE STYLES (Reverted) ===== */
 .contact-form .form-control {
-    border-radius: var(--border-radius-sm); /* Adjusted for a potentially older design */
+    border-radius: var(--border-radius-sm);
+    /* Adjusted for a potentially older design */
     padding: 12px 15px;
     margin-bottom: 15px;
-    border: 1px solid #ced4da; /* Standard Bootstrap-like border */
+    border: 1px solid #ced4da;
+    /* Standard Bootstrap-like border */
     background-color: var(--white-color);
 }
 
 .contact-form .form-control:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25); /* Standard focus */
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+    /* Standard focus */
 }
 
 .contact-form textarea.form-control {
-    min-height: 120px; /* Slightly smaller textarea */
+    min-height: 120px;
+    /* Slightly smaller textarea */
 }
 
 .contact-info .info-item {
     display: flex;
-    align-items: flex-start; /* Align items to start for a more traditional layout */
+    align-items: flex-start;
+    /* Align items to start for a more traditional layout */
     margin-bottom: 20px;
     padding: 15px;
     border-radius: var(--border-radius-sm);
-    background-color: var(--light-color); /* Light background for info items */
+    background-color: var(--light-color);
+    /* Light background for info items */
     border: 1px solid #eee;
 }
 
 .contact-info .info-icon {
-    font-size: 1.5rem; /* Slightly smaller icon */
+    font-size: 1.5rem;
+    /* Slightly smaller icon */
     color: var(--primary-color);
     margin-right: 15px;
     width: 40px;
     height: 40px;
-    background-color: rgba(var(--primary-rgb), 0.05); /* Softer background for icon */
+    background-color: rgba(var(--primary-rgb), 0.05);
+    /* Softer background for icon */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -47,20 +55,24 @@
 }
 
 .contact-info .info-text h5 {
-    margin-top: 0; /* Remove potential top margin */
+    margin-top: 0;
+    /* Remove potential top margin */
     margin-bottom: 5px;
-    font-size: 1.05rem; /* Adjusted font size */
+    font-size: 1.05rem;
+    /* Adjusted font size */
     color: var(--dark-color);
 }
 
 .contact-info .info-text p {
     margin-bottom: 0;
     color: var(--gray-color);
-    font-size: 0.9rem; /* Adjusted font size */
+    font-size: 0.9rem;
+    /* Adjusted font size */
 }
 
 .contact-info .info-text a {
-    color: var(--primary-color); /* Links in primary color */
+    color: var(--primary-color);
+    /* Links in primary color */
     text-decoration: none;
 }
 
@@ -69,10 +81,12 @@
 }
 
 .map-container {
-    margin-top: 30px; /* Adjusted margin */
+    margin-top: 30px;
+    /* Adjusted margin */
     border-radius: var(--border-radius-sm);
     overflow: hidden;
-    border: 1px solid #eee; /* Added a light border to map */
+    border: 1px solid #eee;
+    /* Added a light border to map */
     height: 400px;
 }
 
@@ -84,21 +98,26 @@
 
 /* Basic Responsive adjustments for a potentially older design */
 @media (max-width: 768px) {
-    .contact .row > div { /* Ensure columns stack on smaller screens */
+    .contact .row>div {
+        /* Ensure columns stack on smaller screens */
         margin-bottom: 30px;
     }
-    .contact .row > div:last-child {
+
+    .contact .row>div:last-child {
         margin-bottom: 0;
     }
+
     .contact-info .info-item {
         padding: 10px;
     }
+
     .contact-info .info-icon {
         font-size: 1.3rem;
         width: 35px;
         height: 35px;
         margin-right: 10px;
     }
+
     .rtl .contact-info .info-icon {
         margin-left: 10px;
     }
@@ -106,10 +125,13 @@
 
 /* Ensure page banner title is styled if it was part of the old design */
 .page-banner {
-    padding: 40px 0; /* Example padding */
-    background-color: var(--light-color); /* Example background */
+    padding: 40px 0;
+    /* Example padding */
+    background-color: var(--light-color);
+    /* Example background */
     text-align: center;
-    margin-bottom: 30px; /* Space below banner */
+    margin-bottom: 30px;
+    /* Space below banner */
 }
 
 .page-banner .page-title {
@@ -119,8 +141,9 @@
 }
 
 /* Remove or adjust styles that were part of the newer design if necessary */
-/* .glass-card { */ /* If glass card was not part of old design, remove or neutralize */
-    /* background: transparent;
+/* .glass-card { */
+/* If glass card was not part of old design, remove or neutralize */
+/* background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border: none;
@@ -128,9 +151,9 @@
 /* } */
 
 /* .contact-section .contact-row { */
-    /* display: block; Remove grid/flex if it was new */
+/* display: block; Remove grid/flex if it was new */
 /* } */
 
 /* .whatsapp-contact { */
-    /* display: none; Or style as per old design */
+/* display: none; Or style as per old design */
 /* } */
