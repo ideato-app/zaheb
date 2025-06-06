@@ -111,6 +111,74 @@
             margin-bottom: 0.5rem;
             position: relative;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 10% auto;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .rtl .close-modal {
+            right: auto;
+            left: 15px;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        .additional-requirements {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .additional-requirements h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 
@@ -427,6 +495,125 @@
     <script src="js/modules/animations.js"></script>
     <script src="js/modules/whatsapp.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Popup Modal for Visa Details -->
+    <div id="visaDetailsModal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-modal">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Visa Details Popup Functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get modal elements
+            const modal = document.getElementById('visaDetailsModal');
+            const modalContent = document.getElementById('modalContent');
+            const closeBtn = document.querySelector('.close-modal');
+
+            // Get all "More Details" buttons
+            const detailButtons = document.querySelectorAll('.btn.btn-secondary');
+
+            // Add click event to all detail buttons
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the country section that contains this button
+                    const countrySection = this.closest('.country');
+                    const countryName = countrySection.querySelector('.country-header h2 span').textContent;
+                    const requirementsList = countrySection.querySelector('.requirements ul').cloneNode(true);
+
+                    // Create content for modal
+                    const currentLang = document.documentElement.getAttribute('lang') || 'en';
+                    const title = currentLang === 'ar' ?
+                        `متطلبات التأشيرة: ${countryName}` :
+                        `Visa Requirements: ${countryName}`;
+
+                    // Set modal content
+                    modalContent.innerHTML = '';
+                    const modalTitle = document.createElement('h2');
+                    modalTitle.textContent = title;
+                    modalContent.appendChild(modalTitle);
+                    modalContent.appendChild(requirementsList);
+
+                    // Add additional detailed requirements based on country
+                    const additionalInfo = document.createElement('div');
+                    additionalInfo.classList.add('additional-requirements');
+
+                    // Add country-specific additional information
+                    switch (countryName) {
+                        case 'United States (US)':
+                        case 'الولايات المتحدة الأمريكية':
+                            additionalInfo.innerHTML = `
+                                <h3>${currentLang === 'ar' ? 'متطلبات إضافية:' : 'Additional Requirements:'}</h3>
+                                <ul>
+                                    <li>${currentLang === 'ar' ? 'إثبات الروابط القوية مع بلدك الأصلي' : 'Proof of strong ties to your home country'}</li>
+                                    <li>${currentLang === 'ar' ? 'إثبات القدرة المالية لتغطية نفقات الرحلة' : 'Proof of financial ability to cover trip expenses'}</li>
+                                    <li>${currentLang === 'ar' ? 'خطة سفر مفصلة' : 'Detailed travel itinerary'}</li>
+                                    <li>${currentLang === 'ar' ? 'تاريخ سفر سابق (إن وجد)' : 'Previous travel history (if applicable)'}</li>
+                                </ul>
+                            `;
+                            break;
+                        case 'Canada':
+                        case 'كندا':
+                            additionalInfo.innerHTML = `
+                                <h3>${currentLang === 'ar' ? 'متطلبات إضافية:' : 'Additional Requirements:'}</h3>
+                                <ul>
+                                    <li>${currentLang === 'ar' ? 'بيان حساب مصرفي لآخر 6 أشهر' : 'Bank statements for the last 6 months'}</li>
+                                    <li>${currentLang === 'ar' ? 'خطة سفر مفصلة' : 'Detailed travel itinerary'}</li>
+                                    <li>${currentLang === 'ar' ? 'تأمين سفر' : 'Travel insurance'}</li>
+                                    <li>${currentLang === 'ar' ? 'إثبات العمل أو الدراسة' : 'Proof of employment or study'}</li>
+                                </ul>
+                            `;
+                            break;
+                        case 'China':
+                        case 'الشنجن':
+                            additionalInfo.innerHTML = `
+                                <h3>${currentLang === 'ar' ? 'متطلبات إضافية:' : 'Additional Requirements:'}</h3>
+                                <ul>
+                                    <li>${currentLang === 'ar' ? 'حجز فندقي مؤكد' : 'Confirmed hotel reservation'}</li>
+                                    <li>${currentLang === 'ar' ? 'خطة سفر مفصلة' : 'Detailed travel itinerary'}</li>
+                                    <li>${currentLang === 'ar' ? 'دعوة من شركة صينية (لتأشيرة الأعمال)' : 'Invitation from Chinese company (for business visa)'}</li>
+                                    <li>${currentLang === 'ar' ? 'قبول من مؤسسة تعليمية (لتأشيرة الطالب)' : 'Acceptance from educational institution (for student visa)'}</li>
+                                </ul>
+                            `;
+                            break;
+                        case 'West Arabic Countries':
+                        case 'الدول العربية':
+                            additionalInfo.innerHTML = `
+                                <h3>${currentLang === 'ar' ? 'متطلبات إضافية:' : 'Additional Requirements:'}</h3>
+                                <ul>
+                                    <li>${currentLang === 'ar' ? 'خطاب كفالة (لبعض البلدان)' : 'Sponsorship letter (for some countries)'}</li>
+                                    <li>${currentLang === 'ar' ? 'حجز فندقي مؤكد' : 'Confirmed hotel reservation'}</li>
+                                    <li>${currentLang === 'ar' ? 'تأمين سفر' : 'Travel insurance'}</li>
+                                    <li>${currentLang === 'ar' ? 'إثبات العمل' : 'Proof of employment'}</li>
+                                </ul>
+                            `;
+                            break;
+                    }
+
+                    modalContent.appendChild(additionalInfo);
+
+                    // Show the modal
+                    modal.style.display = 'block';
+                });
+            });
+
+            // Close modal when clicking the X
+            closeBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside the modal
+            window.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
