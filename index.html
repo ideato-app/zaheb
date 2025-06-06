@@ -193,8 +193,8 @@
                 </div>
             </div>
             <div class="copyright">
-                <p data-en="&copy; 2023 Zaheb International. All Rights Reserved."
-                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+                <p data-en="&copy; 2025 Zaheb International. All Rights Reserved."
+                    data-ar="© 2025 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
             </div>
         </div>
     </footer>
@@ -237,7 +237,10 @@
                 container.innerHTML = `
           <h1 class="hero-title">${tittle1.replace(/^@@/, '')}</h1>
           <p class="hero-subtitle">${tittle2}</p>
-          <a href="contact.html" class="btn btn-primary">Get Your Free Consultation</a>
+          <div style="margin-top: 15px;">
+            <a href="contact.html" class="btn btn-primary" style="margin: 5px;">Get Your Free Consultation</a>
+            <a href="services.html" class="btn btn-primary" style="margin: 5px;" data-en="Our Services" data-ar="خدماتنا">Our Services</a>
+          </div>
         `;
                 // Also update the company overview section if present
                 var overviewTitle = document.querySelector('.company-overview .section-title');
