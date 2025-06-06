@@ -1,0 +1,114 @@
+/* filepath: c:\Users\zemax\Desktop\zaheb\css\index.css */
+/* ===== HERO SECTION ===== */
+.hero {
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--white-color);
+    padding-top: 80px; /* Consider if this is needed if header height varies */
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: var(--white-color);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    color: var(--light-color);
+}
+
+/* ===== COMPANY OVERVIEW ===== */
+.company-overview {
+    background-color: var(--light-color);
+}
+
+.company-overview .glass-card {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* ===== SERVICES HIGHLIGHTS ===== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.service-card {
+    text-align: center;
+}
+
+.service-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.service-title {
+    margin-bottom: 15px;
+}
+
+.service-text {
+    margin-bottom: 20px;
+    color: var(--gray-color);
+}
+
+/* ===== CALL TO ACTION ===== */
+.cta {
+    background: none !important;
+    color: var(--dark-color) !important;
+    box-shadow: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.cta-title {
+    color: var(--primary-color) !important;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.cta-text {
+    margin-bottom: 20px;
+    color: var(--gray-color) !important;
+    font-size: 1rem;
+}
+
+/* Responsive adjustments for index page elements */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.3rem;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+}

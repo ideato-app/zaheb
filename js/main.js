@@ -31,11 +31,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.WhatsAppModule) {
         window.WhatsAppModule.init();
     }
-    
+
     // Initialize contact form module if on contact page
-    if (window.location.pathname.includes('contact') && window.ContactModule) {
+    if (document.body.classList.contains('contact-page') && window.ContactModule) {
         window.ContactModule.init();
     }
     
+    // Initialize Prismic hero data fetching if on index page
+    if (document.body.classList.contains('index-page') && typeof fetchHeroData === 'function') {
+        fetchHeroData();
+    }
+    
     console.log('Zaheb International website initialized successfully');
-}); 
+});
