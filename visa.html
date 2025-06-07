@@ -179,6 +179,44 @@
             color: var(--primary-color);
             margin-bottom: 15px;
         }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-left-color: var(--accent-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .modal:focus {
+            outline: none;
+        }
+
+        .btn:focus,
+        .close-modal:focus {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 
@@ -494,12 +532,14 @@
     <script src="js/modules/navigation.js"></script>
     <script src="js/modules/animations.js"></script>
     <script src="js/modules/whatsapp.js"></script>
+    <script src="js/modules/modal.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Popup Modal for Visa Details -->
-    <div id="visaDetailsModal" class="modal">
+    <div id="visaDetailsModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true"
+        tabindex="-1">
         <div class="modal-content glass-card">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal" aria-label="Close">&times;</span>
             <div id="modalContent"></div>
         </div>
     </div>
