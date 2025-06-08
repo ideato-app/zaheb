@@ -195,14 +195,22 @@
                 margin-left: 10px;
             }
         }
+
+        /* Loading indicator */
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            color: var(--gray-color);
+        }
     </style>
 </head>
 
 <body>
     <!-- Language Switcher (Desktop) -->
     <div class="language-switcher desktop-lang">
-        <button class="lang-btn" data-lang="en">English</button>
-        <button class="lang-btn active" data-lang="ar">العربية</button>
+        <button class="lang-btn" data-lang="en-us">English</button>
+        <button class="lang-btn active" data-lang="ar-kw">العربية</button>
     </div>
 
     <!-- Header -->
@@ -220,8 +228,8 @@
                     <!-- Language Switcher (Mobile) -->
                     <li class="nav-item mobile-lang">
                         <div class="language-switcher-mobile">
-                            <button class="lang-btn" data-lang="en">English</button>
-                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                            <button class="lang-btn" data-lang="en-us">English</button>
+                            <button class="lang-btn active" data-lang="ar-kw">العربية</button>
                         </div>
                     </li>
                     <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
@@ -238,7 +246,8 @@
 
     <!-- Page Title centered under navigation header, moved further down -->
     <div class="container" style="padding-top: 80px; padding-bottom: 0; text-align: center;">
-        <h1 data-en="Contact Us" data-ar="اتصل بنا"></h1>
+        <h1>Contact Us</h1>
+        <div class="loading-indicator">Loading content...</div>
     </div>
 
     <!-- Contact Section -->
@@ -246,78 +255,25 @@
         <div class="container">
             <div class="contact-row">
                 <div class="whatsapp-contact glass-card fade-in">
-                    <h2 data-en="Contact Us on WhatsApp" data-ar="تواصل معنا عبر واتساب"></h2>
-                    <p data-en="Click the button below to start a conversation with us on WhatsApp. We're available 24/7 to assist you."
-                        data-ar="انقر على الزر أدناه لبدء محادثة معنا على واتساب. نحن متاحون على مدار الساعة لمساعدتك.">
-                    </p>
+                    <h2>Contact Us on WhatsApp</h2>
+                    <p>Click the button below to start a conversation with us on WhatsApp.</p>
                     <a href="https://wa.me/96522281011" class="whatsapp-contact-btn" target="_blank">
                         <i class="fab fa-whatsapp"></i>
-                        <span data-en="Chat with Us on WhatsApp" data-ar="تحدث معنا على واتساب"></span>
+                        <span>Chat with Us on WhatsApp</span>
                     </a>
                 </div>
                 <div class="contact-info">
                     <div class="glass-card contact-info-card fade-in">
-                        <h2 data-en="Get In Touch" data-ar="تواصل معنا"></h2>
-                        <p data-en="We're here to answer any questions you may have about our services. Reach out to us and we'll respond as soon as we can."
-                            data-ar="نحن هنا للإجابة على أي أسئلة قد تكون لديك حول خدماتنا. تواصل معنا وسنرد في أقرب وقت ممكن.">
-                        </p>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4 data-en="Our Office" data-ar="مكتبنا"></h4>
-                                <p data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya, Kuwait"
-                                    data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية، الكويت"></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4 data-en="Phone / WhatsApp" data-ar="الهاتف / واتساب"></h4>
-                                <p><a href="tel:+96522281011">+965 2228 1011</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4 data-en="Email" data-ar="البريد الإلكتروني"></h4>
-                                <p><a href="mailto:info@zaheb.com">info@zaheb.com</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4 data-en="Working Hours" data-ar="ساعات العمل"></h4>
-                                <p data-en="24/7 Support Available" data-ar="دعم متاح على مدار الساعة"></p>
-                            </div>
-                        </div>
-
-                        <div class="contact-info-item">
-                            <div class="contact-info-icon">
-                                <i class="fab fa-instagram"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <h4 data-en="Instagram" data-ar="انستغرام"></h4>
-                                <p><a href="https://www.instagram.com/zaheb4visa/" target="_blank">@zaheb4visa</a></p>
-                            </div>
-                        </div>
+                        <h2>Get In Touch</h2>
+                        <p>We're here to answer any questions you may have about our services.</p>
+                        <!-- Contact items will be loaded from API -->
                     </div>
                 </div>
             </div>
 
             <!-- Google Map -->
             <div class="map-container fade-in">
+                <!-- Map will be loaded from API if available -->
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.9029592234786!2d48.08107491503515!3d29.33317688214116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf9c83ce455983%3A0xc3fcf73f7ba4f614!2sSalem%20Al%20Mubarak%20St%2C%20Salmiya%2C%20Kuwait!5e0!3m2!1sen!2s!4v1623456789012!5m2!1sen!2s"
                     allowfullscreen="" loading="lazy"></iframe>
@@ -331,25 +287,25 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-white.png" alt="Zaheb International Logo">
-                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق"></p>
+                    <p>Your Trusted Travel Partner</p>
                 </div>
                 <div class="footer-links">
-                    <h3 data-en="Quick Links" data-ar="روابط سريعة"></h3>
+                    <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
-                        <li><a href="about.html" data-en="About Us" data-ar="من نحن"></a></li>
-                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا"></a></li>
-                        
-                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا"></a></li>
+                        <!-- Links will be loaded from API -->
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h3 data-en="Contact Us" data-ar="اتصل بنا"></h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span
-                            data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya"
-                            data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية"></span></p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
+                    <h3>Contact Us</h3>
+                    <!-- Contact info will be loaded from API -->
+                    <p><i class="fas fa-map-marker-alt"></i> <span>Office 1, 2nd Floor, Salem Al Mubarak Street, First
+                            Mall, Salmiya</span></p>
                     <div class="social-links">
+                        <!-- Social links will be loaded from API -->
                         <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
                                 class="fab fa-instagram"></i></a>
                         <a href="https://wa.me/96522281011" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -357,15 +313,13 @@
                 </div>
             </div>
             <div class="copyright">
-                <p data-en="&copy; 2023 Zaheb International. All Rights Reserved."
-                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+                <p>&copy; 2025 Zaheb International. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us"
-        data-ar-tooltip="تحدث معنا">
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -377,6 +331,46 @@
     <script src="js/modules/whatsapp.js"></script>
     <script src="js/modules/contact.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Language Switcher Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all language buttons
+            const langButtons = document.querySelectorAll('.lang-btn');
+
+            // Add click event to each button
+            langButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const lang = this.getAttribute('data-lang');
+
+                    // Update URL with language parameter
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('lang', lang);
+                    window.location.href = url.toString();
+                });
+            });
+
+            // Set active class based on current language
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentLang = urlParams.get('lang') || 'en-us';
+
+            langButtons.forEach(button => {
+                if (button.getAttribute('data-lang') === currentLang) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // Hide loading indicator when content is loaded
+            setTimeout(() => {
+                const loadingIndicator = document.querySelector('.loading-indicator');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+            }, 1500);
+        });
+    </script>
 </body>
 
 </html>

@@ -116,8 +116,8 @@ function updateServices(data) {
                     <h3 class="service-title">${title}</h3>
                     <p class="service-text">${description}</p>
                     <a href="${linkUrl}" class="btn btn-secondary">${linkText}</a>
-                </div>
-            `;
+          </div>
+        `;
         });
 
         servicesGrid.innerHTML = servicesHTML;
