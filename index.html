@@ -47,8 +47,8 @@
 <body class="index-page">
     <!-- Language Switcher (Desktop) -->
     <div class="language-switcher desktop-lang">
-        <button class="lang-btn" data-lang="en">English</button>
-        <button class="lang-btn active" data-lang="ar">العربية</button>
+        <button class="lang-btn" data-lang="en-us">English</button>
+        <button class="lang-btn active" data-lang="ar-kw">العربية</button>
     </div>
 
     <!-- Header -->
@@ -66,12 +66,11 @@
                     <!-- Language Switcher (Mobile) -->
                     <li class="nav-item mobile-lang">
                         <div class="language-switcher-mobile">
-                            <button class="lang-btn" data-lang="en">English</button>
-                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                            <button class="lang-btn" data-lang="en-us">English</button>
+                            <button class="lang-btn active" data-lang="ar-kw">العربية</button>
                         </div>
                     </li>
                     <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-
                     <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
@@ -88,19 +87,18 @@
         <div class="container">
             <div class="hero-content" id="hero-content-dynamic">
                 <!-- Content will be loaded from API -->
+                <div class="loading-indicator">Loading...</div>
             </div>
         </div>
     </section>
-
 
     <!-- Company Overview -->
     <section class="company-overview">
         <div class="container">
             <div class="glass-card">
-                <h2 class="section-title" data-en="Who We Are" data-ar="من نحن"></h2>
-                <p class="section-text" id="who-we-are-text"
-                    data-en="Zaheb International is your premier destination for comprehensive travel and visa services in Kuwait. We specialize in streamlining the visa application process, offering certified translations, and providing complete travel solutions tailored to your needs."
-                    data-ar="زاهب انترناشيونال هي وجهتك المميزة للحصول على خدمات السفر والتأشيرات الشاملة في الكويت. نحن متخصصون في تبسيط عملية طلب التأشيرة، وتقديم ترجمات معتمدة، وتوفير حلول سفر كاملة مصممة خصيصًا لتلبية احتياجاتك.">
+                <h2 class="section-title">Who We Are</h2>
+                <p class="section-text" id="who-we-are-text">
+                    <!-- Content will be loaded from API -->
                 </p>
             </div>
         </div>
@@ -109,41 +107,9 @@
     <!-- Services Highlights -->
     <section class="services-highlights">
         <div class="container">
-            <h2 class="section-title" data-en="Our Top Services" data-ar="خدماتنا المميزة"></h2>
+            <h2 class="section-title">Our Top Services</h2>
             <div class="services-grid">
-                <div class="service-card glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-passport"></i>
-                    </div>
-                    <h3 class="service-title" data-en="Visa Processing" data-ar="معالجة التأشيرات"></h3>
-                    <p class="service-text"
-                        data-en="Expert assistance with Schengen, USA, Canada, UK, Australia and other visa applications"
-                        data-ar="مساعدة خبيرة في طلبات تأشيرات شنغن والولايات المتحدة وكندا والمملكة المتحدة وأستراليا وغيرها">
-                    </p>
-                    <a href="services.html#visa" class="btn btn-secondary" data-en="Learn More"
-                        data-ar="اعرف المزيد"></a>
-                </div>
-                <div class="service-card glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <h3 class="service-title" data-en="Certified Translations" data-ar="ترجمات معتمدة"></h3>
-                    <p class="service-text"
-                        data-en="Professional translation services for official documents with certification"
-                        data-ar="خدمات ترجمة احترافية للوثائق الرسمية مع اعتماد"></p>
-                    <a href="services.html#translation" class="btn btn-secondary" data-en="Learn More"
-                        data-ar="اعرف المزيد"></a>
-                </div>
-                <div class="service-card glass-card">
-                    <div class="service-icon">
-                        <i class="fas fa-hotel"></i>
-                    </div>
-                    <h3 class="service-title" data-en="Travel Bookings" data-ar="حجوزات السفر"></h3>
-                    <p class="service-text" data-en="Comprehensive hotel, car, and train booking services worldwide"
-                        data-ar="خدمات حجز شاملة للفنادق والسيارات والقطارات في جميع أنحاء العالم"></p>
-                    <a href="services.html#bookings" class="btn btn-secondary" data-en="Learn More"
-                        data-ar="اعرف المزيد"></a>
-                </div>
+                <!-- Service cards will be loaded from API -->
             </div>
         </div>
     </section>
@@ -152,11 +118,9 @@
     <section class="cta">
         <div class="container">
             <div class="cta-content glass-card">
-                <h2 class="cta-title" data-en="Ready to Start Your Journey?" data-ar="هل أنت مستعد لبدء رحلتك؟"></h2>
-                <p class="cta-text"
-                    data-en="Contact us today for a free consultation and let our experts handle all your travel needs"
-                    data-ar="اتصل بنا اليوم للحصول على استشارة مجانية ودع خبراءنا يتعاملون مع جميع احتياجات سفرك"></p>
-                <a href="contact.html" class="btn btn-primary" data-en="Contact Us Now" data-ar="تواصل معنا الآن"></a>
+                <h2 class="cta-title">Ready to Start Your Journey?</h2>
+                <p class="cta-text">Contact us today for a free consultation</p>
+                <a href="contact.html" class="btn btn-primary">Contact Us Now</a>
             </div>
         </div>
     </section>
@@ -167,42 +131,38 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-white.png" alt="Zaheb International Logo">
-                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق"></p>
+                    <p>Your Trusted Travel Partner</p>
                 </div>
                 <div class="footer-links">
-                    <h3 data-en="Quick Links" data-ar="روابط سريعة"></h3>
+                    <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
-                        <li><a href="about.html" data-en="About Us" data-ar="من نحن"></a></li>
-                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا"></a></li>
-
-                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا"></a></li>
+                        <!-- Links will be loaded from API -->
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h3 data-en="Contact Us" data-ar="اتصل بنا"></h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span
-                            data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya"
-                            data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية"></span></p>
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span>Office 1, 2nd Floor, Salem Al Mubarak Street, First
+                            Mall, Salmiya</span></p>
                     <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
                     <div class="social-links">
                         <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
                                 class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/96522281011" target="_blank" data-en-tooltip="Chat with us"
-                            data-ar-tooltip="تحدث معنا"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/96522281011" target="_blank"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                <p data-en="&copy; 2025 Zaheb International. All Rights Reserved."
-                    data-ar="© 2025 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+                <p>&copy; 2025 Zaheb International. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us"
-        data-ar-tooltip="تحدث معنا">
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -214,6 +174,38 @@
     <script src="js/modules/whatsapp.js"></script>
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
+
+    <!-- Language Switcher Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all language buttons
+            const langButtons = document.querySelectorAll('.lang-btn');
+
+            // Add click event to each button
+            langButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const lang = this.getAttribute('data-lang');
+
+                    // Update URL with language parameter
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('lang', lang);
+                    window.location.href = url.toString();
+                });
+            });
+
+            // Set active class based on current language
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentLang = urlParams.get('lang') || 'en-us';
+
+            langButtons.forEach(button => {
+                if (button.getAttribute('data-lang') === currentLang) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
