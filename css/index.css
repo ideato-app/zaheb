@@ -69,6 +69,30 @@
     color: var(--gray-color);
 }
 
+/* Service list styling */
+.service-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0 auto;
+    text-align: left;
+    max-width: 80%;
+}
+
+.service-list li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    color: var(--gray-color);
+}
+
+.service-list li:before {
+    content: "✓";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
 /* ===== CALL TO ACTION ===== */
 .cta {
     background: none !important;

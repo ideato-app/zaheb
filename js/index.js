@@ -3,7 +3,7 @@ async function fetchHeroData() {
 
     // Get current language code from URL or use default
     const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang') || 'en-us'; // Default to English if not specified
+    const langCode = urlParams.get('lang') || urlParams.get('lan') || 'en-us'; // Check both 'lang' and 'lan' parameters
 
     try {
         const apiRes = await fetch(apiUrl);
@@ -15,7 +15,34 @@ async function fetchHeroData() {
         const docsData = await docsRes.json();
 
         if (!docsData.results || docsData.results.length === 0) {
-            document.getElementById('hero-content-dynamic').innerHTML = '<p>لا توجد بيانات.</p>';
+            console.error(`No home page data found for language: ${langCode}`);
+
+            // If no results in requested language, try falling back to English
+            if (langCode !== 'en-us') {
+                console.log('Falling back to English');
+                const fallbackRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"home_page")]]&lang=en-us`);
+                const fallbackData = await fallbackRes.json();
+
+                if (!fallbackData.results || fallbackData.results.length === 0) {
+                    const errorMessage = langCode.startsWith('ar') ? 'لا توجد بيانات.' : 'No data found.';
+                    document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
+                    return;
+                }
+
+                const doc = fallbackData.results[0];
+                console.log(`Loaded fallback document in language ${doc.lang} with data:`, doc.data);
+
+                // Update page content with API data
+                updateHeroSection(doc.data);
+                updateCompanyOverview(doc.data);
+                updateServices(doc.data);
+                updateCTASection(doc.data);
+                updateFooter(doc.data);
+                return;
+            }
+
+            const errorMessage = langCode.startsWith('ar') ? 'لا توجد بيانات.' : 'No data found.';
+            document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
             return;
         }
 
@@ -39,7 +66,7 @@ async function fetchHeroData() {
     } catch (err) {
         console.error('Error fetching data:', err);
         // Show error message in the appropriate language
-        const errorMessage = langCode === 'ar-kw' ? 'حدث خطأ أثناء جلب البيانات.' : 'Error loading data.';
+        const errorMessage = langCode.startsWith('ar') ? 'حدث خطأ أثناء جلب البيانات.' : 'Error loading data.';
         document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
     }
 }
@@ -101,8 +128,28 @@ function updateServices(data) {
             const title = service.title && service.title.length > 0 ?
                 service.title[0]?.text || '' : '';
 
-            const description = service.description && service.description.length > 0 ?
-                service.description[0]?.text || '' : '';
+            // Process description - check if it contains list items
+            let descriptionHTML = '';
+            if (service.description && service.description.length > 0) {
+                // Check if any items are list items
+                const hasListItems = service.description.some(item => item.type === 'list-item');
+
+                if (hasListItems) {
+                    // Create a proper HTML list
+                    descriptionHTML = '<ul class="service-list">';
+                    service.description.forEach(item => {
+                        if (item.type === 'list-item') {
+                            descriptionHTML += `<li>${item.text}</li>`;
+                        } else if (item.type === 'paragraph' && item.text.trim() !== '') {
+                            descriptionHTML += `<p>${item.text}</p>`;
+                        }
+                    });
+                    descriptionHTML += '</ul>';
+                } else {
+                    // If no list items, just use the first paragraph text as before
+                    descriptionHTML = service.description[0]?.text || '';
+                }
+            }
 
             const linkText = service.link_text || 'Learn More';
             const linkUrl = service.link_url?.url || '#';
@@ -114,7 +161,7 @@ function updateServices(data) {
                         <i class="${icon.includes('fa-') ? icon : 'fas fa-' + icon}"></i>
                     </div>
                     <h3 class="service-title">${title}</h3>
-                    <p class="service-text">${description}</p>
+                    <div class="service-text">${descriptionHTML}</div>
                     <a href="${linkUrl}" class="btn btn-secondary">${linkText}</a>
           </div>
         `;
@@ -206,7 +253,8 @@ function updateFooter(data) {
 function updateNavigationLinks() {
     // Get current language code from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang');
+    const langCode = urlParams.get('lang') || urlParams.get('lan');
+    const paramName = urlParams.has('lang') ? 'lang' : 'lan';
 
     // If no language parameter is set, don't modify links
     if (!langCode) return;
@@ -226,8 +274,8 @@ function updateNavigationLinks() {
             const baseUrl = window.location.origin + window.location.pathname;
             const absoluteUrl = new URL(href, baseUrl);
 
-            // Add language parameter
-            absoluteUrl.searchParams.set('lang', langCode);
+            // Add language parameter using the same parameter name that was used in the URL
+            absoluteUrl.searchParams.set(paramName, langCode);
 
             // Get the path and query string
             const newHref = absoluteUrl.pathname + absoluteUrl.search;
