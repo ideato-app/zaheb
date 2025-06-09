@@ -132,13 +132,56 @@ async function fetchContactData() {
     const urlParams = new URLSearchParams(window.location.search);
     const langCode = urlParams.get('lang') || 'en-us'; // Default to English if not specified
 
+    console.log(`Fetching contact data for language: ${langCode}`);
+
     try {
         const apiRes = await fetch(apiUrl);
         const data = await apiRes.json();
         const ref = data.refs[0].ref;
 
-        // Include language code in the API query
-        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"contact_page")]]&lang=${langCode}`);
+        // First fetch the English document which contains alternate language references
+        // or directly fetch by language if it's English
+        let queryUrl;
+        if (langCode === 'en-us') {
+            queryUrl = `${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"contact_page")]]&lang=en-us`;
+        } else {
+            // For non-English, we first need to get the English document to find the alternate language ID
+            const englishRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"contact_page")]]&lang=en-us`);
+            const englishData = await englishRes.json();
+
+            if (!englishData.results || englishData.results.length === 0) {
+                console.error('No English contact page found to get alternates');
+                return;
+            }
+
+            const englishDoc = englishData.results[0];
+            console.log('Found English document with ID:', englishDoc.id);
+
+            // Check for the requested language in alternates
+            if (englishDoc.alternate_languages && englishDoc.alternate_languages.length > 0) {
+                console.log('Available alternate languages:', englishDoc.alternate_languages);
+
+                const altLang = englishDoc.alternate_languages.find(lang => lang.lang === langCode);
+
+                if (altLang) {
+                    console.log(`Found ${langCode} alternate with ID:`, altLang.id);
+                    // Directly fetch the document by ID
+                    queryUrl = `${apiUrl}/documents/search?ref=${ref}&q=[[at(document.id,"${altLang.id}")]]`;
+                } else {
+                    console.error(`Language ${langCode} not found in alternate languages, falling back to English`);
+                    // Fallback to English
+                    queryUrl = `${apiUrl}/documents/search?ref=${ref}&q=[[at(document.id,"${englishDoc.id}")]]`;
+                }
+            } else {
+                console.error('No alternate languages found, falling back to English');
+                // Fallback to English
+                queryUrl = `${apiUrl}/documents/search?ref=${ref}&q=[[at(document.id,"${englishDoc.id}")]]`;
+            }
+        }
+
+        // Now fetch the actual document we want to display
+        console.log('Fetching document with URL:', queryUrl);
+        const docsRes = await fetch(queryUrl);
         const docsData = await docsRes.json();
 
         if (!docsData.results || docsData.results.length === 0) {
@@ -147,6 +190,7 @@ async function fetchContactData() {
         }
 
         const doc = docsData.results[0];
+        console.log(`Loaded document in language ${doc.lang} with data:`, doc.data);
 
         // Update page content with API data
         updatePageTitle(doc.data);
