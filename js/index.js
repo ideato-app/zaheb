@@ -158,9 +158,7 @@ function updateServices(data) {
 
             servicesHTML += `
                 <div class="service-card glass-card">
-                    <div class="service-icon">
-                        <i class="${icon.includes('fa-') ? icon : 'fas fa-' + icon}"></i>
-                    </div>
+                   
                     <h3 class="service-title">${title}</h3>
                     <div class="service-text">${descriptionHTML}</div>
                     <a href="${linkUrl}" class="btn btn-secondary">${linkText}</a>
