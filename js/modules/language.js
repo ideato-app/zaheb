@@ -62,10 +62,6 @@ const LanguageModule = (function () {
                 e.stopPropagation();
 
                 const lang = this.getAttribute('data-lang');
-                setLanguage(lang);
-
-                // Update all language buttons (both desktop and mobile)
-                updateAllLangButtons(lang);
 
                 // Save language preference
                 localStorage.setItem('zaheb-language', lang);
@@ -83,6 +79,9 @@ const LanguageModule = (function () {
                         spans[2].style.transform = 'none';
                     }
                 }
+
+                // Reload the page to apply language changes
+                window.location.reload();
             });
 
             // Add touch events for mobile
