@@ -1,25 +1,31 @@
 /* filepath: c:\Users\zemax\Desktop\zaheb\css\services.css */
 /* ===== SERVICES PAGE STYLES ===== */
-.service-detail {
+.services-intro {
+    padding: 30px 0;
+    margin-bottom: 30px;
+}
+
+/* Service items */
+.service-item {
     padding: 60px 0;
 }
 
-.service-detail:nth-child(even) {
+.service-item:nth-child(even) {
     background-color: rgba(248, 249, 250, 0.7);
 }
 
-.service-detail .row {
+.service-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
 }
 
-.service-detail:nth-child(even) .row {
+.row-reverse {
     direction: rtl;
 }
 
-.rtl .service-detail:nth-child(even) .row {
+.rtl .row-reverse {
     direction: ltr;
 }
 
@@ -30,30 +36,43 @@
     box-shadow: var(--glass-shadow);
 }
 
+.service-image.image-right {
+    order: 2;
+}
+
 .service-content {
     padding: 30px;
 }
 
-.service-content h2 {
+.service-content.content-left {
+    order: 1;
+}
+
+.service-title {
     margin-bottom: 20px;
     font-size: 2rem;
+    color: var(--primary-color);
 }
 
-.service-content p {
+.service-description {
     margin-bottom: 20px;
+    line-height: 1.6;
 }
 
+/* Key benefits section */
 .service-benefits {
     margin: 25px 0;
 }
 
-.service-benefits h3 {
+.service-benefits h4 {
     margin-bottom: 15px;
     font-size: 1.3rem;
+    color: var(--dark-color);
 }
 
 .benefits-list {
     list-style: none;
+    padding-left: 0;
 }
 
 .benefits-list li {
@@ -81,32 +100,35 @@
     right: 0;
 }
 
-.service-steps {
+/* How it works section */
+.service-how-it-works {
     margin: 25px 0;
 }
 
-.service-steps h3 {
+.service-how-it-works h4 {
     margin-bottom: 15px;
     font-size: 1.3rem;
+    color: var(--dark-color);
 }
 
-.steps-list {
-    list-style: none;
+.how-it-works-list {
     counter-reset: step-counter;
+    padding-left: 0;
 }
 
-.steps-list li {
+.how-it-works-list li {
     margin-bottom: 15px;
     position: relative;
     padding-left: 40px;
+    list-style: none;
 }
 
-.rtl .steps-list li {
+.rtl .how-it-works-list li {
     padding-left: 0;
     padding-right: 40px;
 }
 
-.steps-list li:before {
+.how-it-works-list li:before {
     content: counter(step-counter);
     counter-increment: step-counter;
     position: absolute;
@@ -122,18 +144,31 @@
     font-weight: 600;
 }
 
-.rtl .steps-list li:before {
+.rtl .how-it-works-list li:before {
     left: auto;
     right: 0;
 }
 
+.service-cta {
+    margin-top: 30px;
+}
+
 /* Responsive adjustments for services page elements */
 @media (max-width: 992px) {
-    .service-detail .row {
+    .service-row {
         grid-template-columns: 1fr;
     }
 
-    .service-detail:nth-child(even) .row {
+    .row-reverse {
         direction: ltr;
+    }
+
+    .service-image,
+    .service-content {
+        order: unset !important;
+    }
+
+    .service-image {
+        margin-bottom: 30px;
     }
 }
