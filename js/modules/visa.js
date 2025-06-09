@@ -1,434 +1,330 @@
-async function fetchVisaData() {
-    const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
+/**
+ * Visa Module
+ * Handles fetching and displaying visa information data from the Prismic API
+ */
 
-    // Get current language code from URL or use default
-    const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang') || 'en-us'; // Default to English if not specified
+const VisaModule = (function () {
+    'use strict';
 
-    try {
-        console.log("Fetching visa page data...");
+    // Modal reference
+    let modal;
 
-        // Get the API ref first
-        const apiRes = await fetch(apiUrl);
-        const data = await apiRes.json();
-        const ref = data.refs[0].ref;
-        console.log("API ref:", ref);
+    async function fetchVisaData() {
+        const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
-        // Include language code in the API query
-        const query = `[[at(document.type,"visa")]]`;
-        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=${query}&lang=${langCode}`);
-        const docsData = await docsRes.json();
+        // Get current language code from URL or use default
+        const urlParams = new URLSearchParams(window.location.search);
+        const langCode = urlParams.get('lang') || urlParams.get('lan') || 'en-us'; // Check both 'lang' and 'lan' parameters
 
-        console.log("API response:", docsData);
+        console.log(`Fetching visa data for language: ${langCode}`);
 
-        if (!docsData.results || docsData.results.length === 0) {
-            console.error('No visa page data found, using fallback content');
-            displayFallbackContent();
-            return;
-        }
+        try {
+            const apiRes = await fetch(apiUrl);
+            const data = await apiRes.json();
+            const ref = data.refs[0].ref;
 
-        const doc = docsData.results[0];
-        console.log("Visa data loaded:", doc.data);
+            // Include language code in the API query
+            const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"visa")]]&lang=${langCode}`);
+            const docsData = await docsRes.json();
 
-        // Update page content with API data
-        updatePageTitle(doc.data);
-        updateIntroSection(doc.data);
-        updateVisaInformation(doc.data);
-        updateCTA(doc.data);
+            if (!docsData.results || docsData.results.length === 0) {
+                console.error(`No visa data found for language: ${langCode}`);
 
-        // Hide loading indicators if any
-        const loadingIndicators = document.querySelectorAll('.loading-spinner');
-        loadingIndicators.forEach(indicator => {
-            indicator.style.display = 'none';
-        });
+                // If no results in requested language, try falling back to English
+                if (langCode !== 'en-us') {
+                    console.log('Falling back to English');
+                    const fallbackRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"visa")]]&lang=en-us`);
+                    const fallbackData = await fallbackRes.json();
 
-    } catch (err) {
-        console.error('Error fetching visa data:', err);
-        displayFallbackContent();
-    }
-}
+                    if (!fallbackData.results || fallbackData.results.length === 0) {
+                        document.querySelector('.loading-spinner').innerHTML = '<p>No visa data found.</p>';
+                        return;
+                    }
 
-function updatePageTitle(data) {
-    const pageTitle = document.querySelector('.container h1');
-    if (pageTitle && data.tittle_page && data.tittle_page.length > 0) {
-        const title = data.tittle_page[0]?.text || '';
-        if (title) {
-            // Remove existing data attributes but keep the element
-            pageTitle.removeAttribute('data-en');
-            pageTitle.removeAttribute('data-ar');
-            pageTitle.textContent = title;
-        }
-    }
-}
+                    const doc = fallbackData.results[0];
+                    console.log(`Loaded fallback document in language ${doc.lang} with data:`, doc.data);
 
-function updateIntroSection(data) {
-    // Update intro title
-    const introTitle = document.querySelector('.visa-intro .section-title');
-    if (introTitle && data.tittle_paragraph && data.tittle_paragraph.length > 0) {
-        const title = data.tittle_paragraph[0]?.text || '';
-        if (title) {
-            // Remove existing data attributes but keep the element
-            introTitle.removeAttribute('data-en');
-            introTitle.removeAttribute('data-ar');
-            introTitle.textContent = title;
-        }
-    }
-
-    // Update intro paragraph
-    const introParagraph = document.querySelector('.visa-intro .lead');
-    if (introParagraph && data.paragraph_text && data.paragraph_text.length > 0) {
-        const text = data.paragraph_text[0]?.text || '';
-        if (text) {
-            // Remove existing data attributes but keep the element
-            introParagraph.removeAttribute('data-en');
-            introParagraph.removeAttribute('data-ar');
-            introParagraph.textContent = text;
-        }
-    }
-}
-
-function updateVisaInformation(data) {
-    if (!data.visa_information || data.visa_information.length === 0) {
-        return;
-    }
-
-    // Get the countries grid
-    const countriesGrid = document.querySelector('.countries-grid');
-    if (!countriesGrid) return;
-
-    // Clear existing content
-    countriesGrid.innerHTML = '';
-
-    // Use the actual visa information from the API
-    const visaCountries = data.visa_information;
-
-    // Process each country's visa information
-    visaCountries.forEach((country, index) => {
-        // Create country section
-        const countryDiv = document.createElement('div');
-        countryDiv.className = 'country glass-card fade-in';
-
-        // Determine which icon to use based on country name
-        let iconClass = 'fas fa-globe';
-        if (country.country_name.toLowerCase().includes('canada')) {
-            iconClass = 'fas fa-leaf';
-        } else if (country.country_name.toLowerCase().includes('united states') || country.country_name.toLowerCase().includes('us')) {
-            iconClass = 'fas fa-flag-usa';
-        } else if (country.country_name.toLowerCase().includes('china')) {
-            iconClass = 'fas fa-dragon';
-        } else if (country.country_name.toLowerCase().includes('arabic') || country.country_name.toLowerCase().includes('arab')) {
-            iconClass = 'fas fa-mosque';
-        }
-
-        // Create country HTML structure
-        countryDiv.innerHTML = `
-            <div class="country-header">
-                <h2><i class="${iconClass}"></i> <span>${country.country_name}</span></h2>
-            </div>
-            <div class="country-content">
-                <div class="visa-info">
-                    <h3><i class="fas fa-id-card"></i> <span>${country.visa_types_list}</span></h3>
-                    ${generateVisaTypesContent(country.visa_types_content)}
-                </div>
-                <div class="requirements">
-                    <h3><i class="fas fa-clipboard-list"></i> <span>${country.general_requirements_list}</span></h3>
-                    ${generateRequirementsList(country.general_requirements_content)}
-                </div>
-                <a href="${country.cta_inquire_link?.url || 'contact.html'}" class="btn btn-primary"><i class="fas fa-envelope"></i> <span>${country.cta_inquire_label}</span></a>
-                <a href="#" class="btn btn-secondary" data-country-index="${index}"><i class="fas fa-info-circle"></i> <span>${country.cta_more_label || 'More Details'}</span></a>
-            </div>
-        `;
-
-        // Add the country section to the grid
-        countriesGrid.appendChild(countryDiv);
-
-        // Prepare modal content for this country
-        prepareModalContent(country, index);
-    });
-
-    // Add event listeners to the "More Details" buttons
-    setupModalListeners();
-}
-
-function generateVisaTypesContent(visaTypes) {
-    if (!visaTypes || visaTypes.length === 0) {
-        return '<p>Please contact us for information on visa types.</p>';
-    }
-
-    let html = '';
-
-    // Process each content item
-    visaTypes.forEach(item => {
-        if (item.type === 'paragraph') {
-            // If it's a simple paragraph, display it
-            html += `<p>${item.text}</p>`;
-        } else if (item.type === 'list-item') {
-            // If it's the first list item, start a new list
-            if (!html.includes('<ul>')) {
-                html += '<ul>';
+                    // Update page content with API data
+                    updatePageContent(doc.data);
+                }
+                return;
             }
 
-            // For list items, check if there are spans to make parts bold
-            if (item.spans && item.spans.length > 0) {
-                let text = item.text;
+            const doc = docsData.results[0];
+            console.log(`Loaded visa document in language ${doc.lang} with data:`, doc.data);
 
-                // Sort spans by start position in descending order to avoid position shifts
-                const sortedSpans = [...item.spans].sort((a, b) => b.start - a.start);
+            // Update page content with API data
+            updatePageContent(doc.data);
 
-                // Apply each span
-                sortedSpans.forEach(span => {
-                    if (span.type === 'strong') {
-                        const before = text.substring(0, span.start);
-                        const highlighted = text.substring(span.start, span.end);
-                        const after = text.substring(span.end);
-                        text = before + '<strong>' + highlighted + '</strong>' + after;
+        } catch (err) {
+            console.error('Error fetching visa data:', err);
+            document.querySelector('.loading-spinner').innerHTML = '<p>Error loading visa information.</p>';
+        }
+    }
+
+    function updatePageContent(data) {
+        // Hide loading spinner
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'none';
+        }
+
+        // Update page title
+        if (data.tittle_page && data.tittle_page.length > 0) {
+            const pageTitle = document.querySelector('.container h1');
+            if (pageTitle) {
+                pageTitle.textContent = data.tittle_page[0].text;
+            }
+        }
+
+        // Update visa introduction
+        if (data.tittle_paragraph && data.paragraph_text) {
+            const introTitle = document.querySelector('.visa-intro .section-title');
+            const introText = document.querySelector('.visa-intro .lead');
+
+            if (introTitle && data.tittle_paragraph.length > 0) {
+                introTitle.textContent = data.tittle_paragraph[0].text;
+            }
+
+            if (introText && data.paragraph_text.length > 0) {
+                introText.textContent = data.paragraph_text[0].text;
+            }
+        }
+
+        // Update CTA section
+        if (data.cta_tittle && data.cta_description) {
+            const ctaTitle = document.querySelector('.cta-title');
+            const ctaText = document.querySelector('.cta-text');
+            const ctaButton = document.querySelector('.cta-content .btn');
+
+            if (ctaTitle && data.cta_tittle.length > 0) {
+                ctaTitle.textContent = data.cta_tittle[0].text;
+            }
+
+            if (ctaText && data.cta_description.length > 0) {
+                ctaText.textContent = data.cta_description[0].text;
+            }
+
+            if (ctaButton && data.lable_button && data.lable_button.length > 0) {
+                ctaButton.textContent = data.lable_button[0].text;
+
+                if (data.url_button && data.url_button.length > 0) {
+                    ctaButton.href = data.url_button[0].text;
+                }
+            }
+        }
+
+        // Render countries
+        if (data.visa_information && data.visa_information.length > 0) {
+            renderCountries(data.visa_information);
+        }
+    }
+
+    function renderCountries(countries) {
+        const countriesGrid = document.querySelector('.countries-grid');
+        let html = '';
+
+        countries.forEach((country) => {
+            // Process visa types
+            let visaTypesHtml = '';
+            if (country.visa_types_content && country.visa_types_content.length > 0) {
+                visaTypesHtml = '<ul class="visa-types-list">';
+                country.visa_types_content.forEach(item => {
+                    if (item.type === 'paragraph') {
+                        visaTypesHtml += `<p>${item.text}</p>`;
+                    } else if (item.type === 'list-item') {
+                        visaTypesHtml += `<li>${item.text}</li>`;
                     }
                 });
-
-                html += `<li>${text}</li>`;
-            } else {
-                html += `<li>${item.text}</li>`;
+                visaTypesHtml += '</ul>';
             }
-        }
-    });
 
-    // Close the list if it was opened
-    if (html.includes('<ul>') && !html.endsWith('</ul>')) {
-        html += '</ul>';
-    }
-
-    return html;
-}
-
-function generateRequirementsList(requirements) {
-    if (!requirements || requirements.length === 0) {
-        return '<ul><li>Please contact us for detailed requirements.</li></ul>';
-    }
-
-    // If there's only one item and it's a paragraph, display it as text
-    if (requirements.length === 1 && requirements[0].type === 'paragraph') {
-        return `<p>${requirements[0].text}</p>`;
-    }
-
-    let html = '';
-    let hasList = false;
-
-    requirements.forEach(item => {
-        if (item.type === 'paragraph') {
-            html += `<p>${item.text}</p>`;
-        } else if (item.type === 'list-item') {
-            // If this is our first list item, start a list
-            if (!hasList) {
-                html += '<ul>';
-                hasList = true;
+            // Process requirements
+            let requirementsHtml = '';
+            if (country.general_requirements_content && country.general_requirements_content.length > 0) {
+                requirementsHtml = '<ul class="requirements-list">';
+                country.general_requirements_content.forEach(item => {
+                    if (item.type === 'list-item') {
+                        requirementsHtml += `<li>${item.text}</li>`;
+                    } else if (item.type === 'paragraph') {
+                        requirementsHtml += `<p>${item.text}</p>`;
+                    }
+                });
+                requirementsHtml += '</ul>';
             }
-            html += `<li>${item.text}</li>`;
-        }
-    });
 
-    // Close the list if it was opened
-    if (hasList) {
-        html += '</ul>';
+            // Create buttons HTML
+            const inquireUrl = country.cta_inquire_link?.url || 'contact.html';
+            const inquireLabel = country.cta_inquire_label || 'Inquire Now';
+
+            const buttonsHtml = `
+                <div class="visa-buttons">
+                    <a href="${inquireUrl}" class="btn btn-primary">${inquireLabel}</a>
+                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}">${country.cta_more_label || 'More Info'}</button>
+                </div>
+            `;
+
+            // Store detailed information for modal
+            if (country.more && country.more.length > 0) {
+                // We'll use a hidden div to store the data for the modal
+                const moreInfoHtml = processMoreInfo(country.more);
+                html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;">${moreInfoHtml}</div>`;
+            }
+
+            // Combine all sections into country HTML
+            const countryHtml = `
+                <div class="country glass-card">
+                    <div class="country-header">
+                        <h2><i class="fas fa-globe"></i> ${country.country_name}</h2>
+                    </div>
+                    <div class="country-content">
+                        <div class="visa-info">
+                            <h3><i class="fas fa-passport"></i> ${country.visa_types_list || 'Visa Types'}</h3>
+                            ${visaTypesHtml}
+                        </div>
+                        <div class="requirements">
+                            <h3><i class="fas fa-list-check"></i> ${country.general_requirements_list || 'Requirements'}</h3>
+                            ${requirementsHtml}
+                        </div>
+                        ${buttonsHtml}
+                    </div>
+                </div>
+            `;
+
+            html += countryHtml;
+        });
+
+        // Insert all countries HTML into the grid
+        countriesGrid.innerHTML = html;
+
+        // Add event listeners to the "More Info" buttons
+        setupMoreInfoButtons();
     }
 
-    // If we didn't generate any content, provide a fallback
-    if (!html) {
-        return '<ul><li>Please contact us for detailed requirements.</li></ul>';
-    }
+    function processMoreInfo(moreInfo) {
+        let html = '';
 
-    return html;
-}
+        moreInfo.forEach(item => {
+            switch (item.type) {
+                case 'heading1':
+                    html += `<h1>${item.text}</h1>`;
+                    break;
+                case 'heading2':
+                    html += `<h2>${item.text}</h2>`;
+                    break;
+                case 'heading3':
+                    html += `<h3>${item.text}</h3>`;
+                    break;
+                case 'paragraph':
+                    html += `<p>${item.text}</p>`;
+                    break;
+                case 'list-item':
+                    // Start a new list or add to an existing one
+                    if (!html.includes('<ul>') || html.lastIndexOf('</ul>') > html.lastIndexOf('<ul>')) {
+                        html += '<ul>';
+                    }
+                    html += `<li>${item.text}</li>`;
 
-function prepareModalContent(country, index) {
-    // Create a hidden div to store the modal content for this country
-    const contentDiv = document.createElement('div');
-    contentDiv.id = `modal-content-${index}`;
-    contentDiv.className = 'hidden-modal-content';
-    contentDiv.style.display = 'none';
-
-    // Generate HTML for modal content from "more" field
-    let html = '';
-
-    if (country.more && country.more.length > 0) {
-        // Process each item in the "more" content
-        let currentList = null;
-
-        country.more.forEach(item => {
-            if (item.type.startsWith('heading')) {
-                // If we were building a list, close it before adding a new heading
-                if (currentList) {
-                    html += '</ul>';
-                    currentList = null;
-                }
-
-                // Extract heading level (h2, h3, etc.)
-                const level = item.type.replace('heading', '');
-
-                // Check if there are spans to make parts bold
-                if (item.spans && item.spans.length > 0) {
-                    let text = item.text;
-
-                    // Apply each span
-                    item.spans.forEach(span => {
-                        if (span.type === 'strong') {
-                            const before = text.substring(0, span.start);
-                            const highlighted = text.substring(span.start, span.end);
-                            const after = text.substring(span.end);
-                            text = before + '<strong>' + highlighted + '</strong>' + after;
-                        }
-                    });
-
-                    html += `<h${level}>${text}</h${level}>`;
-                } else {
-                    html += `<h${level}>${item.text}</h${level}>`;
-                }
-            } else if (item.type === 'paragraph') {
-                // If we were building a list, close it before adding a paragraph
-                if (currentList) {
-                    html += '</ul>';
-                    currentList = null;
-                }
-
-                html += `<p>${item.text}</p>`;
-            } else if (item.type === 'list-item') {
-                // If this is the first list item, start a new list
-                if (!currentList) {
-                    html += '<ul>';
-                    currentList = 'ul';
-                }
-
-                html += `<li>${item.text}</li>`;
+                    // Check if next item is not a list-item, then close the list
+                    const nextItemIndex = moreInfo.indexOf(item) + 1;
+                    if (nextItemIndex >= moreInfo.length || moreInfo[nextItemIndex].type !== 'list-item') {
+                        html += '</ul>';
+                    }
+                    break;
+                default:
+                    html += `<p>${item.text}</p>`;
             }
         });
 
-        // Close any open list
-        if (currentList) {
-            html += `</${currentList}>`;
-        }
-    } else {
-        // Fallback content if no "more" data is available
-        html = `
-            <h2>Visa Requirements: ${country.country_name}</h2>
-            ${generateRequirementsList(country.general_requirements_content)}
-            <div class="additional-requirements">
-                <h3>Additional Requirements:</h3>
-                <ul>
-                    <li>Please contact us for detailed additional requirements.</li>
-                </ul>
-            </div>
-        `;
+        return html;
     }
 
-    contentDiv.innerHTML = html;
+    function setupMoreInfoButtons() {
+        const moreInfoButtons = document.querySelectorAll('.more-info-btn');
 
-    // Append to the document (will be hidden)
-    document.body.appendChild(contentDiv);
-}
-
-function setupModalListeners() {
-    // Get modal elements
-    const modal = document.getElementById('visaDetailsModal');
-    const modalContent = document.getElementById('modalContent');
-    const closeBtn = document.querySelector('.close-modal');
-
-    if (!modal || !modalContent || !closeBtn) return;
-
-    // Get all "More Details" buttons
-    const detailButtons = document.querySelectorAll('.btn.btn-secondary');
-
-    // Add click event to all detail buttons
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the country index from data attribute
-            const countryIndex = this.getAttribute('data-country-index');
-
-            // Get the stored modal content for this country
-            const storedContent = document.getElementById(`modal-content-${countryIndex}`);
-
-            if (storedContent) {
-                // Set modal content
-                modalContent.innerHTML = storedContent.innerHTML;
-
-                // Show the modal
-                modal.style.display = 'block';
-            }
+        moreInfoButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const countryName = this.getAttribute('data-country');
+                showModal(countryName);
+            });
         });
-    });
+    }
 
-    // Close modal when clicking the X
-    closeBtn.addEventListener('click', function () {
-        modal.style.display = 'none';
-    });
+    function showModal(countryName) {
+        const modal = document.getElementById('visaDetailsModal');
+        const modalContent = document.getElementById('modalContent');
+        const moreInfoContent = document.getElementById(`more-info-${sanitizeId(countryName)}`);
 
-    // Close modal when clicking outside the modal
-    window.addEventListener('click', function (e) {
-        if (e.target === modal) {
+        if (modal && moreInfoContent) {
+            // Set modal title and content
+            modalContent.innerHTML = `
+                <h2>${countryName} Visa Details</h2>
+                ${moreInfoContent.innerHTML}
+            `;
+
+            // Show the modal
+            modal.style.display = 'block';
+
+            // Add event listener to close the modal
+            const closeBtn = modal.querySelector('.close-modal');
+            closeBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    // Helper function to sanitize country names for use as IDs
+    function sanitizeId(str) {
+        return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    }
+
+    // Initialize module
+    function init() {
+        fetchVisaData();
+
+        // Initialize modal functionality
+        initModal();
+    }
+
+    function initModal() {
+        modal = document.getElementById('visaDetailsModal');
+
+        // Set up close button functionality
+        const closeBtn = modal.querySelector('.close-modal');
+        closeBtn.addEventListener('click', function () {
             modal.style.display = 'none';
-        }
-    });
-}
+        });
 
-function updateCTA(data) {
-    // Update CTA title
-    const ctaTitle = document.querySelector('.cta-title');
-    if (ctaTitle && data.cta_tittle && data.cta_tittle.length > 0) {
-        const title = data.cta_tittle[0]?.text || '';
-        if (title) {
-            // Remove existing data attributes but keep the element
-            ctaTitle.removeAttribute('data-en');
-            ctaTitle.removeAttribute('data-ar');
-            ctaTitle.textContent = title;
-        }
-    }
-
-    // Update CTA description
-    const ctaText = document.querySelector('.cta-text');
-    if (ctaText && data.cta_description && data.cta_description.length > 0) {
-        const text = data.cta_description[0]?.text || '';
-        if (text) {
-            // Remove existing data attributes but keep the element
-            ctaText.removeAttribute('data-en');
-            ctaText.removeAttribute('data-ar');
-            ctaText.textContent = text;
-        }
-    }
-
-    // Update CTA button
-    const ctaButton = document.querySelector('.cta .btn-primary');
-    if (ctaButton) {
-        if (data.lable_button && data.lable_button.length > 0) {
-            const label = data.lable_button[0]?.text || '';
-            if (label) {
-                // Remove existing data attributes but keep the element
-                ctaButton.removeAttribute('data-en');
-                ctaButton.removeAttribute('data-ar');
-                ctaButton.textContent = label;
+        // Close modal when clicking outside
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
             }
-        }
+        });
 
-        if (data.url_button && data.url_button.length > 0) {
-            const url = data.url_button[0]?.text || '';
-            if (url) {
-                ctaButton.href = url;
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
             }
-        }
+        });
     }
-}
 
-// Display fallback content when API fails
-function displayFallbackContent() {
-    console.log('Using existing HTML content as fallback');
+    // Public API
+    return {
+        init: init
+    };
+})();
 
-    // Hide any loading indicators
-    const loadingIndicators = document.querySelectorAll('.loading-spinner');
-    loadingIndicators.forEach(indicator => {
-        indicator.style.display = 'none';
-    });
-}
-
-// Initialize when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    fetchVisaData();
+    if (document.body.classList.contains('visa-page')) {
+        VisaModule.init();
+    }
 });

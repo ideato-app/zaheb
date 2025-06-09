@@ -223,8 +223,8 @@
 <body class="visa-page">
     <!-- Language Switcher (Desktop) -->
     <div class="language-switcher desktop-lang">
-        <button class="lang-btn" data-lang="en">English</button>
-        <button class="lang-btn active" data-lang="ar">العربية</button>
+        <button class="lang-btn" data-lang="en-us" data-param="lang">English</button>
+        <button class="lang-btn active" data-lang="ar-kw" data-param="lan">العربية</button>
     </div>
 
     <!-- Header -->
@@ -242,8 +242,8 @@
                     <!-- Language Switcher (Mobile) -->
                     <li class="nav-item mobile-lang">
                         <div class="language-switcher-mobile">
-                            <button class="lang-btn" data-lang="en">English</button>
-                            <button class="lang-btn active" data-lang="ar">العربية</button>
+                            <button class="lang-btn" data-lang="en-us" data-param="lang">English</button>
+                            <button class="lang-btn active" data-lang="ar-kw" data-param="lan">العربية</button>
                         </div>
                     </li>
                     <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
@@ -368,8 +368,40 @@
         </div>
     </div>
 
+    <!-- Language Switcher Script -->
     <script>
-        // Language switcher functionality will be handled by language.js
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all language buttons
+            const langButtons = document.querySelectorAll('.lang-btn');
+
+            // Add click event to each button
+            langButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const lang = this.getAttribute('data-lang');
+                    const paramName = this.getAttribute('data-param') || 'lang';
+
+                    // Update URL with language parameter
+                    const url = new URL(window.location.href);
+
+                    // Set the parameter using the data-param attribute value
+                    url.searchParams.set(paramName, lang);
+
+                    window.location.href = url.toString();
+                });
+            });
+
+            // Set active class based on current language
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentLang = urlParams.get('lang') || urlParams.get('lan') || 'en-us';
+
+            langButtons.forEach(button => {
+                if (button.getAttribute('data-lang') === currentLang) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 
