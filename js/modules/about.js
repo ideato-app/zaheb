@@ -1,9 +1,10 @@
 async function fetchAboutData() {
     const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
-    // Get current language code from URL or use default
-    const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang') || 'en-us'; // Default to English if not specified
+    // Get current language code from localStorage or use default
+    const langCode = localStorage.getItem('zaheb-language') || 'ar';
+    // Map our simple language codes to Prismic language codes
+    const prismicLangCode = langCode === 'ar' ? 'ar-kw' : 'en-us';
 
     try {
         console.log("Fetching about page data...");
@@ -14,7 +15,7 @@ async function fetchAboutData() {
 
         // Include language code in the API query - try both "about" and "about_page" document types
         const query = `[[any(document.type,["about","about_page"])]]`;
-        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=${query}&lang=${langCode}`);
+        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=${query}&lang=${prismicLangCode}`);
         const docsData = await docsRes.json();
         console.log("API response:", docsData);
 
@@ -316,40 +317,14 @@ function updateFooter(data) {
 
 // Update navigation links to preserve language parameter
 function updateNavigationLinks() {
-    // Get current language code from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang');
+    // Get current language code from localStorage
+    const langCode = localStorage.getItem('zaheb-language');
 
-    // If no language parameter is set, don't modify links
+    // If no language is stored, don't modify links
     if (!langCode) return;
 
-    // Get all navigation links
-    const navLinks = document.querySelectorAll('a[href]');
-
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-
-        // Skip external links and anchor links
-        if (href.startsWith('http') || href.startsWith('#') || href === '') return;
-
-        // Parse the URL
-        try {
-            // For relative URLs, create a dummy absolute URL to parse
-            const baseUrl = window.location.origin + window.location.pathname;
-            const absoluteUrl = new URL(href, baseUrl);
-
-            // Add language parameter
-            absoluteUrl.searchParams.set('lang', langCode);
-
-            // Get the path and query string
-            const newHref = absoluteUrl.pathname + absoluteUrl.search;
-
-            // Update the link
-            link.setAttribute('href', newHref);
-        } catch (e) {
-            console.error('Error updating link:', e);
-        }
-    });
+    // We don't need to modify links anymore since we're using localStorage
+    // This function is now a no-op but kept for backward compatibility
 }
 
 // Display fallback content when API fails

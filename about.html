@@ -34,8 +34,8 @@
 <body class="about-page">
     <!-- Language Switcher (Desktop) -->
     <div class="language-switcher desktop-lang">
-        <button class="lang-btn" data-lang="en-us">English</button>
-        <button class="lang-btn active" data-lang="ar-kw">العربية</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn active" data-lang="ar">العربية</button>
     </div>
 
     <!-- Header -->
@@ -48,17 +48,17 @@
             </div>
             <nav class="nav">
                 <ul class="nav-list">
-                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link active">About Us</a></li>
+                    <li class="nav-item"><a href="index.html" class="nav-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link active" data-en="About Us" data-ar="من نحن">About Us</a></li>
                     <!-- Language Switcher (Mobile) -->
                     <li class="nav-item mobile-lang">
                         <div class="language-switcher-mobile">
-                            <button class="lang-btn" data-lang="en-us">English</button>
-                            <button class="lang-btn active" data-lang="ar-kw">العربية</button>
+                            <button class="lang-btn" data-lang="en">English</button>
+                            <button class="lang-btn active" data-lang="ar">العربية</button>
                         </div>
                     </li>
-                    <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="services.html" class="nav-link" data-en="Services" data-ar="خدماتنا">Services</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
                 </ul>
             </nav>
             <div class="mobile-menu-btn">
@@ -71,8 +71,8 @@
 
     <!-- Page Title centered under navigation header, moved further down -->
     <div class="container" style="padding-top: 80px; padding-bottom: 0; text-align: center;">
-        <h1>About Us</h1>
-        <div class="loading-indicator">Loading content...</div>
+        <h1 data-en="About Us" data-ar="من نحن">About Us</h1>
+        <div class="loading-indicator" data-en="Loading content..." data-ar="جاري تحميل المحتوى...">Loading content...</div>
     </div>
 
     <!-- Company Introduction -->
@@ -83,7 +83,7 @@
                     <img src="images/about-company.jpg" alt="Zaheb International Office" class="glass-card">
                 </div>
                 <div class="about-content glass-card fade-in">
-                    <h2 class="section-title">Who We Are</h2>
+                    <h2 class="section-title" data-en="Who We Are" data-ar="من نحن">Who We Are</h2>
                     <!-- Content will be loaded from API -->
                 </div>
             </div>
@@ -102,7 +102,7 @@
     <!-- Why Choose Us -->
     <section class="why-choose-us">
         <div class="container">
-            <h2 class="section-title">Why Choose Zaheb International</h2>
+            <h2 class="section-title" data-en="Why Choose Zaheb International" data-ar="لماذا تختار زاهب انترناشيونال">Why Choose Zaheb International</h2>
             <div class="features-grid">
                 <!-- Content will be loaded from API -->
             </div>
@@ -113,9 +113,9 @@
     <section class="cta">
         <div class="container">
             <div class="cta-content glass-card">
-                <h2 class="cta-title">Ready to Start Your Journey?</h2>
-                <p class="cta-text">Contact us today for a free consultation</p>
-                <a href="contact.html" class="btn btn-primary">Contact Us Now</a>
+                <h2 class="cta-title" data-en="Ready to Start Your Journey?" data-ar="هل أنت مستعد لبدء رحلتك؟">Ready to Start Your Journey?</h2>
+                <p class="cta-text" data-en="Contact us today for a free consultation" data-ar="اتصل بنا اليوم للحصول على استشارة مجانية">Contact us today for a free consultation</p>
+                <a href="contact.html" class="btn btn-primary" data-en="Contact Us Now" data-ar="تواصل معنا الآن">Contact Us Now</a>
             </div>
         </div>
     </section>
@@ -126,39 +126,39 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-white.png" alt="Zaheb International Logo">
-                    <p>Your Trusted Travel Partner</p>
+                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق">Your Trusted Travel Partner</p>
                 </div>
                 <div class="footer-links">
-                    <h3>Quick Links</h3>
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
                     <ul>
                         <!-- Links will be loaded from API -->
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا">Services</a></li>
+                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span>Office 1, 2nd Floor, Salem Al Mubarak Street, First
+                    <h3 data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya" data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية">Office 1, 2nd Floor, Salem Al Mubarak Street, First
                             Mall, Salmiya</span></p>
                     <p><i class="fas fa-phone"></i> <a href="tel:+96522281011">+965 2228 1011</a></p>
                     <div class="social-links">
                         <!-- Social links will be loaded from API -->
                         <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
                                 class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/96522281011" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/96522281011" target="_blank" data-en-tooltip="Chat with us" data-ar-tooltip="تحدث معنا"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Zaheb International. All Rights Reserved.</p>
+                <p data-en="&copy; 2025 Zaheb International. All Rights Reserved." data-ar="© 2025 زاهب انترناشيونال. جميع الحقوق محفوظة.">&copy; 2025 Zaheb International. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank">
+    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us" data-ar-tooltip="تحدث معنا">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -170,38 +170,6 @@
     <script src="js/modules/whatsapp.js"></script>
     <script src="js/modules/about.js"></script>
     <script src="js/main.js"></script>
-
-    <!-- Language Switcher Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Get all language buttons
-            const langButtons = document.querySelectorAll('.lang-btn');
-
-            // Add click event to each button
-            langButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const lang = this.getAttribute('data-lang');
-
-                    // Update URL with language parameter
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('lang', lang);
-                    window.location.href = url.toString();
-                });
-            });
-
-            // Set active class based on current language
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentLang = urlParams.get('lang') || 'en-us';
-
-            langButtons.forEach(button => {
-                if (button.getAttribute('data-lang') === currentLang) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

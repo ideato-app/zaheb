@@ -1,9 +1,10 @@
 async function fetchHeroData() {
     const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
-    // Get current language code from URL or use default
-    const urlParams = new URLSearchParams(window.location.search);
-    const langCode = urlParams.get('lang') || urlParams.get('lan') || 'en-us'; // Check both 'lang' and 'lan' parameters
+    // Get current language code from localStorage or use default
+    const langCode = localStorage.getItem('zaheb-language') || 'ar';
+    // Map our simple language codes to Prismic language codes
+    const prismicLangCode = langCode === 'ar' ? 'ar-kw' : 'en-us';
 
     try {
         const apiRes = await fetch(apiUrl);
@@ -11,20 +12,20 @@ async function fetchHeroData() {
         const ref = data.refs[0].ref;
 
         // Include language code in the API query
-        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"home_page")]]&lang=${langCode}`);
+        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"home_page")]]&lang=${prismicLangCode}`);
         const docsData = await docsRes.json();
 
         if (!docsData.results || docsData.results.length === 0) {
-            console.error(`No home page data found for language: ${langCode}`);
+            console.error(`No home page data found for language: ${prismicLangCode}`);
 
             // If no results in requested language, try falling back to English
-            if (langCode !== 'en-us') {
+            if (prismicLangCode !== 'en-us') {
                 console.log('Falling back to English');
                 const fallbackRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"home_page")]]&lang=en-us`);
                 const fallbackData = await fallbackRes.json();
 
                 if (!fallbackData.results || fallbackData.results.length === 0) {
-                    const errorMessage = langCode.startsWith('ar') ? 'لا توجد بيانات.' : 'No data found.';
+                    const errorMessage = langCode === 'ar' ? 'لا توجد بيانات.' : 'No data found.';
                     document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
                     return;
                 }
@@ -41,7 +42,7 @@ async function fetchHeroData() {
                 return;
             }
 
-            const errorMessage = langCode.startsWith('ar') ? 'لا توجد بيانات.' : 'No data found.';
+            const errorMessage = langCode === 'ar' ? 'لا توجد بيانات.' : 'No data found.';
             document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
             return;
         }
@@ -66,7 +67,7 @@ async function fetchHeroData() {
     } catch (err) {
         console.error('Error fetching data:', err);
         // Show error message in the appropriate language
-        const errorMessage = langCode.startsWith('ar') ? 'حدث خطأ أثناء جلب البيانات.' : 'Error loading data.';
+        const errorMessage = langCode === 'ar' ? 'حدث خطأ أثناء جلب البيانات.' : 'Error loading data.';
         document.getElementById('hero-content-dynamic').innerHTML = `<p>${errorMessage}</p>`;
     }
 }
