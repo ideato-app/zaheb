@@ -13,9 +13,10 @@ const VisaModule = (function () {
         const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
         // Get current language code from localStorage or use default
-        const langCode = localStorage.getItem('zaheb-language') || 'ar';
+        const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
         // Map our simple language codes to Prismic language codes
-        const prismicLangCode = langCode === 'ar' ? 'ar-kw' : 'en-us';
+        const prismicLangCode = langCode === 'ar' || langCode === 'ar-kw' ? 'ar-kw' : 'en-us';
+        const isArabic = langCode === 'ar' || langCode === 'ar-kw';
 
         console.log(`Fetching visa data for language: ${prismicLangCode}`);
 
@@ -38,7 +39,10 @@ const VisaModule = (function () {
                     const fallbackData = await fallbackRes.json();
 
                     if (!fallbackData.results || fallbackData.results.length === 0) {
-                        document.querySelector('.loading-spinner').innerHTML = '<p>No visa data found.</p>';
+                        const errorMessage = isArabic
+                            ? 'لم يتم العثور على بيانات التأشيرات.'
+                            : 'No visa data found.';
+                        document.querySelector('.loading-spinner').innerHTML = `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${errorMessage}</p>`;
                         return;
                     }
 
@@ -46,7 +50,7 @@ const VisaModule = (function () {
                     console.log(`Loaded fallback document in language ${doc.lang} with data:`, doc.data);
 
                     // Update page content with API data
-                    updatePageContent(doc.data);
+                    updatePageContent(doc.data, isArabic);
                 }
                 return;
             }
@@ -55,15 +59,18 @@ const VisaModule = (function () {
             console.log(`Loaded visa document in language ${doc.lang} with data:`, doc.data);
 
             // Update page content with API data
-            updatePageContent(doc.data);
+            updatePageContent(doc.data, isArabic);
 
         } catch (err) {
             console.error('Error fetching visa data:', err);
-            document.querySelector('.loading-spinner').innerHTML = '<p>Error loading visa information.</p>';
+            const errorMessage = isArabic
+                ? 'حدث خطأ في تحميل البيانات. يرجى المحاولة مرة أخرى لاحقاً.'
+                : 'Error loading visa information.';
+            document.querySelector('.loading-spinner').innerHTML = `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${errorMessage}</p>`;
         }
     }
 
-    function updatePageContent(data) {
+    function updatePageContent(data, isArabic) {
         // Hide loading spinner
         const loadingSpinner = document.querySelector('.loading-spinner');
         if (loadingSpinner) {
@@ -75,6 +82,8 @@ const VisaModule = (function () {
             const pageTitle = document.querySelector('.container h1');
             if (pageTitle) {
                 pageTitle.textContent = data.tittle_page[0].text;
+                pageTitle.dir = isArabic ? 'rtl' : 'ltr';
+                pageTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
         }
 
@@ -85,10 +94,14 @@ const VisaModule = (function () {
 
             if (introTitle && data.tittle_paragraph.length > 0) {
                 introTitle.textContent = data.tittle_paragraph[0].text;
+                introTitle.dir = isArabic ? 'rtl' : 'ltr';
+                introTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (introText && data.paragraph_text.length > 0) {
                 introText.textContent = data.paragraph_text[0].text;
+                introText.dir = isArabic ? 'rtl' : 'ltr';
+                introText.style.textAlign = isArabic ? 'right' : 'left';
             }
         }
 
@@ -100,14 +113,19 @@ const VisaModule = (function () {
 
             if (ctaTitle && data.cta_tittle.length > 0) {
                 ctaTitle.textContent = data.cta_tittle[0].text;
+                ctaTitle.dir = isArabic ? 'rtl' : 'ltr';
+                ctaTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (ctaText && data.cta_description.length > 0) {
                 ctaText.textContent = data.cta_description[0].text;
+                ctaText.dir = isArabic ? 'rtl' : 'ltr';
+                ctaText.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (ctaButton && data.lable_button && data.lable_button.length > 0) {
                 ctaButton.textContent = data.lable_button[0].text;
+                ctaButton.dir = isArabic ? 'rtl' : 'ltr';
 
                 if (data.url_button && data.url_button.length > 0) {
                     ctaButton.href = data.url_button[0].text;
@@ -117,19 +135,17 @@ const VisaModule = (function () {
 
         // Render countries
         if (data.visa_information && data.visa_information.length > 0) {
-            renderCountries(data.visa_information);
+            renderCountries(data.visa_information, isArabic);
         }
 
         // Render footer
-        renderFooter(data);
+        renderFooter(data, isArabic);
     }
 
-    function renderCountries(countries) {
+    function renderCountries(countries, isArabic) {
         const countriesGrid = document.querySelector('.countries-grid');
+        countriesGrid.dir = isArabic ? 'rtl' : 'ltr';
         let html = '';
-
-        // Get current language for translations
-        const langCode = localStorage.getItem('zaheb-language') || 'ar';
 
         // Define translations for headers
         const translations = {
@@ -159,26 +175,26 @@ const VisaModule = (function () {
             // Process visa types
             let visaTypesHtml = '';
             if (country.visa_types_content && country.visa_types_content.length > 0) {
-                visaTypesHtml = '<ul class="visa-types-list">';
+                visaTypesHtml = `<ul class="visa-types-list" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
                 country.visa_types_content.forEach(item => {
                     if (item.type === 'paragraph') {
-                        visaTypesHtml += `<p>${item.text}</p>`;
+                        visaTypesHtml += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
                     } else if (item.type === 'list-item') {
-                        visaTypesHtml += `<li>${item.text}</li>`;
+                        visaTypesHtml += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
                     }
                 });
                 visaTypesHtml += '</ul>';
             }
 
-            // Process requirements - now using ordered list (ol) instead of unordered list (ul)
+            // Process requirements
             let requirementsHtml = '';
             if (country.general_requirements_content && country.general_requirements_content.length > 0) {
-                requirementsHtml = '<ol class="requirements-list">';
+                requirementsHtml = `<ol class="requirements-list" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
                 country.general_requirements_content.forEach(item => {
                     if (item.type === 'list-item') {
-                        requirementsHtml += `<li>${item.text}</li>`;
+                        requirementsHtml += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
                     } else if (item.type === 'paragraph') {
-                        requirementsHtml += `<p>${item.text}</p>`;
+                        requirementsHtml += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
                     }
                 });
                 requirementsHtml += '</ol>';
@@ -186,40 +202,39 @@ const VisaModule = (function () {
 
             // Create buttons HTML
             const inquireUrl = country.cta_inquire_link?.url || 'contact.html';
-            const inquireLabel = country.cta_inquire_label || translations.inquire_now[langCode];
-            const moreInfoLabel = country.cta_more_label || translations.more_info[langCode];
+            const inquireLabel = country.cta_inquire_label || translations.inquire_now[isArabic ? 'ar' : 'en'];
+            const moreInfoLabel = country.cta_more_label || translations.more_info[isArabic ? 'ar' : 'en'];
 
             const buttonsHtml = `
-                <div class="visa-buttons">
-                    <a href="${inquireUrl}" class="btn btn-primary">${inquireLabel}</a>
-                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}">${moreInfoLabel}</button>
+                <div class="visa-buttons" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">
+                    <a href="${inquireUrl}" class="btn btn-primary" dir="${isArabic ? 'rtl' : 'ltr'}">${inquireLabel}</a>
+                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}" dir="${isArabic ? 'rtl' : 'ltr'}">${moreInfoLabel}</button>
                 </div>
             `;
 
             // Store detailed information for modal
             if (country.more && country.more.length > 0) {
-                // We'll use a hidden div to store the data for the modal
-                const moreInfoHtml = processMoreInfo(country.more);
-                html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;">${moreInfoHtml}</div>`;
+                const moreInfoHtml = processMoreInfo(country.more, isArabic);
+                html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;" dir="${isArabic ? 'rtl' : 'ltr'}">${moreInfoHtml}</div>`;
             }
 
             // Use country-provided headers if available, otherwise use translated defaults
-            const visaTypesHeader = country.visa_types_list || translations.visa_types[langCode];
-            const requirementsHeader = country.general_requirements_list || translations.requirements[langCode];
+            const visaTypesHeader = country.visa_types_list || translations.visa_types[isArabic ? 'ar' : 'en'];
+            const requirementsHeader = country.general_requirements_list || translations.requirements[isArabic ? 'ar' : 'en'];
 
             // Combine all sections into country HTML
             const countryHtml = `
-                <div class="country glass-card">
+                <div class="country glass-card" dir="${isArabic ? 'rtl' : 'ltr'}">
                     <div class="country-header">
-                        <h2><i class="fas fa-globe"></i> ${country.country_name}</h2>
+                        <h2 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-globe"></i> ${country.country_name}</h2>
                     </div>
-                    <div class="country-content">
+                    <div class="country-content" style="text-align: ${isArabic ? 'right' : 'left'}">
                         <div class="visa-info">
-                            <h3><i class="fas fa-passport"></i> ${visaTypesHeader}</h3>
+                            <h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-passport"></i> ${visaTypesHeader}</h3>
                             ${visaTypesHtml}
                         </div>
                         <div class="requirements">
-                            <h3><i class="fas fa-list-check"></i> ${requirementsHeader}</h3>
+                            <h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-list-check"></i> ${requirementsHeader}</h3>
                             ${requirementsHtml}
                         </div>
                         ${buttonsHtml}
@@ -234,233 +249,148 @@ const VisaModule = (function () {
         countriesGrid.innerHTML = html;
 
         // Add event listeners to the "More Info" buttons
-        setupMoreInfoButtons();
+        setupMoreInfoButtons(isArabic);
     }
 
-    function processMoreInfo(moreInfo) {
-        let html = '';
-        const langCode = localStorage.getItem('zaheb-language') || 'ar';
-        let inList = false;
-        let listType = '';
+    function processMoreInfo(moreInfo, isArabic) {
+        let html = `<div class="modal-content-inner" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
 
-        moreInfo.forEach((item, index) => {
-            switch (item.type) {
-                case 'heading1':
-                    // Close any open list before adding a heading
-                    if (inList) {
-                        html += listType === 'ol' ? '</ol>' : '</ul>';
-                        inList = false;
-                    }
-                    html += `<h1>${item.text}</h1>`;
-                    break;
-                case 'heading2':
-                    // Close any open list before adding a heading
-                    if (inList) {
-                        html += listType === 'ol' ? '</ol>' : '</ul>';
-                        inList = false;
-                    }
-                    html += `<h2>${item.text}</h2>`;
-                    break;
-                case 'heading3':
-                    // Close any open list before adding a heading
-                    if (inList) {
-                        html += listType === 'ol' ? '</ol>' : '</ul>';
-                        inList = false;
-                    }
-                    html += `<h3>${item.text}</h3>`;
-                    break;
-                case 'paragraph':
-                    // Close any open list before adding a paragraph
-                    if (inList) {
-                        html += listType === 'ol' ? '</ol>' : '</ul>';
-                        inList = false;
-                    }
-                    html += `<p>${item.text}</p>`;
-                    break;
-                case 'list-item':
-                    // Start a new ordered list if not already in one
-                    if (!inList) {
-                        html += '<ol>'; // Using ordered list for numbered items
-                        inList = true;
-                        listType = 'ol';
-                    }
-                    html += `<li>${item.text}</li>`;
-
-                    // Check if next item is not a list-item, then close the list
-                    const nextItemIndex = index + 1;
-                    if (nextItemIndex >= moreInfo.length || moreInfo[nextItemIndex].type !== 'list-item') {
-                        html += '</ol>';
-                        inList = false;
-                    }
-                    break;
-                default:
-                    // Close any open list before adding other content
-                    if (inList) {
-                        html += listType === 'ol' ? '</ol>' : '</ul>';
-                        inList = false;
-                    }
-                    html += `<p>${item.text}</p>`;
+        moreInfo.forEach(item => {
+            if (item.type === 'heading3') {
+                html += `<h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</h3>`;
+            } else if (item.type === 'paragraph') {
+                html += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
+            } else if (item.type === 'list-item') {
+                if (!html.includes('<ul>')) {
+                    html += `<ul dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
+                }
+                html += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
             }
         });
 
-        // Make sure to close any open list at the end
-        if (inList) {
-            html += listType === 'ol' ? '</ol>' : '</ul>';
+        if (html.includes('<ul>')) {
+            html += '</ul>';
         }
 
+        html += '</div>';
         return html;
     }
 
-    function setupMoreInfoButtons() {
+    function setupMoreInfoButtons(isArabic) {
         const moreInfoButtons = document.querySelectorAll('.more-info-btn');
-        const langCode = localStorage.getItem('zaheb-language') || 'ar';
-
-        const translations = {
-            'visa_details': {
-                'en': 'Visa Details',
-                'ar': 'تفاصيل التأشيرة'
-            }
-        };
-
         moreInfoButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const countryName = this.getAttribute('data-country');
-                showModal(countryName, translations.visa_details[langCode]);
+                const detailsElement = document.getElementById(`more-info-${sanitizeId(countryName)}`);
+                if (detailsElement) {
+                    showModal(countryName, detailsElement.innerHTML, isArabic);
+                }
             });
         });
     }
 
-    function showModal(countryName, detailsText) {
+    function showModal(countryName, detailsText, isArabic) {
         const modal = document.getElementById('visaDetailsModal');
         const modalContent = document.getElementById('modalContent');
-        const moreInfoContent = document.getElementById(`more-info-${sanitizeId(countryName)}`);
+        const title = isArabic ? `تفاصيل تأشيرة ${countryName}` : `${countryName} Visa Details`;
 
-        if (modal && moreInfoContent) {
-            // Set modal title and content
-            modalContent.innerHTML = `
-                <h2>${countryName} ${detailsText || 'Visa Details'}</h2>
-                ${moreInfoContent.innerHTML}
-            `;
+        modalContent.innerHTML = `
+            <h2 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${title}</h2>
+            ${detailsText}
+        `;
 
-            // Show the modal
-            modal.style.display = 'block';
-
-            // Add event listener to close the modal
-            const closeBtn = modal.querySelector('.close-modal');
-            closeBtn.addEventListener('click', function () {
-                modal.style.display = 'none';
-            });
-
-            // Close modal when clicking outside
-            window.addEventListener('click', function (event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+        modal.focus();
     }
 
-    // Helper function to sanitize country names for use as IDs
     function sanitizeId(str) {
         return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
     }
 
-    function renderFooter(data) {
-        // Update footer contacts
-        const contact = data.footer_contacts?.[0];
-        if (contact) {
-            // Update address
-            const addressTexts = document.querySelectorAll('.address-text');
-            if (addressTexts.length && contact.address?.[0]) {
-                addressTexts.forEach(el => {
-                    el.textContent = contact.address[0].text;
-                });
+    function renderFooter(data, isArabic) {
+        // Update footer content
+        if (data.footer_address) {
+            const addressText = document.querySelector('.address-text');
+            if (addressText) {
+                addressText.textContent = data.footer_address;
+                addressText.dir = isArabic ? 'rtl' : 'ltr';
+                addressText.style.textAlign = isArabic ? 'right' : 'left';
             }
+        }
 
-            // Update phone
-            const phoneLinks = document.querySelectorAll('.phone-link');
-            if (phoneLinks.length && contact.phone?.url) {
-                phoneLinks.forEach(link => {
-                    link.href = contact.phone.url;
-                    link.textContent = contact.phone.url.replace('tel:', '');
-                    if (contact.phone.target) link.target = contact.phone.target;
-                });
+        if (data.footer_phone) {
+            const phoneLink = document.querySelector('.phone-link');
+            if (phoneLink) {
+                phoneLink.textContent = data.footer_phone;
+                phoneLink.href = `tel:${data.footer_phone.replace(/\s/g, '')}`;
+                phoneLink.dir = isArabic ? 'rtl' : 'ltr';
+                phoneLink.style.textAlign = isArabic ? 'right' : 'left';
             }
+        }
 
-            // Update email
-            const emailLinks = document.querySelectorAll('.email-link');
-            if (emailLinks.length && contact.email?.url) {
-                emailLinks.forEach(link => {
-                    link.href = `mailto:${contact.email.url}`;
-                    link.textContent = contact.email.url;
-                    if (contact.email.target) link.target = contact.email.target;
-                });
+        if (data.footer_email) {
+            const emailLink = document.querySelector('.email-link');
+            if (emailLink) {
+                emailLink.textContent = data.footer_email;
+                emailLink.href = `mailto:${data.footer_email}`;
+                emailLink.dir = isArabic ? 'rtl' : 'ltr';
+                emailLink.style.textAlign = isArabic ? 'right' : 'left';
             }
+        }
 
-            // Update Instagram links
-            const instagramLinks = document.querySelectorAll('.instagram-link');
-            if (instagramLinks.length && contact.instgram_urk?.url) {
-                instagramLinks.forEach(link => {
-                    link.href = contact.instgram_urk.url;
-                    if (contact.instgram_urk.target) link.target = contact.instgram_urk.target;
-                });
-            }
-
-            // Update Facebook links
-            const facebookLinks = document.querySelectorAll('.facebook-link');
-            if (facebookLinks.length && contact.facebook_url?.url) {
-                facebookLinks.forEach(link => {
-                    link.href = contact.facebook_url.url;
-                    if (contact.facebook_url.target) link.target = contact.facebook_url.target;
-                });
-            }
-
-            // Update WhatsApp links
-            const whatsappLinks = document.querySelectorAll('.whatsapp-link');
-            if (whatsappLinks.length && contact.whatsapp_url?.url) {
-                whatsappLinks.forEach(link => {
-                    link.href = contact.whatsapp_url.url;
-                    if (contact.whatsapp_url.target) link.target = contact.whatsapp_url.target;
-                });
-            }
-
-            // Also update the floating WhatsApp button if it exists
-            const whatsappBtn = document.querySelector('.whatsapp-btn');
-            if (whatsappBtn && contact.whatsapp_url?.url) {
-                whatsappBtn.href = contact.whatsapp_url.url;
-                if (contact.whatsapp_url.target) whatsappBtn.target = contact.whatsapp_url.target;
-            }
+        // Update social media links if available
+        if (data.contact) {
+            updateSocialLinks(data.contact);
         }
     }
 
-    // Initialize module
-    function init() {
-        fetchVisaData();
+    function updateSocialLinks(contact) {
+        const instagramLink = document.querySelector('.instagram-link');
+        const facebookLink = document.querySelector('.facebook-link');
+        const whatsappLink = document.querySelector('.whatsapp-link');
 
+        if (contact.instagram_url && instagramLink) {
+            instagramLink.href = contact.instagram_url;
+        }
+
+        if (contact.facebook_url && facebookLink) {
+            facebookLink.href = contact.facebook_url;
+        }
+
+        if (contact.whatsapp_number && whatsappLink) {
+            const whatsappNumber = contact.whatsapp_number.replace(/\s/g, '');
+            whatsappLink.href = `https://wa.me/${whatsappNumber}`;
+        }
+    }
+
+    function init() {
         // Initialize modal functionality
         initModal();
+        // Fetch visa data
+        fetchVisaData();
     }
 
     function initModal() {
         modal = document.getElementById('visaDetailsModal');
-
-        // Set up close button functionality
         const closeBtn = modal.querySelector('.close-modal');
-        closeBtn.addEventListener('click', function () {
+
+        closeBtn.addEventListener('click', () => {
             modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
         });
 
-        // Close modal when clicking outside
-        window.addEventListener('click', function (event) {
-            if (event.target === modal) {
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
                 modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
             }
         });
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape' && modal.style.display === 'block') {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
                 modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
             }
         });
     }
@@ -471,6 +401,10 @@ const VisaModule = (function () {
     };
 })();
 
+// Export the module
+window.VisaModule = VisaModule;
+
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
     if (document.body.classList.contains('visa-page')) {
         VisaModule.init();

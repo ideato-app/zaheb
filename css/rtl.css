@@ -296,7 +296,7 @@
     padding-right: 0 !important;
 }
 
-/* Fix text alignments */
+/* Text alignment fixes */
 .rtl .text-left {
     text-align: right !important;
 }
@@ -305,10 +305,68 @@
     text-align: left !important;
 }
 
-/* Media queries for responsive RTL layouts */
+/* Visa page specific RTL styles */
+.rtl .visa-intro .lead {
+    text-align: right;
+    line-height: 1.8;
+}
+
+.rtl .country-header h2 i {
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+.rtl .country-content {
+    text-align: right;
+}
+
+.rtl .visa-info h3 i,
+.rtl .requirements h3 i {
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+.rtl .visa-types-list,
+.rtl .requirements-list {
+    padding-left: 0;
+    padding-right: 2rem;
+    text-align: right;
+}
+
+.rtl .visa-buttons {
+    text-align: right;
+}
+
+.rtl .visa-buttons .btn i {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.rtl .modal-content {
+    text-align: right;
+}
+
+.rtl .modal-content h2,
+.rtl .modal-content h3,
+.rtl .modal-content p {
+    text-align: right;
+}
+
+.rtl .modal-content ol,
+.rtl .modal-content ul {
+    padding-left: 0;
+    padding-right: 2rem;
+    text-align: right;
+}
+
+.rtl .loading-indicator {
+    text-align: center;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .rtl .nav-list {
-        flex-direction: column;
+        padding-right: 0;
     }
 
     .rtl .nav-link {
@@ -316,12 +374,144 @@
     }
 
     .rtl .hero-title {
-        font-size: calc(2.3rem * 1.1);
+        font-size: calc(2.5rem * 1.1);
     }
 }
 
 @media (max-width: 576px) {
     .rtl .hero-title {
         font-size: calc(2rem * 1.1);
+    }
+
+    .rtl .visa-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .rtl .visa-buttons .btn {
+        margin: 5px 0;
+    }
+}
+
+/* Visa Page RTL Specific Styles */
+.rtl .visa-page {
+    direction: rtl;
+}
+
+.rtl .visa-page .page-title {
+    text-align: right;
+}
+
+.rtl .visa-page .loading-indicator {
+    text-align: right;
+}
+
+.rtl .visa-page .visa-intro .section-title,
+.rtl .visa-page .visa-intro .lead {
+    text-align: right;
+}
+
+.rtl .visa-page .countries-grid {
+    direction: rtl;
+}
+
+.rtl .visa-page .country {
+    text-align: right;
+}
+
+.rtl .visa-page .country-header h2 {
+    text-align: right;
+}
+
+.rtl .visa-page .country-header h2 i {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.rtl .visa-page .visa-info h3,
+.rtl .visa-page .requirements h3 {
+    text-align: right;
+}
+
+.rtl .visa-page .visa-info h3 i,
+.rtl .visa-page .requirements h3 i {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.rtl .visa-page .visa-types-list,
+.rtl .visa-page .requirements-list {
+    padding-right: 20px;
+    padding-left: 0;
+    text-align: right;
+}
+
+.rtl .visa-page .visa-types-list li,
+.rtl .visa-page .requirements-list li {
+    text-align: right;
+}
+
+.rtl .visa-page .visa-buttons {
+    text-align: right;
+}
+
+.rtl .visa-page .visa-buttons .btn {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.rtl .visa-page .visa-buttons .btn i {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+.rtl .visa-page .modal-content {
+    text-align: right;
+}
+
+.rtl .visa-page .modal-content h2 {
+    text-align: right;
+}
+
+.rtl .visa-page .modal-content-inner {
+    text-align: right;
+}
+
+.rtl .visa-page .modal-content-inner h3,
+.rtl .visa-page .modal-content-inner p,
+.rtl .visa-page .modal-content-inner ul,
+.rtl .visa-page .modal-content-inner li {
+    text-align: right;
+}
+
+.rtl .visa-page .close-modal {
+    right: auto;
+    left: 15px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .rtl .visa-page .country {
+        padding: 15px;
+    }
+
+    .rtl .visa-page .visa-buttons {
+        flex-direction: column;
+    }
+
+    .rtl .visa-page .visa-buttons .btn {
+        margin: 5px 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .rtl .visa-page .country-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .rtl .visa-page .visa-types-list,
+    .rtl .visa-page .requirements-list {
+        padding-right: 15px;
     }
 }

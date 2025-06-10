@@ -19,6 +19,14 @@ const LanguageModule = (function () {
 
         // Set default language (Arabic)
         currentLang = localStorage.getItem('zaheb-language') || 'ar-kw';
+
+        // Ensure the language code is valid
+        if (currentLang !== 'en' && currentLang !== 'ar' && currentLang !== 'ar-kw') {
+            currentLang = 'ar-kw';
+            localStorage.setItem('zaheb-language', currentLang);
+        }
+
+        // Set language immediately
         setLanguage(currentLang);
 
         // Initialize active buttons
@@ -34,6 +42,9 @@ const LanguageModule = (function () {
 
         // Hide loading indicators
         hideLoadingIndicators();
+
+        // Log current language state
+        console.log('Language initialized:', currentLang);
     }
 
     /**
@@ -45,7 +56,7 @@ const LanguageModule = (function () {
         langButtons.forEach(btn => {
             // Map ar-kw to ar for button data-lang attribute
             const buttonLang = btn.getAttribute('data-lang');
-            const isActive = (buttonLang === 'ar' && lang === 'ar-kw') || buttonLang === lang;
+            const isActive = (buttonLang === 'ar' && (lang === 'ar-kw' || lang === 'ar')) || buttonLang === lang;
 
             if (isActive) {
                 btn.classList.add('active');
@@ -71,6 +82,7 @@ const LanguageModule = (function () {
 
                 // Save language preference
                 localStorage.setItem('zaheb-language', lang);
+                console.log('Language preference saved:', lang);
 
                 // Close mobile menu if open when language is switched
                 const nav = document.querySelector('.nav');
@@ -136,9 +148,11 @@ const LanguageModule = (function () {
     function setLanguage(lang) {
         // Update current language
         currentLang = lang;
+        console.log('Setting language to:', lang);
 
-        // Set HTML direction
+        // Set HTML direction and lang attribute
         document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar-kw' || lang === 'ar' ? 'rtl' : 'ltr';
         document.body.classList.remove('rtl');
 
         if (lang === 'ar-kw' || lang === 'ar') {
