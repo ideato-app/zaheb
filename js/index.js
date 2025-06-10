@@ -4,11 +4,12 @@
  */
 async function fetchAndRenderHomepage() {
     const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
-    const langCode = localStorage.getItem('zaheb-language') || 'ar';
-    const prismicLang = langCode === 'ar' ? 'ar-kw' : 'en-us';
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const prismicLang = langCode === 'ar' || langCode === 'ar-kw' ? 'ar-kw' : 'en-us';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
 
     const loadingIndicator = document.getElementById('hero-content-dynamic');
-    const loadingMessage = langCode === 'ar' ? 'جاري التحميل...' : 'Loading...';
+    const loadingMessage = isArabic ? 'جاري التحميل...' : 'Loading...';
     if (loadingIndicator) {
         loadingIndicator.innerHTML = `<div class="loading-indicator">${loadingMessage}</div>`;
     }
@@ -41,7 +42,7 @@ async function fetchAndRenderHomepage() {
     } catch (error) {
         console.error('Error fetching or rendering homepage data:', error);
         if (loadingIndicator) {
-            const errorMessage = langCode === 'ar' ? 'حدث خطأ في تحميل المحتوى.' : 'Failed to load content.';
+            const errorMessage = isArabic ? 'حدث خطأ في تحميل المحتوى.' : 'Failed to load content.';
             loadingIndicator.innerHTML = `<p class="error">${errorMessage}</p>`;
         }
     }
@@ -54,15 +55,23 @@ async function fetchAndRenderHomepage() {
  */
 function renderRichText(richTextArray) {
     if (!richTextArray) return '';
+
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
+
     return richTextArray.map(item => {
-        const dir = `dir="${item.direction || 'ltr'}"`;
+        // Use the item's direction if available, otherwise use language-based direction
+        const direction = item.direction || (isArabic ? 'rtl' : 'ltr');
+        const dir = `dir="${direction}"`;
+        const align = direction === 'rtl' ? 'text-align: right;' : '';
+
         switch (item.type) {
-            case 'heading1': return `<h1 ${dir}>${item.text}</h1>`;
-            case 'heading2': return `<h2 ${dir}>${item.text}</h2>`;
-            case 'heading3': return `<h3 ${dir}>${item.text}</h3>`;
-            case 'paragraph': return `<p ${dir}>${item.text}</p>`;
-            case 'list-item': return `<li ${dir}>${item.text}</li>`;
-            default: return `<p ${dir}>${item.text}</p>`;
+            case 'heading1': return `<h1 ${dir} style="${align}">${item.text}</h1>`;
+            case 'heading2': return `<h2 ${dir} style="${align}">${item.text}</h2>`;
+            case 'heading3': return `<h3 ${dir} style="${align}">${item.text}</h3>`;
+            case 'paragraph': return `<p ${dir} style="${align}">${item.text}</p>`;
+            case 'list-item': return `<li ${dir} style="${align}">${item.text}</li>`;
+            default: return `<p ${dir} style="${align}">${item.text}</p>`;
         }
     }).join('');
 }
@@ -78,15 +87,19 @@ function renderHero(data) {
     const title = renderRichText(data.hero_title);
     const description = renderRichText(data.hero_description);
 
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
+    const buttonClass = isArabic ? 'btn btn-primary rtl' : 'btn btn-primary';
+
     const buttons = (data.hero_cta_buttons || []).map(item => {
         if (!item.button_text || !item.button_link?.url) return '';
-        return `<a href="${item.button_link.url}" class="btn btn-primary">${item.button_text}</a>`;
+        return `<a href="${item.button_link.url}" class="${buttonClass}">${item.button_text}</a>`;
     }).join('');
 
     container.innerHTML = `
         ${title}
         ${description}
-        <div class="hero-buttons">${buttons}</div>
+        <div class="hero-buttons" dir="${isArabic ? 'rtl' : 'ltr'}">${buttons}</div>
     `;
 }
 
@@ -111,13 +124,17 @@ function renderServices(data) {
     const container = document.querySelector('.services-grid');
     if (!container || !data.top_services) return;
 
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
+
     container.innerHTML = (data.top_services || []).map(service => {
         const title = renderRichText(service.title);
-        const description = service.description ? `<ul>${renderRichText(service.description)}</ul>` : '';
-        const link = service.link_url?.url ? `<a href="${service.link_url.url}" class="btn btn-secondary">${service.link_text || 'Learn More'}</a>` : '';
+        const description = service.description ? `<ul dir="${isArabic ? 'rtl' : 'ltr'}">${renderRichText(service.description)}</ul>` : '';
+        const buttonClass = isArabic ? 'btn btn-secondary rtl' : 'btn btn-secondary';
+        const link = service.link_url?.url ? `<a href="${service.link_url.url}" class="${buttonClass}">${service.link_text || (isArabic ? 'اقرأ المزيد' : 'Learn More')}</a>` : '';
 
         return `
-            <div class="service-card glass-card">
+            <div class="service-card glass-card" dir="${isArabic ? 'rtl' : 'ltr'}">
                 ${title}
                 <div class="service-text">${description}</div>
                 ${link}
@@ -139,6 +156,15 @@ function renderCTA(data) {
     titleEl.outerHTML = renderRichText(data.cta_title);
     textEl.innerHTML = renderRichText(data.cta_description);
 
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
+
+    if (isArabic) {
+        buttonEl.classList.add('rtl');
+    } else {
+        buttonEl.classList.remove('rtl');
+    }
+
     if (data.cta_button_text) {
         buttonEl.textContent = data.cta_button_text;
     }
@@ -152,11 +178,15 @@ function renderCTA(data) {
  * @param {object} data - The Prismic data object for the page.
  */
 function renderFooter(data) {
+    const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+    const isArabic = langCode === 'ar' || langCode === 'ar-kw';
+
     // Quick Links
     const quickLinksEl = document.querySelector('.footer-links ul');
     if (quickLinksEl && data.quick_links) {
+        quickLinksEl.dir = isArabic ? 'rtl' : 'ltr';
         quickLinksEl.innerHTML = data.quick_links.map(link =>
-            `<li><a href="${link.url.url}">${link.text}</a></li>`
+            `<li><a href="${link.url.url}" dir="${isArabic ? 'rtl' : 'ltr'}">${link.text}</a></li>`
         ).join('');
     }
 
@@ -174,16 +204,18 @@ function renderFooter(data) {
 
     if (addressEl && contact.address?.[0]) {
         addressEl.textContent = contact.address[0].text;
-        addressEl.dir = contact.address[0].direction || 'ltr';
+        addressEl.dir = contact.address[0].direction || (isArabic ? 'rtl' : 'ltr');
     }
     if (phoneEl && contact.phone?.url) {
         phoneEl.href = contact.phone.url;
         phoneEl.textContent = contact.phone.url.replace('tel:', '');
+        phoneEl.dir = isArabic ? 'rtl' : 'ltr';
         if (contact.phone.target) phoneEl.target = contact.phone.target;
     }
     if (emailEl && contact.email?.url) {
         emailEl.href = `mailto:${contact.email.url}`;
         emailEl.textContent = contact.email.url;
+        emailEl.dir = isArabic ? 'rtl' : 'ltr';
         if (contact.email.target) emailEl.target = contact.email.target;
     }
     if (instagramEl && contact.instgram_urk?.url) {
@@ -203,7 +235,6 @@ function renderFooter(data) {
         if (contact.whatsapp_url.target) floatingWhatsappEl.target = contact.whatsapp_url.target;
     }
 }
-
 
 // --- Initialize ---
 // Run the script once the DOM is fully loaded.
