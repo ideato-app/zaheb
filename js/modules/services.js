@@ -87,6 +87,9 @@ const ServicesModule = (function () {
         if (data.services && data.services.length > 0) {
             renderServices(data.services);
         }
+
+        // Render footer
+        renderFooter(data);
     }
 
     function renderServices(services) {
@@ -182,6 +185,99 @@ const ServicesModule = (function () {
 
         // Insert all services HTML into the container
         servicesContainer.innerHTML = html;
+    }
+
+    function renderFooter(data) {
+        // Update footer tagline
+        const footerTagline = document.querySelector('.footer-tagline');
+        if (footerTagline && data.footer_text) {
+            footerTagline.textContent = data.footer_text;
+        }
+
+        // Update footer quick links
+        const footerLinksContainer = document.querySelector('.footer-links ul');
+        if (footerLinksContainer && data.footer_quick_links && data.footer_quick_links.length > 0) {
+            footerLinksContainer.innerHTML = '';
+
+            data.footer_quick_links.forEach(link => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+
+                // Map link labels to URLs
+                let href = '#';
+                if (link.quick_link_label.toLowerCase() === 'home') href = 'index.html';
+                else if (link.quick_link_label.toLowerCase() === 'about us') href = 'about.html';
+                else if (link.quick_link_label.toLowerCase() === 'services') href = 'services.html';
+                else if (link.quick_link_label.toLowerCase() === 'contact') href = 'contact.html';
+                else if (link.quick_link_label.toLowerCase() === 'call us' && data.footer_contacts?.[0]?.phone?.url) {
+                    href = data.footer_contacts[0].phone.url;
+                }
+
+                a.href = href;
+                a.textContent = link.quick_link_label;
+                li.appendChild(a);
+                footerLinksContainer.appendChild(li);
+            });
+        }
+
+        // Update footer contacts
+        const contact = data.footer_contacts?.[0];
+        if (contact) {
+            // Update address
+            const addressTexts = document.querySelectorAll('.address-text');
+            if (addressTexts.length && contact.address?.[0]) {
+                addressTexts.forEach(el => {
+                    el.textContent = contact.address[0].text;
+                });
+            }
+
+            // Update phone
+            const phoneLinks = document.querySelectorAll('.phone-link');
+            if (phoneLinks.length && contact.phone?.url) {
+                phoneLinks.forEach(link => {
+                    link.href = contact.phone.url;
+                    link.textContent = contact.phone.url.replace('tel:', '');
+                    if (contact.phone.target) link.target = contact.phone.target;
+                });
+            }
+
+            // Update email
+            const emailLinks = document.querySelectorAll('.email-link');
+            if (emailLinks.length && contact.email?.url) {
+                emailLinks.forEach(link => {
+                    link.href = `mailto:${contact.email.url}`;
+                    link.textContent = contact.email.url;
+                    if (contact.email.target) link.target = contact.email.target;
+                });
+            }
+
+            // Update Instagram links
+            const instagramLinks = document.querySelectorAll('.instagram-link');
+            if (instagramLinks.length && contact.instgram_urk?.url) {
+                instagramLinks.forEach(link => {
+                    link.href = contact.instgram_urk.url;
+                    if (contact.instgram_urk.target) link.target = contact.instgram_urk.target;
+                });
+            }
+
+            // Update Facebook links
+            const facebookLinks = document.querySelectorAll('.facebook-link');
+            if (facebookLinks.length && contact.facebook_url?.url) {
+                facebookLinks.forEach(link => {
+                    link.href = contact.facebook_url.url;
+                    if (contact.facebook_url.target) link.target = contact.facebook_url.target;
+                });
+            }
+
+            // Update WhatsApp links
+            const whatsappLinks = document.querySelectorAll('.whatsapp-link, .whatsapp-float-btn');
+            if (whatsappLinks.length && contact.whatsapp_url?.url) {
+                whatsappLinks.forEach(link => {
+                    link.href = contact.whatsapp_url.url;
+                    if (contact.whatsapp_url.target) link.target = contact.whatsapp_url.target;
+                });
+            }
+        }
     }
 
     // Initialize module
