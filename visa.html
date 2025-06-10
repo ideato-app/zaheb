@@ -21,16 +21,59 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/rtl.css">
     <style>
-        /* Additional styles specific to visa page */
-        .visa-intro {
-            padding: 60px 0 30px;
+        /* Base improvements */
+        body {
+            line-height: 1.6;
         }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Page Title Section */
+        .page-title-section {
+            padding: 100px 0 30px;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+        }
+
+        .page-title-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Enhanced visa intro section */
+        .visa-intro {
+            padding: 40px 0 50px;
+        }
+
+        .visa-intro .glass-card {
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .visa-intro .section-title {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .visa-intro .lead {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        /* Enhanced countries grid */
         .countries-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
             gap: 2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         @media (max-width: 768px) {
@@ -41,12 +84,20 @@
 
         .country {
             margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: var(--border-radius);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .country:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .country-header {
             background-color: var(--primary-color);
             color: var(--white-color);
-            padding: 1rem;
+            padding: 1.2rem;
             border-top-left-radius: var(--border-radius);
             border-top-right-radius: var(--border-radius);
         }
@@ -56,64 +107,78 @@
             color: var(--white-color);
             display: flex;
             align-items: center;
+            font-size: 1.4rem;
         }
 
         .country-header h2 i {
-            margin-right: 10px;
+            margin-right: 12px;
             color: var(--accent-color);
+            font-size: 1.6rem;
         }
 
         .rtl .country-header h2 i {
             margin-right: 0;
-            margin-left: 10px;
+            margin-left: 12px;
         }
 
         .country-content {
-            padding: 1.5rem;
+            padding: 1.8rem;
+            background-color: #fff;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         .visa-info,
         .requirements {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
 
         .visa-info h3,
         .requirements h3 {
             color: var(--primary-color);
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
+            font-size: 1.25rem;
         }
 
         .visa-info h3 i,
         .requirements h3 i {
-            margin-right: 10px;
+            margin-right: 12px;
+            color: var(--accent-color);
         }
 
         .rtl .visa-info h3 i,
         .rtl .requirements h3 i {
             margin-right: 0;
-            margin-left: 10px;
+            margin-left: 12px;
         }
 
         .visa-info ul,
         .requirements ul {
-            padding-left: 1.5rem;
+            padding-left: 1.8rem;
+            margin-bottom: 0;
         }
 
         .rtl .visa-info ul,
         .rtl .requirements ul {
             padding-left: 0;
-            padding-right: 1.5rem;
+            padding-right: 1.8rem;
         }
 
         .visa-info li,
         .requirements li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.7rem;
             position: relative;
+            line-height: 1.6;
         }
 
-        /* Modal Styles */
+        .visa-info li:last-child,
+        .requirements li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Enhanced Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -123,25 +188,26 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
         }
 
         .modal-content {
             position: relative;
-            margin: 10% auto;
+            margin: 7% auto;
             width: 80%;
-            max-width: 700px;
-            max-height: 80vh;
+            max-width: 750px;
+            max-height: 85vh;
             overflow-y: auto;
-            padding: 30px;
+            padding: 35px;
+            border-radius: var(--border-radius);
             animation: modalFadeIn 0.3s;
         }
 
         @keyframes modalFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-30px);
             }
 
             to {
@@ -152,46 +218,54 @@
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 18px;
+            right: 18px;
             color: var(--primary-color);
-            font-size: 28px;
+            font-size: 30px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .rtl .close-modal {
             right: auto;
-            left: 15px;
+            left: 18px;
         }
 
         .close-modal:hover {
             color: var(--accent-color);
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         .additional-requirements {
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 25px;
+            padding-top: 25px;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .additional-requirements h3 {
             color: var(--primary-color);
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            font-size: 1.3rem;
         }
 
-        /* Loading Animation */
+        /* Enhanced Loading Animation */
         .loading-spinner {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100px;
+            height: 150px;
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             border-left-color: var(--accent-color);
@@ -208,7 +282,7 @@
             }
         }
 
-        /* Focus styles for accessibility */
+        /* Enhanced Focus styles for accessibility */
         .modal:focus {
             outline: none;
         }
@@ -216,7 +290,130 @@
         .btn:focus,
         .close-modal:focus {
             outline: 2px solid var(--accent-color);
-            outline-offset: 2px;
+            outline-offset: 3px;
+        }
+
+        /* Enhanced CTA Section */
+        .cta {
+            padding: 60px 0;
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9));
+        }
+
+        .cta-content {
+            padding: 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced Footer */
+        .footer {
+            padding-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-logo img {
+            margin-bottom: 15px;
+            max-width: 180px;
+        }
+
+        .footer-contact p {
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            margin-right: 15px;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        /* WhatsApp button enhancement */
+        .whatsapp-btn {
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .page-title-section {
+                padding: 80px 0 20px;
+            }
+
+            .page-title-section h1 {
+                font-size: 2rem;
+            }
+
+            .visa-intro .section-title {
+                font-size: 1.6rem;
+            }
+
+            .country-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .cta-title {
+                font-size: 1.7rem;
+            }
+
+            .cta-content {
+                padding: 30px 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 25px;
+                margin: 10% auto;
+            }
         }
     </style>
 </head>
@@ -259,19 +456,25 @@
         </div>
     </header>
 
-    <!-- Page Title -->
-    <div class="container" style="padding-top: 80px; padding-bottom: 0; text-align: center;">
-        <h1 data-en="Visa Information" data-ar="معلومات التأشيرة"></h1>
+    <!-- Page Title with enhanced styling -->
+    <div class="page-title-section">
+        <div class="container">
+            <h1 data-en="Visa Information" data-ar="معلومات التأشيرة">Visa Information</h1>
+        </div>
     </div>
 
     <!-- Visa Introduction -->
     <section class="visa-intro">
         <div class="container">
             <div class="glass-card text-center fade-in">
-                <h2 class="section-title" data-en="Essential Visa Information" data-ar="معلومات التأشيرة الأساسية"></h2>
+                <h2 class="section-title" data-en="Essential Visa Information" data-ar="معلومات التأشيرة الأساسية">
+                    Essential Visa Information</h2>
                 <p class="lead"
                     data-en="Planning an international trip? Below you'll find essential visa information for popular destinations. Remember to always check with the official embassy or consulate for the most up-to-date requirements."
                     data-ar="هل تخطط لرحلة دولية؟ ستجد أدناه معلومات أساسية عن التأشيرات للوجهات الشهيرة. تذكر دائمًا التحقق من السفارة أو القنصلية الرسمية للحصول على أحدث المتطلبات.">
+                    Planning an international trip? Below you'll find essential visa information for popular
+                    destinations. Remember to always check with the official embassy or consulate for the most
+                    up-to-date requirements.
                 </p>
             </div>
         </div>
@@ -310,16 +513,16 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-white.png" alt="Zaheb International Logo">
-                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق"></p>
+                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق">Your Trusted Travel Partner</p>
                 </div>
                 <div class="footer-links">
-                    <h3 data-en="Quick Links" data-ar="روابط سريعة"></h3>
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
                     <ul>
-                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية"></a></li>
-                        <li><a href="about.html" data-en="About Us" data-ar="من نحن"></a></li>
-                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا"></a></li>
-                        <li><a href="visa.html" data-en="Visa Info" data-ar="معلومات التأشيرة"></a></li>
-                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا"></a></li>
+                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a></li>
+                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا">Services</a></li>
+                        <li><a href="visa.html" data-en="Visa Info" data-ar="معلومات التأشيرة">Visa Info</a></li>
+                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
@@ -340,7 +543,8 @@
             </div>
             <div class="copyright">
                 <p data-en="&copy; 2023 Zaheb International. All Rights Reserved."
-                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة."></p>
+                    data-ar="© 2023 زاهب انترناشيونال. جميع الحقوق محفوظة.">&copy; 2023 Zaheb International. All Rights
+                    Reserved.</p>
             </div>
         </div>
     </footer>
