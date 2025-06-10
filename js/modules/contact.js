@@ -125,277 +125,236 @@ const ContactModule = (function () {
 // Export the module
 window.ContactModule = ContactModule;
 
-async function fetchContactData() {
-    const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
-
-    // Get current language code from localStorage or use default
-    const langCode = localStorage.getItem('zaheb-language') || 'ar';
-    // Map our simple language codes to Prismic language codes
-    const prismicLangCode = langCode === 'ar' ? 'ar-kw' : 'en-us';
-
-    console.log(`Fetching contact data for language: ${prismicLangCode}`);
-
-    try {
-        const apiRes = await fetch(apiUrl);
-        const data = await apiRes.json();
-        const ref = data.refs[0].ref;
-
-        // Include language code in the API query
-        const docsRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"contact_page")]]&lang=${prismicLangCode}`);
-        const docsData = await docsRes.json();
-
-        if (!docsData.results || docsData.results.length === 0) {
-            console.error(`No contact page data found for language: ${prismicLangCode}`);
-
-            // If no results in requested language, try falling back to English
-            if (prismicLangCode !== 'en-us') {
-                console.log('Falling back to English');
-                const fallbackRes = await fetch(`${apiUrl}/documents/search?ref=${ref}&q=[[at(document.type,"contact_page")]]&lang=en-us`);
-                const fallbackData = await fallbackRes.json();
-
-                if (!fallbackData.results || fallbackData.results.length === 0) {
-                    console.error('No fallback contact page data found');
-                    return;
-                }
-
-                const doc = fallbackData.results[0];
-                console.log(`Loaded fallback document in language ${doc.lang} with data:`, doc.data);
-
-                // Update page content with API data
-                updatePageTitle(doc.data);
-                updateWhatsAppSection(doc.data);
-                updateContactInfo(doc.data);
-                updateMapEmbed(doc.data);
-                updateFooter(doc.data);
-            }
-            return;
-        }
-
-        const doc = docsData.results[0];
-        console.log(`Loaded document in language ${doc.lang} with data:`, doc.data);
-
-        // Update page content with API data
-        updatePageTitle(doc.data);
-        updateWhatsAppSection(doc.data);
-        updateContactInfo(doc.data);
-        updateMapEmbed(doc.data);
-        updateFooter(doc.data);
-
-    } catch (err) {
-        console.error('Error fetching contact data:', err);
-    }
-}
-
-function updatePageTitle(data) {
-    const pageTitle = document.querySelector('.container h1');
-    if (pageTitle && data.page_title) {
-        pageTitle.textContent = data.page_title;
-    }
-}
-
-function updateWhatsAppSection(data) {
-    // Update WhatsApp section title
-    const whatsappTitle = document.querySelector('.whatsapp-contact h2');
-    if (whatsappTitle && data.whatsapp_title) {
-        whatsappTitle.textContent = data.whatsapp_title;
-    }
-
-    // Update WhatsApp description
-    const whatsappDesc = document.querySelector('.whatsapp-contact p');
-    if (whatsappDesc && data.whatsapp_description) {
-        whatsappDesc.textContent = data.whatsapp_description;
-    }
-
-    // Update WhatsApp button text
-    const whatsappBtnText = document.querySelector('.whatsapp-contact-btn span');
-    if (whatsappBtnText && data.whatsapp_button_text) {
-        whatsappBtnText.textContent = data.whatsapp_button_text;
-    }
-
-    // Update WhatsApp number on button and floating button
-    const whatsappNumber = data.whatsapp_number || '+96522281011'; // Default if not provided
-    const whatsappLinks = document.querySelectorAll('a[href^="https://wa.me/"]');
-    whatsappLinks.forEach(link => {
-        link.href = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`;
-    });
-}
-
-function updateContactInfo(data) {
-    // Update contact section title
-    const contactTitle = document.querySelector('.contact-info-card h2');
-    if (contactTitle && data.contact_section_title) {
-        contactTitle.textContent = data.contact_section_title;
-    }
-
-    // Update contact section description
-    const contactDesc = document.querySelector('.contact-info-card > p');
-    if (contactDesc && data.contact_section_description) {
-        contactDesc.textContent = data.contact_section_description;
-    }
-
-    // Update contact items
-    if (data.contact_items && data.contact_items.length > 0) {
-        const contactInfoContainer = document.querySelector('.contact-info-card');
-
-        // Remove existing contact items
-        const existingItems = document.querySelectorAll('.contact-info-item');
-        existingItems.forEach(item => {
-            if (item.parentNode === contactInfoContainer) {
-                contactInfoContainer.removeChild(item);
-            }
-        });
-
-        // Add new contact items from API
-        data.contact_items.forEach(item => {
-            const contactItem = document.createElement('div');
-            contactItem.className = 'contact-info-item';
-
-            const iconClass = item.icon && item.icon.includes('fa-') ?
-                item.icon : `fas fa-${item.icon || 'info'}`;
-
-            contactItem.innerHTML = `
-                <div class="contact-info-icon">
-                    <i class="${iconClass}"></i>
-                </div>
-                <div class="contact-info-content">
-                    <h4>${item.title || ''}</h4>
-                    <p>${item.value || ''}</p>
-                </div>
-            `;
-
-            contactInfoContainer.appendChild(contactItem);
-        });
-    }
-}
-
-function updateMapEmbed(data) {
-    const mapContainer = document.querySelector('.map-container');
-    if (mapContainer && data.map_embed) {
-        mapContainer.innerHTML = data.map_embed;
-    }
-}
-
-function updateFooter(data) {
-    // Update footer copyright
-    const copyright = document.querySelector('.copyright p');
-    if (copyright && data.footer_copyright) {
-        copyright.textContent = data.footer_copyright;
-    }
-
-    // Update footer links
-    const footerLinks = document.querySelector('.footer-links ul');
-    if (footerLinks && data.footer_links && data.footer_links.length > 0) {
-        let linksHTML = '';
-
-        data.footer_links.forEach(link => {
-            const label = link.label || '';
-            const url = link.url?.url || '#';
-
-            linksHTML += `<li><a href="${url}">${label}</a></li>`;
-        });
-
-        if (linksHTML) {
-            footerLinks.innerHTML = linksHTML;
-        }
-    }
-
-    // Update footer social links
-    const socialLinks = document.querySelector('.social-links');
-    if (socialLinks && data.footer_social && data.footer_social.length > 0) {
-        let socialHTML = '';
-
-        data.footer_social.forEach(social => {
-            const platform = social.platform || '';
-            const url = social.url?.url || '#';
-            const iconClass = platform === 'fb' ? 'fab fa-facebook' :
-                platform === 'instagram' ? 'fab fa-instagram' :
-                    platform === 'twitter' ? 'fab fa-twitter' :
-                        platform === 'linkedin' ? 'fab fa-linkedin' :
-                            platform === 'whatsapp' ? 'fab fa-whatsapp' : 'fab fa-globe';
-
-            socialHTML += `<a href="${url}" target="_blank"><i class="${iconClass}"></i></a>`;
-        });
-
-        if (socialHTML) {
-            socialLinks.innerHTML = socialHTML;
-        }
-    }
-
-    // Update footer contacts
-    if (data.footer_contacts && data.footer_contacts.length > 0) {
-        const footerContactSection = document.querySelector('.footer-contact');
-        if (footerContactSection) {
-            // Keep the heading
-            const heading = footerContactSection.querySelector('h3');
-            let contactsHTML = '';
-
-            if (heading) {
-                contactsHTML = heading.outerHTML;
-            }
-
-            // Add contacts from API
-            data.footer_contacts.forEach(contact => {
-                const icon = contact.icon || 'info';
-                const title = contact.title || '';
-                const value = contact.value || '';
-
-                const iconClass = icon.includes('fa-') ? icon : `fas fa-${icon}`;
-
-                contactsHTML += `
-                    <p><i class="${iconClass}"></i> <span>${value}</span></p>
-                `;
-            });
-
-            // Add social links section back
-            const socialLinks = footerContactSection.querySelector('.social-links');
-            if (socialLinks) {
-                contactsHTML += socialLinks.outerHTML;
-            }
-
-            footerContactSection.innerHTML = contactsHTML;
-        }
-    }
-}
-
-// Update navigation links to preserve language parameter
-function updateNavigationLinks() {
-    // Get current language code from localStorage
-    const langCode = localStorage.getItem('zaheb-language') || 'ar';
-    const paramName = langCode === 'ar' ? 'lang' : 'lan';
-
-    // If no language parameter is set, don't modify links
-    if (!langCode) return;
-
-    // Get all navigation links
-    const navLinks = document.querySelectorAll('a[href]');
-
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-
-        // Skip external links and anchor links
-        if (href.startsWith('http') || href.startsWith('#') || href === '') return;
-
-        // Parse the URL
-        try {
-            // For relative URLs, create a dummy absolute URL to parse
-            const baseUrl = window.location.origin + window.location.pathname;
-            const absoluteUrl = new URL(href, baseUrl);
-
-            // Add language parameter using the same parameter name that was used in the URL
-            absoluteUrl.searchParams.set(paramName, langCode);
-
-            // Get the path and query string
-            const newHref = absoluteUrl.pathname + absoluteUrl.search;
-
-            // Update the link
-            link.setAttribute('href', newHref);
-        } catch (e) {
-            console.error('Error updating link:', e);
-        }
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function () {
+    const API_ENDPOINT = 'https://zaheb.cdn.prismic.io/api/v2';
+    const CONTACT_DOC_ID = 'aEV3xBUAAC8AsXi9'; // The unique ID for the contact page document
+    const loadingIndicator = document.querySelector('.loading-indicator');
+
+    /**
+     * Fetches the latest API data for the contact page
+     */
+    async function fetchContactData() {
+        try {
+            // Step 1: Get the latest master ref from the Prismic API
+            const apiResponse = await fetch(API_ENDPOINT);
+            if (!apiResponse.ok) throw new Error('Failed to connect to Prismic API.');
+            const apiData = await apiResponse.json();
+            const masterRef = apiData.refs.find(ref => ref.isMasterRef)?.ref;
+
+            if (!masterRef) throw new Error('Could not find master ref in API response.');
+
+            // Step 2: Fetch the 'Contact' document using the master ref
+            const docUrl = `${API_ENDPOINT}/documents/search?ref=${masterRef}&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22${CONTACT_DOC_ID}%22%29+%5D%5D`;
+            const docResponse = await fetch(docUrl);
+            if (!docResponse.ok) throw new Error(`HTTP error! Status: ${docResponse.status}`);
+            const json = await docResponse.json();
+            const data = json.results[0]?.data;
+
+            if (!data) throw new Error('No data found in API response for the Contact page.');
+
+            // Hide loading indicator
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
+
+            // Update page with fetched data
+            updatePageContent(data);
+
+        } catch (error) {
+            console.error('Failed to fetch contact data:', error);
+            if (loadingIndicator) {
+                loadingIndicator.textContent = 'Error loading content. Please try again later.';
+                loadingIndicator.style.color = 'red';
+            }
+        }
+    }
+
+    /**
+     * Updates all page content with data from the API
+     */
+    function updatePageContent(data) {
+        // Update page title
+        updatePageTitle(data);
+
+        // Update WhatsApp section
+        updateWhatsAppSection(data);
+
+        // Update contact info section
+        updateContactInfo(data);
+
+        // Update footer
+        updateFooter(data);
+    }
+
+    /**
+     * Updates the page title
+     */
+    function updatePageTitle(data) {
+        const pageTitle = document.querySelector('.page-title');
+        if (pageTitle && data.page_title) {
+            pageTitle.textContent = data.page_title;
+        }
+    }
+
+    /**
+     * Updates the WhatsApp contact section
+     */
+    function updateWhatsAppSection(data) {
+        // Update WhatsApp title
+        const whatsappTitle = document.querySelector('.whatsapp-title');
+        if (whatsappTitle && data.whatsapp_title) {
+            whatsappTitle.textContent = data.whatsapp_title;
+        }
+
+        // Update WhatsApp description
+        const whatsappDesc = document.querySelector('.whatsapp-description');
+        if (whatsappDesc && data.whatsapp_description) {
+            whatsappDesc.textContent = data.whatsapp_description;
+        }
+
+        // Update WhatsApp button text
+        const whatsappBtnText = document.querySelector('.whatsapp-button-text');
+        if (whatsappBtnText && data.whatsapp_button_text) {
+            whatsappBtnText.textContent = data.whatsapp_button_text;
+        }
+
+        // Update WhatsApp number/link
+        const whatsappLinks = document.querySelectorAll('.whatsapp-link, .whatsapp-float-btn');
+        const contact = data.footer_contacts?.[0];
+        if (whatsappLinks.length && contact?.whatsapp_url?.url) {
+            whatsappLinks.forEach(link => {
+                link.href = contact.whatsapp_url.url;
+                if (contact.whatsapp_url.target) {
+                    link.target = contact.whatsapp_url.target;
+                }
+            });
+        }
+    }
+
+    /**
+     * Updates the contact information section
+     */
+    function updateContactInfo(data) {
+        // Update section title and description
+        const sectionTitle = document.querySelector('.contact-section-title');
+        if (sectionTitle && data.contact_section_title) {
+            sectionTitle.textContent = data.contact_section_title;
+        }
+
+        const sectionDesc = document.querySelector('.contact-section-description');
+        if (sectionDesc && data.contact_section_description) {
+            sectionDesc.textContent = data.contact_section_description;
+        }
+
+        // Update contact items from footer_contacts
+        const contact = data.footer_contacts?.[0];
+        if (contact) {
+            // Update address
+            const addressTexts = document.querySelectorAll('.address-text');
+            if (addressTexts.length && contact.address?.[0]) {
+                addressTexts.forEach(el => {
+                    el.textContent = contact.address[0].text;
+                });
+            }
+
+            // Update phone
+            const phoneLinks = document.querySelectorAll('.phone-link');
+            if (phoneLinks.length && contact.phone?.url) {
+                phoneLinks.forEach(link => {
+                    link.href = contact.phone.url;
+                    link.textContent = contact.phone.url.replace('tel:', '');
+                    if (contact.phone.target) link.target = contact.phone.target;
+                });
+            }
+
+            // Update email
+            const emailLinks = document.querySelectorAll('.email-link');
+            if (emailLinks.length && contact.email?.url) {
+                emailLinks.forEach(link => {
+                    link.href = `mailto:${contact.email.url}`;
+                    link.textContent = contact.email.url;
+                    if (contact.email.target) link.target = contact.email.target;
+                });
+            }
+
+            // Update social links
+            updateSocialLinks(contact);
+        }
+
+        // Add any additional contact items from the API
+        if (data.contact_items && data.contact_items.length > 0) {
+            const socialIcons = document.querySelector('.social-icons');
+            if (socialIcons) {
+                data.contact_items.forEach(item => {
+                    if (item.icon && item.url?.url) {
+                        // We already handle these in updateSocialLinks
+                        // This is just for any additional social links that might be in contact_items
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Updates social media links throughout the page
+     */
+    function updateSocialLinks(contact) {
+        // Update Instagram links
+        const instagramLinks = document.querySelectorAll('.instagram-link');
+        if (instagramLinks.length && contact.instgram_urk?.url) {
+            instagramLinks.forEach(link => {
+                link.href = contact.instgram_urk.url;
+                if (contact.instgram_urk.target) link.target = contact.instgram_urk.target;
+            });
+        }
+
+        // Update Facebook links
+        const facebookLinks = document.querySelectorAll('.facebook-link');
+        if (facebookLinks.length && contact.facebook_url?.url) {
+            facebookLinks.forEach(link => {
+                link.href = contact.facebook_url.url;
+                if (contact.facebook_url.target) link.target = contact.facebook_url.target;
+            });
+        }
+
+        // Update WhatsApp links (already handled in updateWhatsAppSection)
+    }
+
+    /**
+     * Updates the footer section
+     */
+    function updateFooter(data) {
+        // Update footer tagline
+        const footerTagline = document.querySelector('.footer-tagline');
+        if (footerTagline && data.footer_tagline) {
+            footerTagline.textContent = data.footer_tagline;
+        }
+
+        // Update footer links
+        const footerLinksContainer = document.querySelector('.footer-links ul');
+        if (footerLinksContainer && data.footer_links && data.footer_links.length > 0) {
+            footerLinksContainer.innerHTML = '';
+
+            data.footer_links.forEach(link => {
+                if (link.label && link.url?.url) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.url.url;
+                    a.textContent = link.label;
+                    if (link.url.target) a.target = link.url.target;
+                    li.appendChild(a);
+                    footerLinksContainer.appendChild(li);
+                }
+            });
+        }
+
+        // Update copyright text
+        const copyrightText = document.querySelector('.footer-copyright');
+        if (copyrightText && data.footer_copyright) {
+            copyrightText.textContent = data.footer_copyright;
+        }
+
+        // Contact info in footer already updated in updateContactInfo
+    }
+
+    // Initialize the page
     fetchContactData();
-    updateNavigationLinks();
 }); 

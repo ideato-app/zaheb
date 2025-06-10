@@ -252,7 +252,7 @@
 
     <!-- Page Title centered under navigation header, moved further down -->
     <div class="container" style="padding-top: 80px; padding-bottom: 0; text-align: center;">
-        <h1 data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h1>
+        <h1 class="page-title" data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h1>
         <div class="loading-indicator" data-en="Loading content..." data-ar="جاري تحميل المحتوى...">Loading content...
         </div>
     </div>
@@ -262,23 +262,80 @@
         <div class="container">
             <div class="contact-row">
                 <div class="whatsapp-contact glass-card fade-in">
-                    <h2 data-en="Contact Us on WhatsApp" data-ar="تواصل معنا على واتساب">Contact Us on WhatsApp</h2>
-                    <p data-en="Click the button below to start a conversation with us on WhatsApp."
+                    <h2 class="whatsapp-title" data-en="Contact Us on WhatsApp" data-ar="تواصل معنا على واتساب">Contact
+                        Us on WhatsApp</h2>
+                    <p class="whatsapp-description"
+                        data-en="Click the button below to start a conversation with us on WhatsApp."
                         data-ar="انقر على الزر أدناه لبدء محادثة معنا على واتساب.">Click the button below to start a
                         conversation with us on WhatsApp.</p>
-                    <a href="https://wa.me/96522281011" class="whatsapp-contact-btn" target="_blank">
+                    <a href="https://wa.me/96522281011" class="whatsapp-contact-btn whatsapp-link" target="_blank">
                         <i class="fab fa-whatsapp"></i>
-                        <span data-en="Chat with Us on WhatsApp" data-ar="تحدث معنا على واتساب">Chat with Us on
+                        <span class="whatsapp-button-text" data-en="Chat with Us on WhatsApp"
+                            data-ar="تحدث معنا على واتساب">Chat with Us on
                             WhatsApp</span>
                     </a>
                 </div>
                 <div class="contact-info">
                     <div class="glass-card contact-info-card fade-in">
-                        <h2 data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
-                        <p data-en="We're here to answer any questions you may have about our services."
+                        <h2 class="contact-section-title" data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
+                        <p class="contact-section-description"
+                            data-en="We're here to answer any questions you may have about our services."
                             data-ar="نحن هنا للإجابة على أي أسئلة قد تكون لديك حول خدماتنا.">We're here to answer any
                             questions you may have about our services.</p>
-                        <!-- Contact items will be loaded from API -->
+
+                        <div class="contact-items">
+                            <!-- Contact items will be loaded from API -->
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4 data-en="Address" data-ar="العنوان">Address</h4>
+                                    <p class="address-text">Loading address...</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4 data-en="Phone" data-ar="الهاتف">Phone</h4>
+                                    <a href="#" class="phone-link">Loading phone number...</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4 data-en="Email" data-ar="البريد الإلكتروني">Email</h4>
+                                    <a href="#" class="email-link">Loading email...</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-info-content">
+                                    <h4 data-en="Working Hours" data-ar="ساعات العمل">Working Hours</h4>
+                                    <p>Sunday - Thursday: 9AM - 6PM</p>
+                                    <p>Friday - Saturday: Closed</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-social-links">
+                                <h4 data-en="Follow Us" data-ar="تابعنا">Follow Us</h4>
+                                <div class="social-icons">
+                                    <a href="#" class="instagram-link" target="_blank"><i
+                                            class="fab fa-instagram"></i></a>
+                                    <a href="#" class="facebook-link" target="_blank"><i
+                                            class="fab fa-facebook"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,37 +356,33 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-white.png" alt="Zaheb International Logo">
-                    <p data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق">Your Trusted Travel Partner</p>
+                    <p class="footer-tagline" data-en="Your Trusted Travel Partner" data-ar="شريك سفرك الموثوق">Your
+                        Trusted Travel Partner</p>
                 </div>
                 <div class="footer-links">
                     <h3 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h3>
                     <ul>
                         <!-- Links will be loaded from API -->
-                        <li><a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a></li>
-                        <li><a href="about.html" data-en="About Us" data-ar="من نحن">About Us</a></li>
-                        <li><a href="services.html" data-en="Services" data-ar="خدماتنا">Services</a></li>
-                        <li><a href="contact.html" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
                     <h3 data-en="Contact Us" data-ar="اتصل بنا">Contact Us</h3>
-                    <!-- Contact info will be loaded from API -->
-                    <p><i class="fas fa-map-marker-alt"></i> <span
-                            data-en="Office 1, 2nd Floor, Salem Al Mubarak Street, First Mall, Salmiya"
-                            data-ar="مكتب 1، الطابق الثاني، شارع سالم المبارك، فيرست مول، السالمية">Office 1, 2nd Floor,
-                            Salem Al Mubarak Street, First
-                            Mall, Salmiya</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="address-text" data-en="Loading address..."
+                            data-ar="جاري تحميل العنوان...">Loading address...</span></p>
+                    <p><i class="fas fa-phone"></i> <a href="#" class="phone-link">Loading phone number...</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="#" class="email-link">Loading email...</a></p>
                     <div class="social-links">
-                        <!-- Social links will be loaded from API -->
-                        <a href="https://www.instagram.com/zaheb4visa/" target="_blank"><i
+                        <a href="#" class="instagram-link" target="_blank" title="Instagram"><i
                                 class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/96522281011" target="_blank" data-en-tooltip="Chat with us"
-                            data-ar-tooltip="تحدث معنا"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="facebook-link" target="_blank" title="Facebook"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="#" class="whatsapp-link" target="_blank" title="WhatsApp"><i
+                                class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                <p data-en="&copy; 2025 Zaheb International. All Rights Reserved."
+                <p class="footer-copyright" data-en="&copy; 2025 Zaheb International. All Rights Reserved."
                     data-ar="© 2025 زاهب انترناشيونال. جميع الحقوق محفوظة.">&copy; 2025 Zaheb International. All Rights
                     Reserved.</p>
             </div>
@@ -337,8 +390,8 @@
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/96522281011" class="whatsapp-btn" target="_blank" data-en-tooltip="Chat with us"
-        data-ar-tooltip="تحدث معنا">
+    <a href="https://wa.me/96522281011" class="whatsapp-btn whatsapp-float-btn" target="_blank"
+        data-en-tooltip="Chat with us" data-ar-tooltip="تحدث معنا">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -348,7 +401,7 @@
     <script src="js/modules/navigation.js"></script>
     <script src="js/modules/animations.js"></script>
     <script src="js/modules/whatsapp.js"></script>
-    <script src="js/modules/contact.js"></script>
+    <script src="js/modules/contact.js?v=1.0"></script>
     <script src="js/main.js"></script>
 </body>
 
