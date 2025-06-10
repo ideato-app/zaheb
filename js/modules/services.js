@@ -76,15 +76,9 @@ const ServicesModule = (function () {
         }
 
         // Update services introduction
-        if (data.tittle_paragraph && data.paragraph_text) {
-            const introTitle = document.querySelector('.services-intro .section-title');
-            const introText = document.querySelector('.services-intro .lead');
-
-            if (introTitle && data.tittle_paragraph.length > 0) {
-                introTitle.textContent = data.tittle_paragraph[0].text;
-            }
-
-            if (introText && data.paragraph_text.length > 0) {
+        if (data.paragraph_text && data.paragraph_text.length > 0) {
+            const introText = document.querySelector('.container p.lead');
+            if (introText) {
                 introText.textContent = data.paragraph_text[0].text;
             }
         }
@@ -97,25 +91,21 @@ const ServicesModule = (function () {
 
     function renderServices(services) {
         const servicesContainer = document.getElementById('services-container');
+        servicesContainer.classList.add('services-grid'); // Add grid class
         let html = '';
 
         services.forEach((service, index) => {
-            // Determine if service should be displayed with image on left or right
-            const isEven = index % 2 === 0;
-            const imageClass = isEven ? 'service-image' : 'service-image image-right';
-            const contentClass = isEven ? 'service-content' : 'service-content content-left';
-
             // Create HTML for service image
             const imageUrl = service.img_of_services?.url || '';
             const imageHtml = `
-                <div class="${imageClass}">
-                    <img src="${imageUrl}" alt="${service.service_title || 'Service image'}" class="glass-effect">
+                <div class="service-image">
+                    <img src="${imageUrl}" alt="${service.service_title || 'Service image'}">
                 </div>
             `;
 
             // Create HTML for service description
             const description = service.service_description && service.service_description.length > 0
-                ? service.service_description[0].text
+                ? `<p class="service-description">${service.service_description[0].text}</p>`
                 : '';
 
             // Create HTML for key benefits
@@ -168,27 +158,23 @@ const ServicesModule = (function () {
             const ctaLabel = service.service_cta_label || 'Learn More';
             const ctaUrl = service.service_cta_link?.url || '#';
             const ctaHtml = `
-                <a href="${ctaUrl}" class="btn btn-primary">${ctaLabel}</a>
+                <div class="service-cta">
+                    <a href="${ctaUrl}" class="btn btn-secondary">${ctaLabel}</a>
+                </div>
             `;
 
-            // Combine all sections into service HTML
+            // Combine all sections into service card HTML
             const serviceHtml = `
-                <section class="service-item">
-                    <div class="container">
-                        <div class="service-row ${isEven ? '' : 'row-reverse'}">
-                            ${imageHtml}
-                            <div class="${contentClass}">
-                                <h3 class="service-title">${service.service_title || 'Service'}</h3>
-                                <p class="service-description">${description}</p>
-                                ${benefitsHtml}
-                                ${howItWorksHtml}
-                                <div class="service-cta">
-                                    ${ctaHtml}
-                                </div>
-                            </div>
-                        </div>
+                <div class="service-card glass-card fade-in">
+                    ${imageHtml}
+                    <div class="service-content">
+                        <h3 class="service-title">${service.service_title || 'Service'}</h3>
+                        ${description}
+                        ${benefitsHtml}
+                        ${howItWorksHtml}
+                        ${ctaHtml}
                     </div>
-                </section>
+                </div>
             `;
 
             html += serviceHtml;

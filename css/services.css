@@ -1,72 +1,66 @@
 /* filepath: c:\Users\zemax\Desktop\zaheb\css\services.css */
 /* ===== SERVICES PAGE STYLES ===== */
-.services-intro {
-    padding: 30px 0;
-    margin-bottom: 30px;
+
+/* Services Grid */
+#services-container {
+    padding: 40px 0;
 }
 
-/* Service items */
-.service-item {
-    padding: 60px 0;
-}
-
-.service-item:nth-child(even) {
-    background-color: rgba(248, 249, 250, 0.7);
-}
-
-.service-row {
+.services-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
 }
 
-.row-reverse {
-    direction: rtl;
-}
-
-.rtl .row-reverse {
-    direction: ltr;
-}
-
-.service-image img {
-    width: 100%;
-    height: auto;
+/* Service Card */
+.service-card {
+    background-color: var(--white-color);
     border-radius: var(--border-radius);
-    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.service-image.image-right {
-    order: 2;
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-.service-content {
-    padding: 30px;
+.service-card .service-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-.service-content.content-left {
-    order: 1;
+.service-card .service-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .service-title {
-    margin-bottom: 20px;
-    font-size: 2rem;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
     color: var(--primary-color);
+    font-weight: 600;
 }
 
 .service-description {
     margin-bottom: 20px;
     line-height: 1.6;
+    flex-grow: 1;
 }
 
 /* Key benefits section */
 .service-benefits {
-    margin: 25px 0;
+    margin: 20px 0;
 }
 
 .service-benefits h4 {
     margin-bottom: 15px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--dark-color);
 }
 
@@ -78,21 +72,22 @@
 .benefits-list li {
     margin-bottom: 10px;
     position: relative;
-    padding-left: 30px;
+    padding-left: 25px;
 }
 
 .rtl .benefits-list li {
     padding-left: 0;
-    padding-right: 30px;
+    padding-right: 25px;
 }
 
 .benefits-list li:before {
     content: '\f00c';
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     color: var(--primary-color);
     position: absolute;
     left: 0;
+    font-size: 0.9rem;
 }
 
 .rtl .benefits-list li:before {
@@ -102,30 +97,30 @@
 
 /* How it works section */
 .service-how-it-works {
-    margin: 25px 0;
+    margin: 20px 0;
 }
 
 .service-how-it-works h4 {
     margin-bottom: 15px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--dark-color);
 }
 
 .how-it-works-list {
     counter-reset: step-counter;
     padding-left: 0;
+    list-style: none;
 }
 
 .how-it-works-list li {
     margin-bottom: 15px;
     position: relative;
-    padding-left: 40px;
-    list-style: none;
+    padding-left: 35px;
 }
 
 .rtl .how-it-works-list li {
     padding-left: 0;
-    padding-right: 40px;
+    padding-right: 35px;
 }
 
 .how-it-works-list li:before {
@@ -133,8 +128,8 @@
     counter-increment: step-counter;
     position: absolute;
     left: 0;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-color: var(--primary-color);
     color: var(--white-color);
     border-radius: 50%;
@@ -142,6 +137,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .rtl .how-it-works-list li:before {
@@ -150,25 +146,27 @@
 }
 
 .service-cta {
-    margin-top: 30px;
+   
+    margin-top: auto;
+    
+    /* Pushes button to the bottom */
+    padding-top: 20px;
 }
 
-/* Responsive adjustments for services page elements */
-@media (max-width: 992px) {
-    .service-row {
+.service-card .btn-secondary {
+    background-color: #092f7d;
+    color: var(--white-color);
+    width: 100%;
+    text-align: center;
+}
+
+.service-card .btn-secondary:hover {
+    background-color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .services-grid {
         grid-template-columns: 1fr;
-    }
-
-    .row-reverse {
-        direction: ltr;
-    }
-
-    .service-image,
-    .service-content {
-        order: unset !important;
-    }
-
-    .service-image {
-        margin-bottom: 30px;
     }
 }
