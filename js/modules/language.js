@@ -18,7 +18,7 @@ const LanguageModule = (function () {
         const languageSwitcher = document.querySelector('.language-switcher');
 
         // Set default language (Arabic)
-        currentLang = localStorage.getItem('zaheb-language') || 'ar';
+        currentLang = localStorage.getItem('zaheb-language') || 'ar-kw';
         setLanguage(currentLang);
 
         // Initialize active buttons
@@ -43,7 +43,11 @@ const LanguageModule = (function () {
     function updateAllLangButtons(lang) {
         const langButtons = document.querySelectorAll('.lang-btn');
         langButtons.forEach(btn => {
-            if (btn.getAttribute('data-lang') === lang) {
+            // Map ar-kw to ar for button data-lang attribute
+            const buttonLang = btn.getAttribute('data-lang');
+            const isActive = (buttonLang === 'ar' && lang === 'ar-kw') || buttonLang === lang;
+
+            if (isActive) {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
@@ -61,7 +65,9 @@ const LanguageModule = (function () {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const lang = this.getAttribute('data-lang');
+                // Map 'ar' button to 'ar-kw' for storage and API
+                const buttonLang = this.getAttribute('data-lang');
+                const lang = buttonLang === 'ar' ? 'ar-kw' : buttonLang;
 
                 // Save language preference
                 localStorage.setItem('zaheb-language', lang);
@@ -135,14 +141,16 @@ const LanguageModule = (function () {
         document.documentElement.lang = lang;
         document.body.classList.remove('rtl');
 
-        if (lang === 'ar') {
+        if (lang === 'ar-kw' || lang === 'ar') {
             document.body.classList.add('rtl');
         }
 
-        // Update text content
+        // Update text content - map ar-kw to ar for data attributes
         const elementsWithLang = document.querySelectorAll('[data-en], [data-ar]');
         elementsWithLang.forEach(el => {
-            const langText = el.getAttribute(`data-${lang}`);
+            // Use 'ar' for data attribute even when language is 'ar-kw'
+            const dataLang = lang === 'ar-kw' ? 'ar' : lang;
+            const langText = el.getAttribute(`data-${dataLang}`);
             if (langText) {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     el.placeholder = langText;
@@ -155,7 +163,7 @@ const LanguageModule = (function () {
         // Update WhatsApp button tooltip
         const whatsappBtn = document.querySelector('.whatsapp-btn');
         if (whatsappBtn) {
-            if (lang === 'ar') {
+            if (lang === 'ar-kw' || lang === 'ar') {
                 whatsappBtn.setAttribute('data-tooltip', whatsappBtn.getAttribute('data-ar-tooltip'));
             } else {
                 whatsappBtn.setAttribute('data-tooltip', whatsappBtn.getAttribute('data-en-tooltip'));
