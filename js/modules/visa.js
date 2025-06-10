@@ -9,6 +9,70 @@ const VisaModule = (function () {
     // Modal reference
     let modal;
 
+    /**
+     * Renders a rich text array from Prismic into clean HTML.
+     * @param {Array} content - The rich text array from Prismic.
+     * @param {Object} options - Rendering options.
+     * @param {string} options.listElement - The tag to use for lists (ul or ol).
+     * @returns {string} The generated HTML string.
+     */
+    function renderRichText(content, { listElement = 'ul' } = {}) {
+        if (!content || !Array.isArray(content)) {
+            return '';
+        }
+
+        let html = '';
+        let listOpen = false;
+
+        const closeList = () => {
+            if (listOpen) {
+                html += `</${listElement}>`;
+                listOpen = false;
+            }
+        };
+
+        content.forEach(item => {
+            let text = item.text;
+
+            // Apply spans (e.g., strong for bold)
+            if (item.spans && item.spans.length > 0) {
+                // Process spans backwards to not mess up indices
+                [...item.spans].reverse().forEach(span => {
+                    if (span.type === 'strong') {
+                        text = text.slice(0, span.start) + `<strong>` + text.slice(span.start, span.end) + `</strong>` + text.slice(span.end);
+                    }
+                });
+            }
+
+            if (item.type === 'list-item') {
+                if (!listOpen) {
+                    html += `<${listElement} class="dynamic-list">`;
+                    listOpen = true;
+                }
+                html += `<li>${text}</li>`;
+            } else {
+                closeList();
+                switch (item.type) {
+                    case 'heading1':
+                        html += `<h1>${text}</h1>`;
+                        break;
+                    case 'heading2':
+                        html += `<h2>${text}</h2>`;
+                        break;
+                    case 'heading3':
+                        html += `<h3>${text}</h3>`;
+                        break;
+                    case 'paragraph':
+                        html += `<p>${text}</p>`;
+                        break;
+                }
+            }
+        });
+
+        closeList();
+        return html;
+    }
+
     async function fetchVisaData() {
         const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
@@ -64,7 +128,7 @@ const VisaModule = (function () {
                         const errorMessage = isArabic
                             ? 'لم يتم العثور على بيانات التأشيرات.'
                             : 'No visa data found.';
-                        document.querySelector('.loading-spinner').innerHTML = `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${errorMessage}</p>`;
+                        document.querySelector('.loading-spinner').innerHTML = `<p>${errorMessage}</p>`;
                         return;
                     }
 
@@ -88,7 +152,7 @@ const VisaModule = (function () {
             const errorMessage = isArabic
                 ? 'حدث خطأ في تحميل البيانات. يرجى المحاولة مرة أخرى لاحقاً.'
                 : 'Error loading visa information.';
-            document.querySelector('.loading-spinner').innerHTML = `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${errorMessage}</p>`;
+            document.querySelector('.loading-spinner').innerHTML = `<p>${errorMessage}</p>`;
         }
     }
 
@@ -104,8 +168,6 @@ const VisaModule = (function () {
             const pageTitle = document.querySelector('.container h1');
             if (pageTitle) {
                 pageTitle.textContent = data.tittle_page[0].text;
-                pageTitle.dir = isArabic ? 'rtl' : 'ltr';
-                pageTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
         }
 
@@ -116,14 +178,10 @@ const VisaModule = (function () {
 
             if (introTitle && data.tittle_paragraph.length > 0) {
                 introTitle.textContent = data.tittle_paragraph[0].text;
-                introTitle.dir = isArabic ? 'rtl' : 'ltr';
-                introTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (introText && data.paragraph_text.length > 0) {
                 introText.textContent = data.paragraph_text[0].text;
-                introText.dir = isArabic ? 'rtl' : 'ltr';
-                introText.style.textAlign = isArabic ? 'right' : 'left';
             }
         }
 
@@ -135,19 +193,14 @@ const VisaModule = (function () {
 
             if (ctaTitle && data.cta_tittle.length > 0) {
                 ctaTitle.textContent = data.cta_tittle[0].text;
-                ctaTitle.dir = isArabic ? 'rtl' : 'ltr';
-                ctaTitle.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (ctaText && data.cta_description.length > 0) {
                 ctaText.textContent = data.cta_description[0].text;
-                ctaText.dir = isArabic ? 'rtl' : 'ltr';
-                ctaText.style.textAlign = isArabic ? 'right' : 'left';
             }
 
             if (ctaButton && data.lable_button && data.lable_button.length > 0) {
                 ctaButton.textContent = data.lable_button[0].text;
-                ctaButton.dir = isArabic ? 'rtl' : 'ltr';
 
                 if (data.url_button && data.url_button.length > 0) {
                     ctaButton.href = data.url_button[0].text;
@@ -166,19 +219,10 @@ const VisaModule = (function () {
 
     function renderCountries(countries, isArabic) {
         const countriesGrid = document.querySelector('.countries-grid');
-        countriesGrid.dir = isArabic ? 'rtl' : 'ltr';
         let html = '';
 
         // Define translations for headers
         const translations = {
-            'visa_types': {
-                'en': 'Visa Types',
-                'ar': 'أنواع التأشيرات'
-            },
-            'requirements': {
-                'en': 'Requirements',
-                'ar': 'المتطلبات'
-            },
             'more_info': {
                 'en': 'More Info',
                 'ar': 'مزيد من المعلومات'
@@ -187,40 +231,11 @@ const VisaModule = (function () {
                 'en': 'Inquire Now',
                 'ar': 'استفسر الآن'
             },
-            'visa_details': {
-                'en': 'Visa Details',
-                'ar': 'تفاصيل التأشيرة'
-            }
         };
 
         countries.forEach((country) => {
-            // Process visa types
-            let visaTypesHtml = '';
-            if (country.visa_types_content && country.visa_types_content.length > 0) {
-                visaTypesHtml = `<ul class="visa-types-list" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
-                country.visa_types_content.forEach(item => {
-                    if (item.type === 'paragraph') {
-                        visaTypesHtml += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
-                    } else if (item.type === 'list-item') {
-                        visaTypesHtml += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
-                    }
-                });
-                visaTypesHtml += '</ul>';
-            }
-
-            // Process requirements
-            let requirementsHtml = '';
-            if (country.general_requirements_content && country.general_requirements_content.length > 0) {
-                requirementsHtml = `<ol class="requirements-list" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
-                country.general_requirements_content.forEach(item => {
-                    if (item.type === 'list-item') {
-                        requirementsHtml += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
-                    } else if (item.type === 'paragraph') {
-                        requirementsHtml += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
-                    }
-                });
-                requirementsHtml += '</ol>';
-            }
+            const visaTypesHtml = renderRichText(country.visa_types_content, { listElement: 'ul' });
+            const requirementsHtml = renderRichText(country.general_requirements_content, { listElement: 'ol' });
 
             // Create buttons HTML
             const inquireUrl = country.cta_inquire_link?.url || 'contact.html';
@@ -228,35 +243,35 @@ const VisaModule = (function () {
             const moreInfoLabel = country.cta_more_label || translations.more_info[isArabic ? 'ar' : 'en'];
 
             const buttonsHtml = `
-                <div class="visa-buttons" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">
-                    <a href="${inquireUrl}" class="btn btn-primary" dir="${isArabic ? 'rtl' : 'ltr'}">${inquireLabel}</a>
-                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}" dir="${isArabic ? 'rtl' : 'ltr'}">${moreInfoLabel}</button>
+                <div class="visa-buttons">
+                    <a href="${inquireUrl}" class="btn btn-primary">${inquireLabel}</a>
+                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}">${moreInfoLabel}</button>
                 </div>
             `;
 
             // Store detailed information for modal
             if (country.more && country.more.length > 0) {
-                const moreInfoHtml = processMoreInfo(country.more, isArabic);
-                html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;" dir="${isArabic ? 'rtl' : 'ltr'}">${moreInfoHtml}</div>`;
+                const moreInfoHtml = processMoreInfo(country.more);
+                html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;">${moreInfoHtml}</div>`;
             }
 
             // Use country-provided headers if available, otherwise use translated defaults
-            const visaTypesHeader = country.visa_types_list || translations.visa_types[isArabic ? 'ar' : 'en'];
-            const requirementsHeader = country.general_requirements_list || translations.requirements[isArabic ? 'ar' : 'en'];
+            const visaTypesHeader = country.visa_types_list || (isArabic ? 'أنواع التأشيرات' : 'Visa Types');
+            const requirementsHeader = country.general_requirements_list || (isArabic ? 'المتطلبات' : 'Requirements');
 
             // Combine all sections into country HTML
             const countryHtml = `
-                <div class="country glass-card" dir="${isArabic ? 'rtl' : 'ltr'}">
+                <div class="country glass-card">
                     <div class="country-header">
-                        <h2 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-globe"></i> ${country.country_name}</h2>
+                        <h2><i class="fas fa-globe"></i> ${country.country_name}</h2>
                     </div>
-                    <div class="country-content" style="text-align: ${isArabic ? 'right' : 'left'}">
+                    <div class="country-content">
                         <div class="visa-info">
-                            <h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-passport"></i> ${visaTypesHeader}</h3>
+                            <h3><i class="fas fa-passport"></i> ${visaTypesHeader}</h3>
                             ${visaTypesHtml}
                         </div>
                         <div class="requirements">
-                            <h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}"><i class="fas fa-list-check"></i> ${requirementsHeader}</h3>
+                            <h3><i class="fas fa-list-check"></i> ${requirementsHeader}</h3>
                             ${requirementsHtml}
                         </div>
                         ${buttonsHtml}
@@ -274,28 +289,9 @@ const VisaModule = (function () {
         setupMoreInfoButtons(isArabic);
     }
 
-    function processMoreInfo(moreInfo, isArabic) {
-        let html = `<div class="modal-content-inner" dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
-
-        moreInfo.forEach(item => {
-            if (item.type === 'heading3') {
-                html += `<h3 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</h3>`;
-            } else if (item.type === 'paragraph') {
-                html += `<p dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</p>`;
-            } else if (item.type === 'list-item') {
-                if (!html.includes('<ul>')) {
-                    html += `<ul dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">`;
-                }
-                html += `<li dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${item.text}</li>`;
-            }
-        });
-
-        if (html.includes('<ul>')) {
-            html += '</ul>';
-        }
-
-        html += '</div>';
-        return html;
+    function processMoreInfo(moreInfo) {
+        const innerHtml = renderRichText(moreInfo);
+        return `<div class="modal-content-inner">${innerHtml}</div>`;
     }
 
     function setupMoreInfoButtons(isArabic) {
@@ -317,10 +313,11 @@ const VisaModule = (function () {
         const title = isArabic ? `تفاصيل تأشيرة ${countryName}` : `${countryName} Visa Details`;
 
         modalContent.innerHTML = `
-            <h2 dir="${isArabic ? 'rtl' : 'ltr'}" style="text-align: ${isArabic ? 'right' : 'left'}">${title}</h2>
+            <h2>${title}</h2>
             ${detailsText}
         `;
 
+        modal.dir = isArabic ? 'rtl' : 'ltr';
         modal.style.display = 'block';
         modal.setAttribute('aria-hidden', 'false');
         modal.focus();
@@ -368,6 +365,13 @@ const VisaModule = (function () {
     }
 
     function renderFooter(data, isArabic) {
+        const setRtl = (el) => {
+            if (el) {
+                el.dir = isArabic ? 'rtl' : 'ltr';
+                el.style.textAlign = isArabic ? 'right' : 'left';
+            }
+        };
+
         // Footer Logo
         const footerLogo = document.querySelector('.footer-logo img');
         if (footerLogo && data.footer_logo?.url) {
@@ -379,9 +383,12 @@ const VisaModule = (function () {
         const footerTagline = document.querySelector('.footer-tagline');
         if (footerTagline && data.footer_tagline) {
             footerTagline.textContent = data.footer_tagline;
+            setRtl(footerTagline);
         }
 
         // Footer Links
+        const quickLinksTitle = document.querySelector('.footer-links h3');
+        setRtl(quickLinksTitle);
         const footerLinksContainer = document.querySelector('.footer-links ul');
         if (footerLinksContainer && data.footer_links?.length > 0) {
             footerLinksContainer.innerHTML = ''; // Clear existing links
@@ -392,28 +399,33 @@ const VisaModule = (function () {
                     footerLinksContainer.appendChild(li);
                 }
             });
+            setRtl(footerLinksContainer);
         }
 
         // Footer Contact Info
+        const contactUsTitle = document.querySelector('.footer-contact h3');
+        setRtl(contactUsTitle);
         const contact = data.footer_contacts?.[0];
         if (contact) {
-            document.querySelectorAll('.footer-contact .address-text').forEach(el => {
-                if (contact.address?.[0]?.text) {
-                    el.textContent = contact.address[0].text;
-                }
-            });
-            document.querySelectorAll('.footer-contact .phone-link').forEach(el => {
-                if (contact.phone?.url) {
-                    el.href = contact.phone.url;
-                    el.textContent = contact.phone.url.replace('tel:', '');
-                }
-            });
-            document.querySelectorAll('.footer-contact .email-link').forEach(el => {
-                if (contact.email?.url) {
-                    el.href = `mailto:${contact.email.url}`;
-                    el.textContent = contact.email.url;
-                }
-            });
+            const addressText = document.querySelector('.footer-contact .address-text');
+            if (addressText && contact.address?.[0]?.text) {
+                addressText.textContent = contact.address[0].text;
+                setRtl(addressText.parentElement);
+            }
+
+            const phoneLink = document.querySelector('.footer-contact .phone-link');
+            if (phoneLink && contact.phone?.url) {
+                phoneLink.href = contact.phone.url;
+                phoneLink.textContent = contact.phone.url.replace('tel:', '');
+                setRtl(phoneLink.parentElement);
+            }
+
+            const emailLink = document.querySelector('.footer-contact .email-link');
+            if (emailLink && contact.email?.url) {
+                emailLink.href = `mailto:${contact.email.url}`;
+                emailLink.textContent = contact.email.url;
+                setRtl(emailLink.parentElement);
+            }
 
             // Footer Social Links
             const instagramLink = document.querySelector('.footer .instagram-link');
@@ -434,6 +446,7 @@ const VisaModule = (function () {
         const copyright = document.querySelector('.footer-copyright');
         if (copyright && data.footer_copyright) {
             copyright.textContent = data.footer_copyright;
+            setRtl(copyright);
         }
     }
 
