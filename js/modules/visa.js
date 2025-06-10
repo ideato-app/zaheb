@@ -379,13 +379,6 @@ const VisaModule = (function () {
             footerLogo.alt = data.footer_logo.alt || 'Zaheb International Logo';
         }
 
-        // Footer Tagline
-        const footerTagline = document.querySelector('.footer-tagline');
-        if (footerTagline && data.footer_tagline) {
-            footerTagline.textContent = data.footer_tagline;
-            setRtl(footerTagline);
-        }
-
         // Footer Links
         const quickLinksTitle = document.querySelector('.footer-links h3');
         setRtl(quickLinksTitle);
