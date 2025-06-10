@@ -269,48 +269,62 @@ function updateFooter(data) {
         }
     }
 
-    // Update footer contact
-    if (data.footer_contact && data.footer_contact.length > 0) {
-        const contact = data.footer_contact[0];
+    // Update footer contacts - new structure from API
+    if (data.footer_contacts && data.footer_contacts.length > 0) {
+        const contact = data.footer_contacts[0];
 
         // Update address
         const addressSpan = document.querySelector('.footer-contact p:first-of-type span');
-        if (addressSpan && contact.address) {
-            addressSpan.textContent = contact.address;
+        if (addressSpan && contact.address && contact.address.length > 0) {
+            addressSpan.textContent = contact.address[0].text;
         }
 
         // Update phone
         const phoneLink = document.querySelector('.footer-contact a[href^="tel:"]');
-        if (phoneLink && contact.phone) {
-            phoneLink.textContent = contact.phone;
-            phoneLink.href = `tel:${contact.phone.replace(/\s/g, '')}`;
+        if (phoneLink && contact.phone?.url) {
+            phoneLink.href = contact.phone.url;
+            phoneLink.textContent = contact.phone.url.replace('tel:', '');
+            if (contact.phone.target) phoneLink.target = contact.phone.target;
         }
-    }
 
-    // Update social links
-    if (data.social_links && data.social_links.length > 0) {
+        // Update email if it exists in the footer
+        const emailLink = document.querySelector('.footer-contact .email-link');
+        if (emailLink && contact.email?.url) {
+            emailLink.href = `mailto:${contact.email.url}`;
+            emailLink.textContent = contact.email.url;
+            if (contact.email.target) emailLink.target = contact.email.target;
+        }
+
+        // Update social links
         const socialLinks = document.querySelector('.social-links');
         if (socialLinks) {
-            // Clear existing links
-            socialLinks.innerHTML = '';
+            // Update Instagram
+            const instagramLink = socialLinks.querySelector('a[href*="instagram"]');
+            if (instagramLink && contact.instgram_urk?.url) {
+                instagramLink.href = contact.instgram_urk.url;
+                if (contact.instgram_urk.target) instagramLink.target = contact.instgram_urk.target;
+            }
 
-            // Add social links from API
-            data.social_links.forEach(social => {
-                const icon = social.social_icon || 'instagram';
-                const url = social.social_url?.url || '#';
+            // Update WhatsApp
+            const whatsappLink = socialLinks.querySelector('a[href*="wa.me"]');
+            if (whatsappLink && contact.whatsapp_url?.url) {
+                whatsappLink.href = contact.whatsapp_url.url;
+                if (contact.whatsapp_url.target) whatsappLink.target = contact.whatsapp_url.target;
+            }
 
-                const iconClass = icon.includes('fa-') ? icon :
-                    icon === 'instagram' ? 'fab fa-instagram' :
-                        icon === 'facebook' || icon === 'fb' ? 'fab fa-facebook' :
-                            icon === 'twitter' ? 'fab fa-twitter' :
-                                icon === 'whatsapp' ? 'fab fa-whatsapp' : 'fab fa-globe';
+            // Update Facebook if it exists
+            const facebookLink = socialLinks.querySelector('a[href*="facebook"]');
+            if (facebookLink && contact.facebook_url?.url) {
+                facebookLink.href = contact.facebook_url.url;
+                if (contact.facebook_url.target) facebookLink.target = contact.facebook_url.target;
+            }
+        }
 
-                const a = document.createElement('a');
-                a.href = url;
-                a.target = '_blank';
-                a.innerHTML = `<i class="${iconClass}"></i>`;
-                socialLinks.appendChild(a);
-            });
+        // Update floating WhatsApp button
+        const floatingWhatsappBtn = document.querySelector('.whatsapp-btn');
+        if (floatingWhatsappBtn && contact.whatsapp_url?.url) {
+            floatingWhatsappBtn.href = contact.whatsapp_url.url;
+            if (contact.whatsapp_url.target) floatingWhatsappBtn.target = contact.whatsapp_url.target;
         }
     }
 }
