@@ -160,8 +160,8 @@ const VisaModule = (function () {
             renderCountries(data.visa_information, isArabic);
         }
 
-        // Render footer
-        renderFooter(data, isArabic);
+        // The footer is now rendered by fetchFooterData
+        // renderFooter(data, isArabic);
     }
 
     function renderCountries(countries, isArabic) {
@@ -330,59 +330,110 @@ const VisaModule = (function () {
         return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
     }
 
-    function renderFooter(data, isArabic) {
-        // Update footer content
-        if (data.footer_address) {
-            const addressText = document.querySelector('.address-text');
-            if (addressText) {
-                addressText.textContent = data.footer_address;
-                addressText.dir = isArabic ? 'rtl' : 'ltr';
-                addressText.style.textAlign = isArabic ? 'right' : 'left';
-            }
-        }
+    async function fetchFooterData() {
+        const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
+        try {
+            const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+            const isArabic = langCode === 'ar-kw' || langCode === 'ar';
 
-        if (data.footer_phone) {
-            const phoneLink = document.querySelector('.phone-link');
-            if (phoneLink) {
-                phoneLink.textContent = data.footer_phone;
-                phoneLink.href = `tel:${data.footer_phone.replace(/\s/g, '')}`;
-                phoneLink.dir = isArabic ? 'rtl' : 'ltr';
-                phoneLink.style.textAlign = isArabic ? 'right' : 'left';
-            }
-        }
+            const apiResponse = await fetch(apiUrl);
+            if (!apiResponse.ok) throw new Error('Failed to connect to Prismic API for footer.');
+            const apiData = await apiResponse.json();
+            const masterRef = apiData.refs.find(ref => ref.isMasterRef)?.ref;
 
-        if (data.footer_email) {
-            const emailLink = document.querySelector('.email-link');
-            if (emailLink) {
-                emailLink.textContent = data.footer_email;
-                emailLink.href = `mailto:${data.footer_email}`;
-                emailLink.dir = isArabic ? 'rtl' : 'ltr';
-                emailLink.style.textAlign = isArabic ? 'right' : 'left';
-            }
-        }
+            if (!masterRef) throw new Error('Could not find master ref in API response for footer.');
 
-        // Update social media links if available
-        if (data.contact) {
-            updateSocialLinks(data.contact);
+            const docUrl = `${apiUrl}/documents/search?ref=${masterRef}&q=[[at(document.type,"contact_page")]]&lang=${isArabic ? 'ar-kw' : 'en-us'}`;
+
+            let response = await fetch(docUrl);
+            let data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                console.log(`No footer data found for language: ${isArabic ? 'ar-kw' : 'en-us'}. Falling back to English.`);
+                const fallbackUrl = `${apiUrl}/documents/search?ref=${masterRef}&q=[[at(document.type,"contact_page")]]&lang=en-us`;
+                response = await fetch(fallbackUrl);
+                data = await response.json();
+            }
+
+            if (data.results && data.results.length > 0) {
+                const doc = data.results[0].data;
+                renderFooter(doc, isArabic);
+            } else {
+                console.error("No footer content found in any language.");
+            }
+
+        } catch (error) {
+            console.error('Failed to fetch footer data:', error);
         }
     }
 
-    function updateSocialLinks(contact) {
-        const instagramLink = document.querySelector('.instagram-link');
-        const facebookLink = document.querySelector('.facebook-link');
-        const whatsappLink = document.querySelector('.whatsapp-link');
-
-        if (contact.instagram_url && instagramLink) {
-            instagramLink.href = contact.instagram_url;
+    function renderFooter(data, isArabic) {
+        // Footer Logo
+        const footerLogo = document.querySelector('.footer-logo img');
+        if (footerLogo && data.footer_logo?.url) {
+            footerLogo.src = data.footer_logo.url;
+            footerLogo.alt = data.footer_logo.alt || 'Zaheb International Logo';
         }
 
-        if (contact.facebook_url && facebookLink) {
-            facebookLink.href = contact.facebook_url;
+        // Footer Tagline
+        const footerTagline = document.querySelector('.footer-tagline');
+        if (footerTagline && data.footer_tagline) {
+            footerTagline.textContent = data.footer_tagline;
         }
 
-        if (contact.whatsapp_number && whatsappLink) {
-            const whatsappNumber = contact.whatsapp_number.replace(/\s/g, '');
-            whatsappLink.href = `https://wa.me/${whatsappNumber}`;
+        // Footer Links
+        const footerLinksContainer = document.querySelector('.footer-links ul');
+        if (footerLinksContainer && data.footer_links?.length > 0) {
+            footerLinksContainer.innerHTML = ''; // Clear existing links
+            data.footer_links.forEach(link => {
+                if (link.label && link.url?.url) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${link.url.url}">${link.label}</a>`;
+                    footerLinksContainer.appendChild(li);
+                }
+            });
+        }
+
+        // Footer Contact Info
+        const contact = data.footer_contacts?.[0];
+        if (contact) {
+            document.querySelectorAll('.footer-contact .address-text').forEach(el => {
+                if (contact.address?.[0]?.text) {
+                    el.textContent = contact.address[0].text;
+                }
+            });
+            document.querySelectorAll('.footer-contact .phone-link').forEach(el => {
+                if (contact.phone?.url) {
+                    el.href = contact.phone.url;
+                    el.textContent = contact.phone.url.replace('tel:', '');
+                }
+            });
+            document.querySelectorAll('.footer-contact .email-link').forEach(el => {
+                if (contact.email?.url) {
+                    el.href = `mailto:${contact.email.url}`;
+                    el.textContent = contact.email.url;
+                }
+            });
+
+            // Footer Social Links
+            const instagramLink = document.querySelector('.footer .instagram-link');
+            if (instagramLink && contact.instgram_urk?.url) { // Note: 'instgram_urk' typo from API
+                instagramLink.href = contact.instgram_urk.url;
+            }
+            const facebookLink = document.querySelector('.footer .facebook-link');
+            if (facebookLink && contact.facebook_url?.url) {
+                facebookLink.href = contact.facebook_url.url;
+            }
+            const whatsappLink = document.querySelector('.footer .whatsapp-link');
+            if (whatsappLink && contact.whatsapp_url?.url) {
+                whatsappLink.href = contact.whatsapp_url.url;
+            }
+        }
+
+        // Footer Copyright
+        const copyright = document.querySelector('.footer-copyright');
+        if (copyright && data.footer_copyright) {
+            copyright.textContent = data.footer_copyright;
         }
     }
 
@@ -397,6 +448,7 @@ const VisaModule = (function () {
 
         // Fetch visa data
         fetchVisaData();
+        fetchFooterData();
 
         // Listen for language changes
         document.addEventListener('languageChanged', function (e) {
@@ -410,6 +462,7 @@ const VisaModule = (function () {
 
             // Small delay to ensure localStorage is updated
             setTimeout(fetchVisaData, 100);
+            setTimeout(fetchFooterData, 100);
         });
     }
 
