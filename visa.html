@@ -188,34 +188,64 @@
     <script src="js/modules/utils.js"></script>
     <script src="js/modules/language.js"></script>
     <script>
-        // Initialize language module first
+        // Initialize language module first, before any other scripts
+        console.log('Initializing language module in visa.html');
         if (window.LanguageModule) {
             window.LanguageModule.init();
+            console.log('Current language after init:', window.LanguageModule.getCurrentLanguage());
+        } else {
+            console.error('LanguageModule not found!');
         }
     </script>
     <script src="js/modules/navigation.js"></script>
     <script src="js/modules/animations.js"></script>
     <script src="js/modules/whatsapp.js"></script>
     <script src="js/modules/modal.js?v=1.1"></script>
-    <script src="js/modules/visa.js?v=1.2"></script>
+    <script src="js/modules/visa.js?v=1.3"></script>
     <script src="js/main.js"></script>
     <script>
-        // Initialize other modules after language is set
+        // Initialize other modules after all scripts have loaded
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM loaded in visa.html - initializing modules');
+
             if (window.NavigationModule) {
                 window.NavigationModule.init();
             }
+
             if (window.AnimationsModule) {
                 window.AnimationsModule.init();
             }
+
             if (window.WhatsAppModule) {
                 window.WhatsAppModule.init();
             }
+
             if (window.ModalModule) {
                 window.ModalModule.init();
             }
+
             if (window.VisaModule) {
+                console.log('Initializing VisaModule');
+
+                // Get the current language before initializing VisaModule
+                const currentLanguage = window.LanguageModule ?
+                    window.LanguageModule.getCurrentLanguage() :
+                    localStorage.getItem('zaheb-language');
+
+                console.log('Current language before initializing VisaModule:', currentLanguage);
+
                 window.VisaModule.init();
+            } else {
+                console.error('VisaModule not found!');
+            }
+
+            // Force language update again to ensure content is properly localized
+            if (window.LanguageModule) {
+                const currentLang = window.LanguageModule.getCurrentLanguage();
+                console.log('Triggering language update event with language:', currentLang);
+                document.dispatchEvent(new CustomEvent('languageChanged', {
+                    detail: { language: currentLang }
+                }));
             }
         });
     </script>

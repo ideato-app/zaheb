@@ -12,13 +12,35 @@ const VisaModule = (function () {
     async function fetchVisaData() {
         const apiUrl = 'https://zaheb.cdn.prismic.io/api/v2';
 
-        // Get current language code from localStorage or use default
-        const langCode = localStorage.getItem('zaheb-language') || 'ar-kw';
+        // Get current language code - try multiple methods to ensure we get the right one
+        let langCode;
+
+        // First try from localStorage directly
+        langCode = localStorage.getItem('zaheb-language');
+        console.log('Initial language from localStorage:', langCode);
+
+        // Then try from LanguageModule if available
+        if (window.LanguageModule && typeof window.LanguageModule.getCurrentLanguage === 'function') {
+            const moduleLang = window.LanguageModule.getCurrentLanguage();
+            console.log('Language from LanguageModule:', moduleLang);
+
+            // Only use module language if it's valid (not undefined or null)
+            if (moduleLang) {
+                langCode = moduleLang;
+            }
+        }
+
+        // Set default if still not set
+        if (!langCode) {
+            langCode = 'ar-kw';
+            console.log('No language found, defaulting to:', langCode);
+        }
+
         // Map our simple language codes to Prismic language codes
         const prismicLangCode = langCode === 'ar' || langCode === 'ar-kw' ? 'ar-kw' : 'en-us';
         const isArabic = langCode === 'ar' || langCode === 'ar-kw';
 
-        console.log(`Fetching visa data for language: ${prismicLangCode}`);
+        console.log(`Visa module - Current language: ${langCode}, Prismic language: ${prismicLangCode}, isArabic: ${isArabic}`);
 
         try {
             const apiRes = await fetch(apiUrl);
@@ -365,10 +387,30 @@ const VisaModule = (function () {
     }
 
     function init() {
+        console.log('Visa module initializing...');
         // Initialize modal functionality
         initModal();
+
+        // Check current language directly before initial fetch
+        const storedLang = localStorage.getItem('zaheb-language');
+        console.log('Stored language before initial fetch:', storedLang);
+
         // Fetch visa data
         fetchVisaData();
+
+        // Listen for language changes
+        document.addEventListener('languageChanged', function (e) {
+            console.log('Language changed event detected in visa module:', e.detail.language);
+
+            // Force update of language in localStorage to ensure consistency
+            if (e.detail && e.detail.language) {
+                localStorage.setItem('zaheb-language', e.detail.language);
+                console.log('Updated localStorage with language from event:', e.detail.language);
+            }
+
+            // Small delay to ensure localStorage is updated
+            setTimeout(fetchVisaData, 100);
+        });
     }
 
     function initModal() {
@@ -404,9 +446,9 @@ const VisaModule = (function () {
 // Export the module
 window.VisaModule = VisaModule;
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
-    if (document.body.classList.contains('visa-page')) {
-        VisaModule.init();
-    }
-});
+// Remove self-initialization since we're handling this in visa.html
+// document.addEventListener('DOMContentLoaded', function () {
+//     if (document.body.classList.contains('visa-page')) {
+//         VisaModule.init();
+//     }
+// });
