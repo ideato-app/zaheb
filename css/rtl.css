@@ -46,8 +46,10 @@
 }
 
 /* Fix header layout for RTL */
-.rtl .nav-list {
-    flex-direction: row-reverse;
+@media (min-width: 769px) {
+    .rtl .nav-list {
+        flex-direction: row-reverse;
+    }
 }
 
 .rtl .nav-link {
