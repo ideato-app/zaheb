@@ -128,6 +128,33 @@ const VisaModule = (function () {
         const countriesGrid = document.querySelector('.countries-grid');
         let html = '';
 
+        // Get current language for translations
+        const langCode = localStorage.getItem('zaheb-language') || 'ar';
+
+        // Define translations for headers
+        const translations = {
+            'visa_types': {
+                'en': 'Visa Types',
+                'ar': 'أنواع التأشيرات'
+            },
+            'requirements': {
+                'en': 'Requirements',
+                'ar': 'المتطلبات'
+            },
+            'more_info': {
+                'en': 'More Info',
+                'ar': 'مزيد من المعلومات'
+            },
+            'inquire_now': {
+                'en': 'Inquire Now',
+                'ar': 'استفسر الآن'
+            },
+            'visa_details': {
+                'en': 'Visa Details',
+                'ar': 'تفاصيل التأشيرة'
+            }
+        };
+
         countries.forEach((country) => {
             // Process visa types
             let visaTypesHtml = '';
@@ -143,10 +170,10 @@ const VisaModule = (function () {
                 visaTypesHtml += '</ul>';
             }
 
-            // Process requirements
+            // Process requirements - now using ordered list (ol) instead of unordered list (ul)
             let requirementsHtml = '';
             if (country.general_requirements_content && country.general_requirements_content.length > 0) {
-                requirementsHtml = '<ul class="requirements-list">';
+                requirementsHtml = '<ol class="requirements-list">';
                 country.general_requirements_content.forEach(item => {
                     if (item.type === 'list-item') {
                         requirementsHtml += `<li>${item.text}</li>`;
@@ -154,17 +181,18 @@ const VisaModule = (function () {
                         requirementsHtml += `<p>${item.text}</p>`;
                     }
                 });
-                requirementsHtml += '</ul>';
+                requirementsHtml += '</ol>';
             }
 
             // Create buttons HTML
             const inquireUrl = country.cta_inquire_link?.url || 'contact.html';
-            const inquireLabel = country.cta_inquire_label || 'Inquire Now';
+            const inquireLabel = country.cta_inquire_label || translations.inquire_now[langCode];
+            const moreInfoLabel = country.cta_more_label || translations.more_info[langCode];
 
             const buttonsHtml = `
                 <div class="visa-buttons">
                     <a href="${inquireUrl}" class="btn btn-primary">${inquireLabel}</a>
-                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}">${country.cta_more_label || 'More Info'}</button>
+                    <button class="btn btn-secondary more-info-btn" data-country="${country.country_name}">${moreInfoLabel}</button>
                 </div>
             `;
 
@@ -175,6 +203,10 @@ const VisaModule = (function () {
                 html += `<div id="more-info-${sanitizeId(country.country_name)}" class="hidden-modal-content" style="display:none;">${moreInfoHtml}</div>`;
             }
 
+            // Use country-provided headers if available, otherwise use translated defaults
+            const visaTypesHeader = country.visa_types_list || translations.visa_types[langCode];
+            const requirementsHeader = country.general_requirements_list || translations.requirements[langCode];
+
             // Combine all sections into country HTML
             const countryHtml = `
                 <div class="country glass-card">
@@ -183,11 +215,11 @@ const VisaModule = (function () {
                     </div>
                     <div class="country-content">
                         <div class="visa-info">
-                            <h3><i class="fas fa-passport"></i> ${country.visa_types_list || 'Visa Types'}</h3>
+                            <h3><i class="fas fa-passport"></i> ${visaTypesHeader}</h3>
                             ${visaTypesHtml}
                         </div>
                         <div class="requirements">
-                            <h3><i class="fas fa-list-check"></i> ${country.general_requirements_list || 'Requirements'}</h3>
+                            <h3><i class="fas fa-list-check"></i> ${requirementsHeader}</h3>
                             ${requirementsHtml}
                         </div>
                         ${buttonsHtml}
@@ -207,54 +239,98 @@ const VisaModule = (function () {
 
     function processMoreInfo(moreInfo) {
         let html = '';
+        const langCode = localStorage.getItem('zaheb-language') || 'ar';
+        let inList = false;
+        let listType = '';
 
-        moreInfo.forEach(item => {
+        moreInfo.forEach((item, index) => {
             switch (item.type) {
                 case 'heading1':
+                    // Close any open list before adding a heading
+                    if (inList) {
+                        html += listType === 'ol' ? '</ol>' : '</ul>';
+                        inList = false;
+                    }
                     html += `<h1>${item.text}</h1>`;
                     break;
                 case 'heading2':
+                    // Close any open list before adding a heading
+                    if (inList) {
+                        html += listType === 'ol' ? '</ol>' : '</ul>';
+                        inList = false;
+                    }
                     html += `<h2>${item.text}</h2>`;
                     break;
                 case 'heading3':
+                    // Close any open list before adding a heading
+                    if (inList) {
+                        html += listType === 'ol' ? '</ol>' : '</ul>';
+                        inList = false;
+                    }
                     html += `<h3>${item.text}</h3>`;
                     break;
                 case 'paragraph':
+                    // Close any open list before adding a paragraph
+                    if (inList) {
+                        html += listType === 'ol' ? '</ol>' : '</ul>';
+                        inList = false;
+                    }
                     html += `<p>${item.text}</p>`;
                     break;
                 case 'list-item':
-                    // Start a new list or add to an existing one
-                    if (!html.includes('<ul>') || html.lastIndexOf('</ul>') > html.lastIndexOf('<ul>')) {
-                        html += '<ul>';
+                    // Start a new ordered list if not already in one
+                    if (!inList) {
+                        html += '<ol>'; // Using ordered list for numbered items
+                        inList = true;
+                        listType = 'ol';
                     }
                     html += `<li>${item.text}</li>`;
 
                     // Check if next item is not a list-item, then close the list
-                    const nextItemIndex = moreInfo.indexOf(item) + 1;
+                    const nextItemIndex = index + 1;
                     if (nextItemIndex >= moreInfo.length || moreInfo[nextItemIndex].type !== 'list-item') {
-                        html += '</ul>';
+                        html += '</ol>';
+                        inList = false;
                     }
                     break;
                 default:
+                    // Close any open list before adding other content
+                    if (inList) {
+                        html += listType === 'ol' ? '</ol>' : '</ul>';
+                        inList = false;
+                    }
                     html += `<p>${item.text}</p>`;
             }
         });
+
+        // Make sure to close any open list at the end
+        if (inList) {
+            html += listType === 'ol' ? '</ol>' : '</ul>';
+        }
 
         return html;
     }
 
     function setupMoreInfoButtons() {
         const moreInfoButtons = document.querySelectorAll('.more-info-btn');
+        const langCode = localStorage.getItem('zaheb-language') || 'ar';
+
+        const translations = {
+            'visa_details': {
+                'en': 'Visa Details',
+                'ar': 'تفاصيل التأشيرة'
+            }
+        };
 
         moreInfoButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const countryName = this.getAttribute('data-country');
-                showModal(countryName);
+                showModal(countryName, translations.visa_details[langCode]);
             });
         });
     }
 
-    function showModal(countryName) {
+    function showModal(countryName, detailsText) {
         const modal = document.getElementById('visaDetailsModal');
         const modalContent = document.getElementById('modalContent');
         const moreInfoContent = document.getElementById(`more-info-${sanitizeId(countryName)}`);
@@ -262,7 +338,7 @@ const VisaModule = (function () {
         if (modal && moreInfoContent) {
             // Set modal title and content
             modalContent.innerHTML = `
-                <h2>${countryName} Visa Details</h2>
+                <h2>${countryName} ${detailsText || 'Visa Details'}</h2>
                 ${moreInfoContent.innerHTML}
             `;
 

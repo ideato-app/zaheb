@@ -131,6 +131,7 @@ body {
     margin-left: 12px;
 }
 
+/* Style for unordered lists */
 .visa-info ul,
 .requirements ul {
     padding-left: 1.8rem;
@@ -143,11 +144,38 @@ body {
     padding-right: 1.8rem;
 }
 
+/* Style for ordered lists */
+.visa-info ol,
+.requirements ol,
+.modal-content ol {
+    padding-left: 2rem;
+    margin-bottom: 0;
+    counter-reset: item;
+}
+
+.rtl .visa-info ol,
+.rtl .requirements ol,
+.rtl .modal-content ol {
+    padding-left: 0;
+    padding-right: 2rem;
+}
+
+/* Styling for list items */
 .visa-info li,
 .requirements li {
     margin-bottom: 0.7rem;
     position: relative;
     line-height: 1.6;
+}
+
+/* Specific styling for ordered list items */
+.requirements-list li {
+    padding-left: 0.5rem;
+}
+
+.requirements-list li::marker {
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 .visa-info li:last-child,
@@ -179,6 +207,26 @@ body {
     padding: 35px;
     border-radius: var(--border-radius);
     animation: modalFadeIn 0.3s;
+}
+
+/* Modal content ordered lists */
+.modal-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.rtl .modal-content ol {
+    padding-left: 0;
+    padding-right: 2rem;
+}
+
+.modal-content li {
+    margin-bottom: 0.8rem;
+}
+
+.modal-content li::marker {
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
 @keyframes modalFadeIn {
