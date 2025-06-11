@@ -327,6 +327,7 @@ section {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    z-index: 100;
 }
 
 .mobile-menu-btn span {
@@ -426,7 +427,7 @@ section {
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #f0f0f0;
+    background-color: #629eff;
     border-radius: 50%;
     color: var(--primary-color);
     transition: var(--transition);
@@ -575,6 +576,7 @@ section {
 
     .mobile-menu-btn {
         display: flex;
+        z-index: 100;
     }
 
     .language-switcher {
@@ -609,6 +611,7 @@ section {
 
     .nav.active {
         left: 0;
+        display: block !important;
     }
 
     .rtl .nav {
@@ -618,6 +621,7 @@ section {
 
     .rtl .nav.active {
         right: 0;
+        display: block !important;
     }
 
     .nav-list {

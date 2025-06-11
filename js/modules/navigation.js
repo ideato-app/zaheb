@@ -3,9 +3,9 @@
  * Handles mobile menu, navigation, and scroll effects
  */
 
-const NavigationModule = (function() {
+const NavigationModule = (function () {
     'use strict';
-    
+
     /**
      * Initialize navigation functionality
      */
@@ -13,39 +13,44 @@ const NavigationModule = (function() {
         initMobileMenu();
         initScrollEffects();
     }
-    
+
     /**
      * Initialize mobile menu functionality
      */
     function initMobileMenu() {
         const menuBtn = document.querySelector('.mobile-menu-btn');
         const nav = document.querySelector('.nav');
-        
+
+        console.log('Initializing mobile menu:', menuBtn ? 'Menu button found' : 'Menu button not found', nav ? 'Nav found' : 'Nav not found');
+
         if (menuBtn && nav) {
-            menuBtn.addEventListener('click', function() {
+            menuBtn.addEventListener('click', function () {
+                console.log('Mobile menu button clicked');
                 nav.classList.toggle('active');
                 this.classList.toggle('active');
-                
+
                 // Transform hamburger to X
                 const spans = this.querySelectorAll('span');
                 if (this.classList.contains('active')) {
                     spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
                     spans[1].style.opacity = '0';
                     spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                    console.log('Mobile menu opened');
                 } else {
                     spans[0].style.transform = 'none';
                     spans[1].style.opacity = '1';
                     spans[2].style.transform = 'none';
+                    console.log('Mobile menu closed');
                 }
             });
-            
+
             // Close menu when clicking on a link
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function () {
                     nav.classList.remove('active');
                     menuBtn.classList.remove('active');
-                    
+
                     // Reset hamburger
                     const spans = menuBtn.querySelectorAll('span');
                     spans[0].style.transform = 'none';
@@ -55,48 +60,48 @@ const NavigationModule = (function() {
             });
         }
     }
-    
+
     /**
      * Initialize scroll effects
      */
     function initScrollEffects() {
         // Header scroll effect
         const header = document.querySelector('.header');
-        
+
         if (header) {
-            const handleHeaderScroll = window.UtilsModule ? 
-                window.UtilsModule.throttle(updateHeaderOnScroll, 100) : 
+            const handleHeaderScroll = window.UtilsModule ?
+                window.UtilsModule.throttle(updateHeaderOnScroll, 100) :
                 updateHeaderOnScroll;
-                
+
             window.addEventListener('scroll', handleHeaderScroll);
-            
+
             // Initial call
             updateHeaderOnScroll();
         }
-        
+
         // Active navigation link based on scroll position
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
-        
+
         if (sections.length && navLinks.length) {
-            const handleNavScroll = window.UtilsModule ? 
-                window.UtilsModule.throttle(function() {
+            const handleNavScroll = window.UtilsModule ?
+                window.UtilsModule.throttle(function () {
                     updateActiveNavLink(sections, navLinks);
-                }, 100) : 
-                function() {
+                }, 100) :
+                function () {
                     updateActiveNavLink(sections, navLinks);
                 };
-                
+
             window.addEventListener('scroll', handleNavScroll);
         }
     }
-    
+
     /**
      * Update header styles on scroll
      */
     function updateHeaderOnScroll() {
         const header = document.querySelector('.header');
-        
+
         if (window.scrollY > 100) {
             header.style.padding = '10px 0';
             header.style.background = 'rgba(255, 255, 255, 0.9)';
@@ -107,7 +112,7 @@ const NavigationModule = (function() {
             header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
         }
     }
-    
+
     /**
      * Update active navigation link based on scroll position
      * @param {NodeList} sections - Page sections with IDs
@@ -115,16 +120,16 @@ const NavigationModule = (function() {
      */
     function updateActiveNavLink(sections, navLinks) {
         let current = '';
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 100;
             const sectionHeight = section.offsetHeight;
-            
+
             if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
         });
-        
+
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href').includes(current)) {
@@ -132,7 +137,7 @@ const NavigationModule = (function() {
             }
         });
     }
-    
+
     // Public API
     return {
         init: init

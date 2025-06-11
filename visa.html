@@ -209,7 +209,10 @@
             console.log('DOM loaded in visa.html - initializing modules');
 
             if (window.NavigationModule) {
+                console.log('Initializing NavigationModule');
                 window.NavigationModule.init();
+            } else {
+                console.error('NavigationModule not found!');
             }
 
             if (window.AnimationsModule) {
@@ -247,6 +250,14 @@
                     detail: { language: currentLang }
                 }));
             }
+
+            // Re-initialize mobile menu after a short delay to ensure DOM is fully processed
+            setTimeout(function () {
+                if (window.NavigationModule) {
+                    console.log('Re-initializing mobile menu');
+                    window.NavigationModule.init();
+                }
+            }, 500);
         });
     </script>
 </body>
