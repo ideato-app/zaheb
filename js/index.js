@@ -96,6 +96,12 @@ function renderHero(data) {
         return `<a href="${item.button_link.url}" class="${buttonClass}">${item.button_text}</a>`;
     }).join('');
 
+    // Set hero background image from API
+    const heroSection = document.querySelector('.hero');
+    if (heroSection && data.imge_hero?.url) {
+        heroSection.style.backgroundImage = `url('${data.imge_hero.url}')`;
+    }
+
     container.innerHTML = `
         ${title}
         ${description}
